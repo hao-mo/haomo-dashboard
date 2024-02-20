@@ -1,0 +1,47 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended",
+    "plugin:tailwindcss/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["build", ".eslintrc.json"],
+  "plugins": ["simple-import-sort", "import", "react", "@typescript-eslint"],
+  "rules": {
+    "no-console": "warn",
+    "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
+    "simple-import-sort/imports": [
+      "warn",
+      {
+        "groups": [
+          // Node.js builtins and third-party packages
+          ["^\\u0000"],
+          ["^react", "^@?\\w"],
+
+          // Your internal path aliases
+          ["^@?\\w"],
+          // Absolute imports and other imports such as React-style `@/foo`.
+          // Anything not matched in another group.
+          ["^"],
+          // Relative imports.
+          // Anything that starts with a dot.
+          ["^\\."]
+        ]
+      }
+    ],
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "files.exclude": {
+    "node_modules/": true,
+    ".scannerwork": true,
+    "tsconfig.tsbuildinfo": true,
+    "LICENSE": true
+  },
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  }
+}

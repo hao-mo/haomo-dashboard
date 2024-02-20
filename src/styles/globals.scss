@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gw: 4vw;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased; /* for safari & chrome */
+    -moz-osx-font-smoothing: grayscale; /* for firefox */
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+  }
+
+  body {
+    @apply bg-white font-default text-default;
+    scrollbar-gutter: stable;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-primary text-white;
+  }
+
+  img,
+  picture,
+  video,
+  svg {
+    -ms-transform: translateZ(0); /* IE 9 */
+    -webkit-transform: translateZ(0); /* Chrome, Safari, Opera */
+    transform: translateZ(0);
+  }
+
+  img,
+  a {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  html.lenis {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+}
+
+// @layer components {
+//   .mask {
+//     @apply absolute top-0 flex h-full w-full cursor-default items-center justify-center;
+//     mask-image: url('../../public/mask.svg');
+//     mask-repeat: no-repeat;
+//     mask-size: 40px;
+//     background: #ec4e39;
+//     position: absolute;
+//     color: black;
+//   }
+// }
+
+@layer utilities {
+  .auto-grid {
+    --min-column-size: 15rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--min-column-size), 100%), 1fr));
+  }
+}
+
+@layer components {
+  :root {
+    --duration: 0.5s;
+    --delay: 0.2s;
+  }
+  // Single link
+  .link-single {
+    @apply relative inline-block w-fit leading-relaxed;
+
+    &:after {
+      @apply absolute bottom-0 left-0 block h-px w-full bg-primary content-none;
+      transition:
+        transform var(--duration) ease,
+        background-color var(--duration) ease;
+      transform-origin: 100% 50%;
+      transform: scaleX(0);
+    }
+  }
+
+  .link-single:hover:after,
+  a:hover .link-single:after,
+  .link-single[aria-current='true']:after,
+  .a[aria-current='true'] .link-single:after,
+  .link-single:focus-visible:after,
+  a:focus-visible .link-single:after {
+    transform-origin: 0 50%;
+    transform: scaleX(1);
+  }
+
+  // Multi link
+  .link-multi {
+    @apply bg-gradient-to-r from-primary to-primary bg-no-repeat pb-0 leading-relaxed transition-[background-size,color] duration-500;
+    background-size: 0 1px;
+    background-position: 100% 100%;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+
+    &:hover,
+    &:focus-visible {
+      background-size: 100% 1px;
+      background-position: 0 100%;
+      box-decoration-break: slice;
+      -webkit-box-decoration-break: slice;
+    }
+  }
+
+  // Double link
+  .link-double {
+    --delay: 0.2s;
+    @apply relative inline-block w-fit leading-relaxed;
+
+    &:before {
+      @apply absolute bottom-0 left-0 block h-px w-full bg-primary/40 content-none;
+      transition:
+        transform var(--duration) var(--delay),
+        background-color var(--duration);
+      transform-origin: 0 50%;
+      transform: scaleX(1);
+    }
+
+    &:after {
+      @apply absolute bottom-0 left-0 block h-px w-full bg-primary content-none;
+    }
+  }
+
+  .link-double:after,
+  .link-double:hover:before,
+  a:hover .link-double:before,
+  button:hover .link-double:before,
+  .link-double:focus-visible:after,
+  a:focus-visible .link-double:before,
+  button:focus-visible .link-double:before {
+    transition:
+      transform var(--duration),
+      background-color var(--duration);
+    transform-origin: 100% 50%;
+    transform: scaleX(0);
+  }
+
+  .link-double:hover:after,
+  a:hover .link-double:after,
+  button:hover .link-double:after,
+  .link-double:focus-visible:after,
+  a:focus-visible .link-double:after,
+  button:focus-visible .link-double:after {
+    transition:
+      transform var(--duration) var(--delay),
+      background-color var(--duration);
+    transform-origin: 0 50%;
+    transform: scaleX(1);
+  }
+}
