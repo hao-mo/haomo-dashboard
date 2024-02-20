@@ -20,7 +20,7 @@ export const settings = {
     '2xl': 90, // Desktop
   },
   extendedLength: {
-    primary: 'var(--gw)',
+    default: 'var(--gw)',
     6: '1.5rem',
     8: '2rem',
     10: '2.5rem',

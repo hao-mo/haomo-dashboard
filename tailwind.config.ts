@@ -10,29 +10,60 @@ import { spaces } from './tailwind-settings/spaces';
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   mode: 'jit',
+  darkMode: ['class'],
   theme: {
     extend: {
       fontFamily: {
-        default: ['cursive', ...fontFamily.sans],
-        notoSans: ['var(--font-notoSans)', ...fontFamily.sans],
         mono: ['Consolas', ...fontFamily.mono],
       },
       container: {
         center: true,
-        // padding: 'var(--gw)',
-
-        screens: {
-          // DEFAULT: '100%',
-        },
+        padding: 'var(--gw)',
+        screens: { DEFAULT: '100%' },
       },
       colors: {
-        black: '#000000',
+        black: '#131417',
         white: '#ffffff',
-        default: { DEFAULT: '#0A171E' },
-        light: { DEFAULT: '#EBF0FE' },
-        dark: { DEFAULT: '#131417' },
-        primary: { DEFAULT: '#1A6074' },
-        secondary: { DEFAULT: '#7BB4D2' },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+      },
+      borderRadius: {
+        half: '50%',
+        inherit: 'inherit',
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
       lineHeight: {
         tighter: '1.1',
@@ -60,10 +91,6 @@ const config: Config = {
         98: '.98',
         '-1': '-1',
       },
-      borderRadius: {
-        inherit: 'inherit',
-        half: '50%',
-      },
       spacing: {
         half: '50%',
         '1/5': '20%',
@@ -87,9 +114,24 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+      },
     },
   },
   plugins: [
+    require('tailwindcss-animate'),
     plugin(({ addVariant }) => {
       addVariant('optional', '&:optional');
       addVariant('hocus', ['&:hover', '&:focus']);

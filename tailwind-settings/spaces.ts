@@ -11,7 +11,7 @@ const height = {
   'screen-3/2': '150vh',
   'screen-2': '200vh',
   'screen-3': '300vh',
-  primary: 'var(--gw)',
+  default: 'var(--gw)',
 };
 
 const width = {
@@ -23,7 +23,7 @@ const width = {
   'screen-2': '200vw',
   'screen-3': '300vw',
   '9/10': '90%',
-  primary: 'var(--gw)',
+  default: 'var(--gw)',
 };
 
 export const spaces = { height, width };
