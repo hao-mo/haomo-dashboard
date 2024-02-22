@@ -26,6 +26,7 @@ export const settings = {
     10: '2.5rem',
     12: '3rem',
     16: '4rem',
+    18: '4.5rem',
     20: '5rem',
     24: '6rem',
     30: '7.5rem',

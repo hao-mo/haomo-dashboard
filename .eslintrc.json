@@ -25,23 +25,56 @@
       "warn",
       {
         "groups": [
+          ["^@?\\w", "^react"],
           // Node.js builtins and third-party packages
           ["^\\u0000"],
-          ["^react", "^@?\\w"],
-
           // Your internal path aliases
-          ["^@?\\w"],
-          // Absolute imports and other imports such as React-style `@/foo`.
-          // Anything not matched in another group.
-          ["^"],
-          // Relative imports.
-          // Anything that starts with a dot.
-          ["^\\."]
+          ["^@/public(\\/.*|$)"],
+          ["^@/(components|hooks|styles|lib|utils)(\\/.*|$)"],
+
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          // Style imports (CSS, SCSS)
+          ["^.+\\.s?(css)$"]
+
+          // Packages. `react` related packages come first.
+          // ["^@?\\w", "^react"],
+          // // Internal packages.
+          // ["^(@|@company|@ui|@components|@utils|@styles|@lib|@/\\public)(/.*|$)"],
+          // // Side effect imports.
+          // ["^\\u0000"],
+          // // Parent imports. Put `..` last.
+          // ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          // // Other relative imports. Put same-folder imports and `.` last.
+          // ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          // // Style imports.
+          // ["^.+\\.s?css$"]
         ]
       }
     ],
     "import/first": "error",
     "import/newline-after-import": "error",
-    "import/no-duplicates": "error"
+    "import/no-duplicates": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "tailwindcss/no-custom-classname": [
+      "off"
+      // { "whitelist": ["link\\-(single|double|multi)", "auto\\-grid"] }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js"],
+      "parser": "@typescript-eslint/parser"
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
   }
 }

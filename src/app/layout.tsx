@@ -1,8 +1,11 @@
-import '../styles/globals.scss';
-
 import type { Metadata } from 'next';
 
+import { Sidebar } from '@/components/sidebar';
 import { inter } from '@/styles/fonts';
+
+import { Providers } from './providers';
+
+import '../styles/globals.scss';
 
 export const metadata: Metadata = {
   title: {
@@ -22,8 +25,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='zh-TW'>
-      <body className={inter.className}>{children}</body>
+    <html
+      lang='zh-TW'
+      suppressHydrationWarning
+    >
+      <body className={inter.className}>
+        <Providers>
+          <div className='relative flex h-screen overflow-hidden'>
+            <Sidebar />
+            <div className='relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden border-l'>
+              {children}
+            </div>
+          </div>
+        </Providers>
+      </body>
     </html>
   );
 }
