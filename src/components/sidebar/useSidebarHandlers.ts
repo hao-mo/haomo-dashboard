@@ -1,9 +1,11 @@
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 
 import { useSidebar } from './sidebar';
 
 export function useSidebarHandlers() {
   const ref = useRef<HTMLElement>(null);
+  const pathname = usePathname();
   const { isTabletView, isVisible, setIsVisible } = useSidebar();
 
   const handleClick = useCallback(
@@ -27,6 +29,10 @@ export function useSidebarHandlers() {
     if (isTabletView) setIsVisible(false);
     else setIsVisible(true);
   }, [isTabletView]);
+
+  useEffect(() => {
+    if (isTabletView) setIsVisible(false);
+  }, [pathname]);
 
   useEffect(() => {
     document.addEventListener('click', handleClick);

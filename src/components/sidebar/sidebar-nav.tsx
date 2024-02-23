@@ -1,5 +1,8 @@
+'use client';
+
 import { AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTransition } from 'react';
 
 import { siteRoutes } from '@/lib/routes';
 import { fadeInLeft } from '@/lib/transitions';
@@ -11,6 +14,14 @@ import { MotionTypography } from '../typography';
 import { useSidebar } from '.';
 
 export const SidebarNav = () => {
+  const [_, startTransition] = useTransition();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleClick = (href: string) => {
+    startTransition(() => router.push(href));
+  };
+
   return (
     <TooltipProvider
       delayDuration={500}
@@ -18,12 +29,13 @@ export const SidebarNav = () => {
     >
       <nav className='no-scrollbar mt-4 flex-1 overflow-y-auto'>
         <ul className='flex flex-col px-4'>
-          {siteRoutes.map((route, i) => (
+          {siteRoutes.map((route) => (
             <SidebarNavItem
-              key={i}
+              key={`sidebar-nav-item-${route.name}`}
               icon={route.icon}
-              href={route.href}
               name={route.name}
+              isActive={pathname === route.href}
+              handleClick={() => handleClick(route.href)}
             />
           ))}
         </ul>
@@ -34,25 +46,25 @@ export const SidebarNav = () => {
 
 interface SidebarNavItemProps {
   name: string;
-  href: string;
-  active?: boolean;
+  handleClick: () => void;
+  isActive?: boolean;
   icon?: React.ReactNode;
 }
 
-const SidebarNavItem = ({ icon, name, href, active }: SidebarNavItemProps) => {
+const SidebarNavItem = ({ icon, name, handleClick, isActive }: SidebarNavItemProps) => {
   const { isVisible } = useSidebar();
-  const router = useRouter();
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
+      <TooltipTrigger
+        asChild
+        onClick={handleClick}
+      >
         <li
           className={cn(
             'group relative my-1 flex h-10 cursor-pointer items-center overflow-hidden rounded-md p-2.5 font-medium transition-colors duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground',
-            'data-[active="true"]:bg-primary data-[active="true"]:text-primary-foreground'
+            isActive && 'text-primary'
           )}
-          data-active={active}
-          onClick={() => router.push(href)}
         >
           <span className='flex items-center justify-center'>{icon}</span>
           <div className='flex-1 overflow-hidden'>
