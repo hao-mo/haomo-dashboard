@@ -1,22 +1,37 @@
 'use client';
 
-import { AnimatePresence } from 'framer-motion';
-import { ChevronLeft } from 'lucide-react';
+import type { Variants } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
+import { ChevronLeft, XIcon } from 'lucide-react';
 import Link from 'next/link';
-import { createContext, memo, useCallback, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import { fadeInLeft } from '@/lib/transitions';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
+import { SiteConfig } from '@/lib/site-config';
+import { fadeIn, fadeInLeft } from '@/lib/transitions';
 import { cn } from '@/utils';
 
 import { Button } from '../button';
+import { MotionBox } from '../motion-box';
 import { ThemedLogo } from '../themed-logo';
 import { MotionTypography } from '../typography';
 
 import { SidebarNav } from './sidebar-nav';
+import { useSidebarHandlers } from './useSidebarHandlers';
 
 interface SidebarContextType {
-  expanded: boolean;
-  setExpanded: (value: boolean) => void;
+  isTabletView: boolean;
+  isVisible: boolean;
+  setIsVisible: (value: boolean) => void;
 }
 
 const SidebarContext = createContext<SidebarContextType>({} as SidebarContextType);
@@ -29,36 +44,62 @@ export const useSidebar = () => {
   return context;
 };
 
-export const Sidebar = memo(() => {
-  const [expanded, setExpanded] = useState<boolean>(true);
+export const SidebarProvider = ({ children }: PropsWithChildren) => {
+  const isTabletView = useBreakpoint('md', 'max');
+  const [isVisible, setIsVisible] = useState<boolean>(!isTabletView);
 
   const contextValue: SidebarContextType = useMemo(
-    () => ({
-      expanded,
-      setExpanded,
-    }),
-    [expanded, setExpanded]
+    () => ({ isTabletView, isVisible, setIsVisible }),
+    [isTabletView, isVisible, setIsVisible]
   );
 
+  return <SidebarContext.Provider value={contextValue}>{children}</SidebarContext.Provider>;
+};
+
+const sidebarVariants: Variants = {
+  expanded: { width: '18rem', x: 0 },
+  collapsed: { width: '4.5rem', x: 0 },
+  hidden: { width: '18rem', x: '-120%' },
+};
+
+export const Sidebar = memo(() => {
+  const { ref, isTabletView, isVisible } = useSidebarHandlers();
+
   return (
-    <SidebarContext.Provider value={contextValue}>
-      <aside
+    <>
+      <m.aside
+        ref={ref}
         className={cn(
-          'absolute z-10 flex h-screen flex-col transition-all duration-200 ease-linear lg:static',
-          expanded ? 'w-72' : 'w-18'
+          'absolute z-10 flex h-screen flex-col border-r bg-background shadow-md md:static'
         )}
+        initial={false}
+        animate={isVisible ? 'expanded' : isTabletView ? 'hidden' : 'collapsed'}
+        variants={sidebarVariants}
+        transition={{ duration: 0.2, ease: 'linear' }}
       >
         <SidebarHeader />
         <SidebarNav />
-      </aside>
-    </SidebarContext.Provider>
+      </m.aside>
+      <AnimatePresence mode='wait'>
+        {isTabletView && isVisible && (
+          <MotionBox
+            className='absolute z-5 h-screen w-full bg-black/80 backdrop-blur-sm'
+            initial='hidden'
+            animate='show'
+            exit='hidden'
+            variants={fadeIn}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 });
 
 Sidebar.displayName = 'Sidebar';
 
 const SidebarHeader = memo(() => {
-  const { expanded } = useSidebar();
+  const { isVisible } = useSidebar();
   return (
     <header className='relative flex h-20 items-center justify-between border-b border-border p-4'>
       <Link
@@ -71,7 +112,7 @@ const SidebarHeader = memo(() => {
             mode='wait'
             initial={false}
           >
-            {expanded && (
+            {isVisible && (
               <MotionTypography
                 as='h1'
                 initial='hidden'
@@ -81,7 +122,7 @@ const SidebarHeader = memo(() => {
                 transition={{ duration: 0.2, ease: 'linear' }}
                 className='max-w-48 text-base font-bold'
               >
-                HaoMo
+                {SiteConfig.name}
               </MotionTypography>
             )}
           </AnimatePresence>
@@ -95,22 +136,38 @@ const SidebarHeader = memo(() => {
 SidebarHeader.displayName = 'SidebarHeader';
 
 const SidebarToggle = memo(() => {
-  const { expanded, setExpanded } = useSidebar();
+  const ref = useRef<HTMLButtonElement>(null);
+  const { isTabletView, isVisible, setIsVisible } = useSidebar();
 
   const toggleExpanded = useCallback(() => {
-    setExpanded(!expanded);
-  }, [expanded]);
+    setIsVisible(!isVisible);
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    if (isTabletView && isVisible) {
+      ref.current.focus();
+    }
+  }, [isTabletView, isVisible, ref]);
 
   return (
     <Button
+      ref={ref}
       size='circle'
       onClick={toggleExpanded}
-      className='absolute -bottom-4 -right-4 rounded-half text-white'
+      className={cn(
+        'rounded-half  text-white',
+        isTabletView ? 'relative' : 'absolute -bottom-4 -right-4'
+      )}
     >
-      <ChevronLeft
-        size={16}
-        className={cn('transition-transform duration-200', expanded ? 'rotate-0' : 'rotate-180')}
-      />
+      {isTabletView ? (
+        <XIcon size={16} />
+      ) : (
+        <ChevronLeft
+          size={16}
+          className={cn('transition-transform duration-200', isVisible ? 'rotate-0' : 'rotate-180')}
+        />
+      )}
     </Button>
   );
 });

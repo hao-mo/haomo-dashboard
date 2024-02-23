@@ -68,6 +68,7 @@ declare global {
   export interface IRoute {
     name: string;
     href: string;
+    icon?: React.ReactNode;
     routes?: IRoute[];
   }
 }

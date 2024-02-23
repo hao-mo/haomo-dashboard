@@ -75,40 +75,24 @@ export const toDateString = (date: Date) => {
 };
 
 /**
- * 在左邊補字
+ * 在指定的方向補字
  * @param input - 要補字的值
  * @param size - 要補到的長度
  * @param padString - 要補的字串
+ * @param direction - 補字的方向，'start' 或 'end'
  * @returns 補字後的字串
  */
-export function padLeft(input: string | number, size: number, padString: string = '0') {
+export function pad(
+  input: string | number,
+  size: number,
+  direction: 'start' | 'end',
+  padString: string = '0'
+) {
   const stringifiedInput = String(input);
-  if (stringifiedInput.length >= size) {
-    return stringifiedInput;
-  }
+  const differ = Math.max(size - stringifiedInput.length, 0);
+  const padding = padString.repeat(differ);
 
-  return getPadStringRepeat(size, padString, stringifiedInput) + stringifiedInput;
-}
-
-/**
- * 在右邊補字
- * @param input - 要補字的值
- * @param size - 要補到的長度
- * @param padString - 要補的字串
- * @returns 補字後的字串
- */
-export function padRight(input: string | number, size: number, padString: string = '0') {
-  const stringifiedInput = String(input);
-  if (stringifiedInput.length >= size) {
-    return stringifiedInput;
-  }
-
-  return stringifiedInput + getPadStringRepeat(size, padString, stringifiedInput);
-}
-
-function getPadStringRepeat(size: number, padString: string, stringifiedInput: string) {
-  const differ = size - stringifiedInput.length;
-  return padString.repeat(Math.max(differ, 0));
+  return direction === 'start' ? padding + stringifiedInput : stringifiedInput + padding;
 }
 
 /**
@@ -118,4 +102,21 @@ function getPadStringRepeat(size: number, padString: string, stringifiedInput: s
  */
 export const wait = async (milliseconds: number): Promise<void> => {
   await new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
+
+/**
+ * 透過 requestAnimationFrame 來等待下一個動畫幀
+ * @returns 一個 Promise，當下一個動畫幀到來時，它就會被解決
+ */
+export const nextFrame = async (): Promise<void> => {
+  await new Promise((resolve) => requestAnimationFrame(resolve));
+};
+
+/**
+ * 將字串轉換為數字
+ * @param target - 要轉換的字串
+ * @returns 轉換後的數字
+ */
+export const toNumber = (target: string) => {
+  return Number(target.replace(/[^0-9.-]+/g, ''));
 };

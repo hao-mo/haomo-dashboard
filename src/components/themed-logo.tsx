@@ -12,6 +12,7 @@ export const ThemedLogo = () => {
         className='w-full object-contain object-center'
         alt='Logo'
         priority
+        sizes='2.5rem'
       />
     </div>
   );
