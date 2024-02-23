@@ -21,6 +21,7 @@ export const Hamburger = () => {
 
   return (
     <Button
+      className='lg:hidden'
       ref={ref}
       size='icon'
       variant='outline'

@@ -12,3 +12,5 @@ export const siteRoutes: IRoute[] = [
     icon: <PieChart size={20} />,
   },
 ];
+
+export const allRoutes = [...siteRoutes];
