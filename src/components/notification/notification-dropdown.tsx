@@ -42,7 +42,7 @@ export const NotificationDropdown = () => {
       <DropdownMenuContent
         align='center'
         sideOffset={5}
-        className=''
+        className='px-2'
       >
         <h4 className='border-b border-border px-4 py-2 text-foreground/70'>Notification</h4>
         <div className='my-2 max-h-100 overflow-y-auto'>
