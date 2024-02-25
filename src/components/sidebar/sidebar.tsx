@@ -15,8 +15,8 @@ import {
   useState,
 } from 'react';
 
-import { useBreakpoint } from '@/hooks/useBreakpoint';
-import { SiteConfig } from '@/lib/site-config';
+import useBetterMediaQuery from '@/hooks/useBreakpoint';
+import { siteConfig } from '@/lib/site-config';
 import { fadeIn, fadeInLeft } from '@/lib/transitions';
 import { cn } from '@/utils';
 
@@ -29,7 +29,7 @@ import { SidebarNav } from './sidebar-nav';
 import { useSidebarHandlers } from './useSidebarHandlers';
 
 interface SidebarContextType {
-  isTabletView: boolean;
+  isTabletView?: boolean;
   isVisible: boolean;
   setIsVisible: (value: boolean) => void;
 }
@@ -45,7 +45,7 @@ export const useSidebar = () => {
 };
 
 export const SidebarProvider = ({ children }: PropsWithChildren) => {
-  const isTabletView = useBreakpoint('md', 'max');
+  const isTabletView = useBetterMediaQuery('md', 'max');
   const [isVisible, setIsVisible] = useState<boolean>(!isTabletView);
 
   const contextValue: SidebarContextType = useMemo(
@@ -122,7 +122,7 @@ const SidebarHeader = memo(() => {
                 transition={{ duration: 0.2, ease: 'linear' }}
                 className='max-w-48 text-base font-bold'
               >
-                {SiteConfig.name}
+                {siteConfig.name}
               </MotionTypography>
             )}
           </AnimatePresence>
