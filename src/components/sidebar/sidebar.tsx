@@ -63,17 +63,17 @@ const sidebarVariants: Variants = {
 };
 
 export const Sidebar = memo(() => {
-  const { ref, isTabletView, isVisible } = useSidebarHandlers();
+  const { ref, isTabletView, isVisible, animationState } = useSidebarHandlers();
 
   return (
     <>
       <m.aside
         ref={ref}
         className={cn(
-          'absolute z-10 flex h-screen flex-col border-r bg-background shadow-md md:static'
+          'absolute z-10 flex h-screen flex-col border-r border-border bg-background shadow-md md:static'
         )}
         initial={false}
-        animate={isVisible ? 'expanded' : isTabletView ? 'hidden' : 'collapsed'}
+        animate={animationState}
         variants={sidebarVariants}
         transition={{ duration: 0.2, ease: 'linear' }}
       >

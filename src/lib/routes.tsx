@@ -1,4 +1,4 @@
-import { PieChart, StickyNote } from 'lucide-react';
+import { LogOut, PieChart, StickyNote, UserRoundCog, UsersRound } from 'lucide-react';
 
 export const siteRoutes: IRoute[] = [
   {
@@ -13,4 +13,22 @@ export const siteRoutes: IRoute[] = [
   },
 ];
 
-export const allRoutes = [...siteRoutes];
+export const userRoutes: IRoute[] = [
+  {
+    name: 'Account',
+    href: '/account-setting',
+    icon: <UserRoundCog size={16} />,
+  },
+  {
+    name: 'Profile',
+    href: '/profile',
+    icon: <UsersRound size={16} />,
+  },
+  {
+    name: 'Logout',
+    href: '/logout',
+    icon: <LogOut size={16} />,
+  },
+];
+
+export const allRoutes = [...siteRoutes, ...userRoutes];

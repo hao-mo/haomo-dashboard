@@ -6,6 +6,7 @@ import { useTheme } from 'next-themes';
 import { useMount } from '@/hooks/useMount';
 
 import { Button } from '../button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../tooltip';
 
 export const ThemeSwitch = () => {
   const { theme, setTheme } = useTheme();
@@ -18,12 +19,25 @@ export const ThemeSwitch = () => {
   if (!isMount) return null;
 
   return (
-    <Button
-      variant='outline'
-      size='circle'
-      onClick={handleSwitchTheme}
-    >
-      {theme === 'light' ? <Sun size={16} /> : <Moon size={16} />}
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant='outline'
+            size='circle'
+            onClick={handleSwitchTheme}
+          >
+            {theme === 'light' ? <Sun size={20} /> : <Moon size={20} />}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent
+          className='capitalize'
+          side='bottom'
+          alignOffset={10}
+        >
+          {theme === 'light' ? 'dark' : 'light'}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

@@ -11,7 +11,50 @@ const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   mode: 'jit',
   darkMode: ['class'],
+
   theme: {
+    colors: {
+      inherit: 'inherit',
+      current: 'currentColor',
+      transparent: 'transparent',
+      black: '#131417',
+      white: '#ffffff',
+      border: 'hsl(var(--border))',
+      input: 'hsl(var(--input))',
+      ring: 'hsl(var(--ring))',
+      background: 'hsl(var(--background))',
+      foreground: 'hsl(var(--foreground))',
+      primary: {
+        DEFAULT: 'hsl(var(--primary))',
+        foreground: 'hsl(var(--primary-foreground))',
+      },
+      secondary: {
+        DEFAULT: 'hsl(var(--secondary))',
+        foreground: 'hsl(var(--secondary-foreground))',
+      },
+      destructive: {
+        DEFAULT: 'hsl(var(--destructive))',
+        foreground: 'hsl(var(--destructive-foreground))',
+      },
+      muted: {
+        DEFAULT: 'hsl(var(--muted))',
+        foreground: 'hsl(var(--muted-foreground))',
+      },
+      accent: {
+        DEFAULT: 'hsl(var(--accent))',
+        foreground: 'hsl(var(--accent-foreground))',
+      },
+      popover: {
+        DEFAULT: 'hsl(var(--popover))',
+        foreground: 'hsl(var(--popover-foreground))',
+      },
+      card: {
+        DEFAULT: 'hsl(var(--card))',
+        foreground: 'hsl(var(--card-foreground))',
+      },
+    },
+    screens,
+    fontSize,
     extend: {
       fontFamily: {
         mono: ['Consolas', ...fontFamily.mono],
@@ -20,43 +63,6 @@ const config: Config = {
         center: true,
         padding: 'var(--gw)',
         screens: { DEFAULT: '100%' },
-      },
-      colors: {
-        black: '#131417',
-        white: '#ffffff',
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
       },
       borderRadius: {
         half: '50%',
@@ -99,8 +105,6 @@ const config: Config = {
         '4/5': '80%',
         ...settings.extendedLength,
       },
-      screens,
-      fontSize,
       minHeight: spaces.height,
       height: spaces.height,
       minWidth: spaces.width,

@@ -8,6 +8,18 @@ export function useSidebarHandlers() {
   const pathname = usePathname();
   const { isTabletView, isVisible, setIsVisible } = useSidebar();
 
+  const getAnimationState = () => {
+    if (isVisible) {
+      return 'expanded';
+    } else if (isTabletView) {
+      return 'hidden';
+    } else {
+      return 'collapsed';
+    }
+  };
+
+  const animationState = getAnimationState();
+
   const handleClick = useCallback(
     ({ target }: MouseEvent) => {
       if (!ref.current) return;
@@ -44,5 +56,5 @@ export function useSidebarHandlers() {
     return () => document.removeEventListener('keydown', handleKeydown);
   }, [handleKeydown]);
 
-  return { ref, isTabletView, isVisible, setIsVisible };
+  return { ref, isTabletView, isVisible, animationState, setIsVisible };
 }
