@@ -75,7 +75,7 @@
   }
 
   ::selection {
-    @apply bg-primary text-white;
+    @apply bg-primary text-primary-foreground;
   }
 
   /* width */
@@ -86,12 +86,12 @@
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #c8c8c8;
+    @apply rounded-md bg-muted;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply rounded-md bg-primary/70;
+    @apply rounded-md bg-primary/80 transition-colors duration-200 ease-in-out;
   }
 
   /* Handle on hover */

@@ -25,7 +25,7 @@ export const PageTitle = () => {
         initial={false}
       >
         <MotionTypography
-          className='text-xl font-bold'
+          className='text-lg font-bold md:text-xl'
           key={pathname}
           as='h2'
           initial='hidden'

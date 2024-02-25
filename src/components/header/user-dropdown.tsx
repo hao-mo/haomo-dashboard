@@ -1,4 +1,5 @@
-import { ChevronDownIcon } from 'lucide-react';
+'use client';
+
 import Link from 'next/link';
 
 import { userRoutes } from '@/lib/routes';
@@ -9,38 +10,43 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../dropdown-menu';
 
 export const UserDropdown = () => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        asChild
-        className='group'
-      >
+      <DropdownMenuTrigger asChild>
         <Button
-          variant='outline'
-          className=' ml-auto gap-2'
+          variant='ghost'
+          size='circle'
+          className='group ml-auto gap-2 p-0'
         >
-          <Avatar className='size-5'>
+          <Avatar className='size-8'>
             <AvatarImage
               src='/avatar.webp'
               alt='avatar'
             />
             <AvatarFallback>U</AvatarFallback>
           </Avatar>
-          <span className='select-none'>Avatar</span>
-          <ChevronDownIcon
-            size={16}
-            className='transition-transform duration-200 ease-in-out group-data-[state=open]:rotate-180'
-          />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'
-        sideOffset={5}
+        sideOffset={8}
+        className='min-w-60 max-w-60'
       >
+        <DropdownMenuLabel>
+          <span className='block truncate'>Username</span>
+          <div className='flex items-center justify-between gap-x-2 pt-2'>
+            <span className='text-xs text-muted-foreground/80'>Role</span>
+            <span className='text-xs font-medium'>Admin</span>
+          </div>
+        </DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
         {userRoutes.map((route) => (
           <DropdownMenuItem key={`user-route-${route.name}`}>
             <Link

@@ -50,7 +50,10 @@ export function DataTableColumnHeader<TData, TValue>({
             {renderSortIcon()}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='start'>
+        <DropdownMenuContent
+          align='start'
+          sideOffset={8}
+        >
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className='mr-2 size-3.5 text-muted-foreground/70' />
             Asc

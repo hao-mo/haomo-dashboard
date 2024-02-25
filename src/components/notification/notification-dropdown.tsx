@@ -4,7 +4,13 @@ import React from 'react';
 import type { INotification } from '@/lib/types';
 
 import { Button } from '../button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../dropdown-menu';
 
 import { NotificationDropdownItem } from './notification-dropdown-item';
 
@@ -40,15 +46,16 @@ export const NotificationDropdown = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align='center'
-        sideOffset={5}
-        className='px-2'
+        align='end'
+        sideOffset={8}
+        // className='px-2'
       >
-        <h4 className='border-b border-border px-4 py-2 text-foreground/70'>Notification</h4>
-        <div className='my-2 max-h-100 overflow-y-auto'>
+        <DropdownMenuLabel className='text-foreground/70'>Notification</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <div className='max-h-100 overflow-y-auto overflow-x-hidden'>
           {notifications.map((notification, index) => (
             <React.Fragment key={`notification-item-${notification.id}`}>
-              {index !== 0 && <div className='my-2 h-px w-full border-t border-border' />}
+              {index !== 0 && <DropdownMenuSeparator />}
               <NotificationDropdownItem notification={notification} />
             </React.Fragment>
           ))}

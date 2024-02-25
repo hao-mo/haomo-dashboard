@@ -14,9 +14,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { Search } from 'lucide-react';
 import { useState } from 'react';
 
-import { DataTablePagination, DataTableViewOptions } from '@/components/data-table';
+import {
+  DataTablePageSizeSelector,
+  DataTablePagination,
+  DataTableViewOptions,
+} from '@/components/data-table';
+import DataTableSelectedRowsInfo from '@/components/data-table/selected-rows-info';
 import { Input } from '@/components/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table';
 
@@ -52,12 +58,18 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div>
-      <div className='flex items-center py-4'>
+      <div className='flex items-center gap-x-2 py-4'>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
           className='max-w-sm'
+          icon={
+            <Search
+              className='text-muted-foreground/80'
+              size={20}
+            />
+          }
         />
         <DataTableViewOptions table={table} />
       </div>
@@ -105,7 +117,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+
+      <div className='px-2 py-4'>
+        <div className='mb-4 flex items-center justify-between'>
+          <DataTablePageSizeSelector table={table} />
+          <DataTablePagination table={table} />
+        </div>
+        <DataTableSelectedRowsInfo table={table} />
+      </div>
     </div>
   );
 }

@@ -45,7 +45,7 @@ export const useSidebar = () => {
 };
 
 export const SidebarProvider = ({ children }: PropsWithChildren) => {
-  const isTabletView = useBetterMediaQuery('md', 'max');
+  const isTabletView = useBetterMediaQuery('lg', 'max');
   const [isVisible, setIsVisible] = useState<boolean>(!isTabletView);
 
   const contextValue: SidebarContextType = useMemo(
@@ -70,7 +70,7 @@ export const Sidebar = memo(() => {
       <m.aside
         ref={ref}
         className={cn(
-          'absolute z-10 flex h-screen flex-col border-r border-border bg-background shadow-md md:static'
+          'absolute z-10 flex h-screen flex-col border-r border-border bg-background shadow-md lg:static'
         )}
         initial={false}
         animate={animationState}

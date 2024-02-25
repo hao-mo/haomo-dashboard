@@ -1,12 +1,4 @@
-import {
-  FileSpreadsheet,
-  LogOut,
-  PieChart,
-  Sheet,
-  StickyNote,
-  UserRoundCog,
-  UsersRound,
-} from 'lucide-react';
+import { FileSpreadsheet, LogOut, PieChart, Sheet, StickyNote, UserRoundCog } from 'lucide-react';
 
 export const siteRoutes: IRoute[] = [
   {
@@ -33,17 +25,12 @@ export const siteRoutes: IRoute[] = [
 
 export const userRoutes: IRoute[] = [
   {
-    name: 'Account',
+    name: 'Edit account',
     href: '/account-setting',
     icon: <UserRoundCog size={16} />,
   },
   {
-    name: 'Profile',
-    href: '/profile',
-    icon: <UsersRound size={16} />,
-  },
-  {
-    name: 'Logout',
+    name: 'Sign out',
     href: '/logout',
     icon: <LogOut size={16} />,
   },

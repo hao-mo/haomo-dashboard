@@ -9,5 +9,5 @@ export const HeaderThemedLogo = () => {
 
   if (!isTabletView) return null;
 
-  return <ThemedLogo className='lg:hidden' />;
+  return <ThemedLogo className='max-lg:size-8 lg:hidden' />;
 };

@@ -24,15 +24,16 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
         <Button
           variant='outline'
           size='sm'
-          className='ml-auto hidden h-8 lg:flex'
+          className='ml-auto h-10'
         >
-          <SlidersHorizontal className='mr-2 size-4' />
-          View
+          <SlidersHorizontal className='size-4' />
+          <span className='ml-2 max-md:hidden'>Filter</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'
         className='w-[150px]'
+        sideOffset={8}
       >
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -43,7 +44,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className='capitalize'
+                className='cursor-pointer capitalize'
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
               >
