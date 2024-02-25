@@ -26,7 +26,7 @@ export const siteRoutes: IRoute[] = [
 export const userRoutes: IRoute[] = [
   {
     name: 'Edit account',
-    href: '/account-setting',
+    href: '/user/account-setting',
     icon: <UserRoundCog size={16} />,
   },
   {

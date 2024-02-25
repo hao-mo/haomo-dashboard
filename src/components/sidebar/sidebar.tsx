@@ -59,7 +59,7 @@ export const SidebarProvider = ({ children }: PropsWithChildren) => {
 const sidebarVariants: Variants = {
   expanded: { width: '18rem', x: 0 },
   collapsed: { width: '4.5rem', x: 0 },
-  hidden: { width: '18rem', x: '-120%' },
+  hidden: { width: '18rem', x: '-150%' },
 };
 
 export const Sidebar = memo(() => {
@@ -104,7 +104,7 @@ const SidebarHeader = memo(() => {
     <header className='relative flex h-20 items-center justify-between border-b border-border p-4'>
       <Link
         href='/'
-        className='flex items-center'
+        className='flex items-center focus-visible:outline-none'
       >
         <ThemedLogo />
         <div className='ml-4 overflow-hidden'>
@@ -153,15 +153,18 @@ const SidebarToggle = memo(() => {
   return (
     <Button
       ref={ref}
+      variant={isTabletView ? 'ghost' : 'default'}
       size='circle'
       onClick={toggleExpanded}
       className={cn(
-        'rounded-half  text-white',
-        isTabletView ? 'relative' : 'absolute -bottom-4 -right-4'
+        'absolute rounded-half',
+        isTabletView
+          ? '-right-16 top-half -translate-y-half bg-transparent text-white hover:bg-muted-foreground/30 hover:text-white'
+          : ' -bottom-4 -right-4'
       )}
     >
       {isTabletView ? (
-        <XIcon size={16} />
+        <XIcon size={24} />
       ) : (
         <ChevronLeft
           size={16}

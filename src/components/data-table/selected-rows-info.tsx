@@ -14,13 +14,7 @@ export default function DataTableSelectedRowsInfo<T>({
   const totalRows = table.getFilteredRowModel().rows.length;
 
   return (
-    <div
-      className={cn(
-        'flex-1 text-sm text-muted-foreground',
-        selectedRows === 0 && 'invisible',
-        className
-      )}
-    >
+    <div className={cn('flex-1 text-sm text-muted-foreground', className)}>
       {selectedRows} of {totalRows} row(s) selected
     </div>
   );

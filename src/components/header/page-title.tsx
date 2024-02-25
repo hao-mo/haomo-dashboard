@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
 import { allRoutes } from '@/lib/routes';
-import { fadeInUp } from '@/lib/transitions';
+import { easeInExpo, fadeIn } from '@/lib/transitions';
 
 import { MotionTypography } from '../typography';
 
@@ -25,14 +25,14 @@ export const PageTitle = () => {
         initial={false}
       >
         <MotionTypography
-          className='text-lg font-bold md:text-xl'
           key={pathname}
           as='h2'
           initial='hidden'
           animate='show'
           exit='hidden'
-          variants={fadeInUp}
-          transition={{ duration: 0.2, ease: 'easeInOut' }}
+          variants={fadeIn}
+          transition={{ duration: 0.3, ease: easeInExpo }}
+          className='text-lg font-bold will-change-transform md:text-xl'
         >
           {currentPageName}
         </MotionTypography>

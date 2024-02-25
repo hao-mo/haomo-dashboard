@@ -25,7 +25,7 @@
       "warn",
       {
         "groups": [
-          ["^@?\\w", "^react"],
+          ["^@?\\w"],
           // Node.js builtins and third-party packages
           ["^\\u0000"],
           // Your internal path aliases
