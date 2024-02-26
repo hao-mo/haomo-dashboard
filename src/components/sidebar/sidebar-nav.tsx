@@ -8,8 +8,8 @@ import { siteRoutes } from '@/lib/routes';
 import { fadeInLeft } from '@/lib/transitions';
 import { cn } from '@/utils';
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../tooltip';
-import { MotionTypography } from '../typography';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { MotionTypography } from '../ui/typography';
 
 import { useSidebar } from '.';
 

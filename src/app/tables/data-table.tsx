@@ -23,8 +23,15 @@ import {
   DataTableViewOptions,
 } from '@/components/data-table';
 import DataTableSelectedRowsInfo from '@/components/data-table/selected-rows-info';
-import { Input } from '@/components/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/table';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

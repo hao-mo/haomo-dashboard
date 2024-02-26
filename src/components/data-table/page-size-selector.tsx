@@ -1,6 +1,6 @@
 import type { Table } from '@tanstack/react-table';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 interface DataTablePageSizeSelectorProps<T> extends WithClassName {
   table: Table<T>;

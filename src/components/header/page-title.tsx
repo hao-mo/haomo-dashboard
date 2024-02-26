@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { allRoutes } from '@/lib/routes';
 import { easeInExpo, fadeIn } from '@/lib/transitions';
 
-import { MotionTypography } from '../typography';
+import { MotionTypography } from '../ui/typography';
 
 const HOME_PAGE = '/';
 

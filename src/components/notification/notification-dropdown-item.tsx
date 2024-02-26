@@ -2,7 +2,7 @@ import type { INotification } from '@/lib/types';
 import { capitalize } from '@/utils';
 import { formatDistance } from '@/utils/format';
 
-import { DropdownMenuItem } from '../dropdown-menu';
+import { DropdownMenuItem } from '../ui/dropdown-menu';
 
 export const NotificationDropdownItem = ({ notification }: { notification: INotification }) => {
   return (

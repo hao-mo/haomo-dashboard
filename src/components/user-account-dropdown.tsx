@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 import { userRoutes } from '@/lib/routes';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../avatar';
-import { Button } from '../button';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Button } from './ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +13,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../dropdown-menu';
+} from './ui/dropdown-menu';
 
-export const UserDropdown = () => {
+export const UserAccountDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

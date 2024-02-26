@@ -20,10 +20,10 @@ import { siteConfig } from '@/lib/site-config';
 import { fadeIn, fadeInLeft } from '@/lib/transitions';
 import { cn } from '@/utils';
 
-import { Button } from '../button';
 import { MotionBox } from '../motion-box';
 import { ThemedLogo } from '../themed-logo';
-import { MotionTypography } from '../typography';
+import { Button } from '../ui/button';
+import { MotionTypography } from '../ui/typography';
 
 import { SidebarNav } from './sidebar-nav';
 import { useSidebarHandlers } from './useSidebarHandlers';

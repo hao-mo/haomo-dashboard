@@ -5,8 +5,8 @@ import { useTheme } from 'next-themes';
 
 import { useMount } from '@/hooks/useMount';
 
-import { Button } from '../button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../tooltip';
+import { Button } from '../ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
 export const ThemeSwitch = () => {
   const { theme, setTheme } = useTheme();

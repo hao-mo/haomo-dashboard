@@ -3,8 +3,8 @@
 import { MenuIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
-import { Button } from '../button';
 import { useSidebar } from '../sidebar';
+import { Button } from '../ui/button';
 
 export const Hamburger = () => {
   const ref = useRef<HTMLButtonElement>(null);

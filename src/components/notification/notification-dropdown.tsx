@@ -3,14 +3,14 @@ import React from 'react';
 
 import type { INotification } from '@/lib/types';
 
-import { Button } from '../button';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../dropdown-menu';
+} from '../ui/dropdown-menu';
 
 import { NotificationDropdownItem } from './notification-dropdown-item';
 
