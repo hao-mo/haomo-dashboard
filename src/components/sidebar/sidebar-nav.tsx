@@ -11,7 +11,7 @@ import { cn } from '@/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import { MotionTypography } from '../ui/typography';
 
-import { useSidebar } from '.';
+import { useSidebar } from './hooks/useSidebar';
 
 export const SidebarNav = () => {
   const [_, startTransition] = useTransition();

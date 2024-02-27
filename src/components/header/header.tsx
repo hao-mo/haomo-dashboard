@@ -1,5 +1,5 @@
 import { NotificationDropdown } from '../notification/notification-dropdown';
-import { UserAccountDropdown } from '../user-account-dropdown';
+import { MobileUserAccountDropdown } from '../user-account-dropdown';
 
 import { Hamburger } from './hamburger';
 import { HeaderThemedLogo } from './header-themed-logo';
@@ -18,7 +18,7 @@ export const Header = () => {
         <div className='flex items-center gap-2 sm:gap-4'>
           <NotificationDropdown />
           <ThemeSwitch />
-          <UserAccountDropdown />
+          <MobileUserAccountDropdown />
         </div>
       </div>
     </header>

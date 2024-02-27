@@ -1,12 +1,11 @@
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { useSidebar } from './sidebar';
+import { useSidebar } from './useSidebar';
 
 export function useSidebarHandlers() {
-  const ref = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const { isTabletView, isVisible, setIsVisible } = useSidebar();
+  const { ref, isTabletView, isVisible, setIsVisible } = useSidebar();
 
   const getAnimationState = () => {
     if (isVisible) {
@@ -22,11 +21,9 @@ export function useSidebarHandlers() {
 
   const handleClick = useCallback(
     ({ target }: MouseEvent) => {
-      if (!ref.current) return;
-      if (!isVisible || !isTabletView || ref.current.contains(target as Node)) return;
-      setIsVisible(false);
+      if (target === document.getElementById('sidebar-overlay')) setIsVisible(false);
     },
-    [isVisible, isTabletView, ref]
+    [isVisible, isTabletView]
   );
 
   const handleKeydown = useCallback(

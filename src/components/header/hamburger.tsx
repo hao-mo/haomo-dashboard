@@ -3,7 +3,7 @@
 import { MenuIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
-import { useSidebar } from '../sidebar';
+import { useSidebar } from '../sidebar/hooks/useSidebar';
 import { Button } from '../ui/button';
 
 export const Hamburger = () => {

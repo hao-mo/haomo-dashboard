@@ -1,7 +1,6 @@
 'use client';
 
-import { useSidebar } from '@/components/sidebar';
-
+import { useSidebar } from '../sidebar/hooks/useSidebar';
 import { ThemedLogo } from '../themed-logo';
 
 export const HeaderThemedLogo = () => {

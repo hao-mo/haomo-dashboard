@@ -4,18 +4,8 @@ import type { Variants } from 'framer-motion';
 import { AnimatePresence, m } from 'framer-motion';
 import { ChevronLeft, XIcon } from 'lucide-react';
 import Link from 'next/link';
-import {
-  createContext,
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 
-import useBetterMediaQuery from '@/hooks/useBreakpoint';
 import { siteConfig } from '@/lib/site-config';
 import { fadeIn, fadeInLeft } from '@/lib/transitions';
 import { cn } from '@/utils';
@@ -24,37 +14,11 @@ import { MotionBox } from '../motion-box';
 import { ThemedLogo } from '../themed-logo';
 import { Button } from '../ui/button';
 import { MotionTypography } from '../ui/typography';
+import { UserAccountDropdown } from '../user-account-dropdown';
 
+import { useSidebar } from './hooks/useSidebar';
+import { useSidebarHandlers } from './hooks/useSidebarHandlers';
 import { SidebarNav } from './sidebar-nav';
-import { useSidebarHandlers } from './useSidebarHandlers';
-
-interface SidebarContextType {
-  isTabletView?: boolean;
-  isVisible: boolean;
-  setIsVisible: (value: boolean) => void;
-}
-
-const SidebarContext = createContext<SidebarContextType>({} as SidebarContextType);
-
-export const useSidebar = () => {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error('useSidebar must be used within a SidebarProvider');
-  }
-  return context;
-};
-
-export const SidebarProvider = ({ children }: PropsWithChildren) => {
-  const isTabletView = useBetterMediaQuery('lg', 'max');
-  const [isVisible, setIsVisible] = useState<boolean>(!isTabletView);
-
-  const contextValue: SidebarContextType = useMemo(
-    () => ({ isTabletView, isVisible, setIsVisible }),
-    [isTabletView, isVisible, setIsVisible]
-  );
-
-  return <SidebarContext.Provider value={contextValue}>{children}</SidebarContext.Provider>;
-};
 
 const sidebarVariants: Variants = {
   expanded: { width: '18rem', x: 0 },
@@ -78,11 +42,13 @@ export const Sidebar = memo(() => {
         transition={{ duration: 0.2, ease: 'linear' }}
       >
         <SidebarHeader />
+        <UserAccountDropdown />
         <SidebarNav />
       </m.aside>
       <AnimatePresence mode='wait'>
         {isTabletView && isVisible && (
           <MotionBox
+            id='sidebar-overlay'
             className='absolute z-5 h-screen w-full bg-black/80 backdrop-blur-sm'
             initial='hidden'
             animate='show'

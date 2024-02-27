@@ -32,7 +32,10 @@ export default function RootLayout({
     >
       <body className={inter.className}>
         <Providers>
-          <div className='relative flex h-screen overflow-hidden'>
+          <div
+            className='relative flex h-screen overflow-hidden'
+            id='body'
+          >
             <Sidebar />
             <div className='relative flex max-h-screen flex-1 flex-col overflow-hidden'>
               <Header />
