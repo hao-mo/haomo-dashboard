@@ -33,7 +33,7 @@ export const ThemeSwitch = () => {
         <TooltipContent
           className='capitalize'
           side='bottom'
-          alignOffset={10}
+          sideOffset={8}
         >
           {theme === 'light' ? 'dark' : 'light'}
         </TooltipContent>

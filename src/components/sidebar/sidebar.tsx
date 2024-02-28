@@ -42,14 +42,14 @@ export const Sidebar = memo(() => {
         transition={{ duration: 0.2, ease: 'linear' }}
       >
         <SidebarHeader />
-        <UserAccountDropdown />
         <SidebarNav />
+        <UserAccountDropdown />
       </m.aside>
       <AnimatePresence mode='wait'>
         {isTabletView && isVisible && (
           <MotionBox
             id='sidebar-overlay'
-            className='absolute z-5 h-screen w-full bg-black/80 backdrop-blur-sm'
+            className='absolute z-[8] h-screen w-full bg-black/80 backdrop-blur-sm'
             initial='hidden'
             animate='show'
             exit='hidden'

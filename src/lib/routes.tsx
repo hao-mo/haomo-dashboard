@@ -1,5 +1,7 @@
 import { FileSpreadsheet, PieChart, Sheet, StickyNote } from 'lucide-react';
 
+import type { IRoute } from './types';
+
 export const siteRoutes: IRoute[] = [
   {
     name: 'Blogs',

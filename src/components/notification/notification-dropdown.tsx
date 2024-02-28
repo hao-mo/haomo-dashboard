@@ -48,7 +48,7 @@ export const NotificationDropdown = () => {
       <DropdownMenuContent
         align='end'
         sideOffset={8}
-        // className='px-2'
+        side='bottom'
       >
         <DropdownMenuLabel className='text-foreground/70'>Notification</DropdownMenuLabel>
         <DropdownMenuSeparator />

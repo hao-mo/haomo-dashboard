@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, m } from 'framer-motion';
 import { ChevronsUpDownIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,6 +8,8 @@ import Link from 'next/link';
 import AvatarFallbackImage from '@/public/avatar.webp';
 
 import { userRoutes } from '@/lib/routes';
+import { fadeIn } from '@/lib/transitions';
+import { cn } from '@/utils';
 
 import { useSidebar } from './sidebar/hooks/useSidebar';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -15,53 +18,99 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { MotionTypography } from './ui/typography';
+
+const MotionButton = m(Button);
 
 export const UserAccountDropdown = () => {
-  const { ref } = useSidebar();
+  const { isVisible, isTabletView } = useSidebar();
+
+  const collapsed = !isVisible && !isTabletView;
+
   return (
-    <div className='mt-4 px-4'>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant='ghost'
-            className='group relative h-fit w-full gap-2 text-left'
-          >
-            <div className='flex w-full items-center justify-between'>
-              <div className='flex min-w-0 items-center justify-between space-x-3'>
-                <Avatar className='size-10'>
-                  <AvatarImage
-                    src='https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80'
-                    alt='avatar'
-                  />
-                  <AvatarFallback>
-                    <Image
-                      src={AvatarFallbackImage}
-                      alt='avatar'
+    <TooltipProvider
+      delayDuration={500}
+      disableHoverableContent
+    >
+      <div className='mb-4 mt-auto flex items-center justify-center px-4'>
+        <Tooltip>
+          <DropdownMenu>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <MotionButton
+                  variant='ghost'
+                  size={collapsed ? 'circle' : 'default'}
+                  className='group relative h-fit w-full gap-2 text-left'
+                  initial={false}
+                  animate={collapsed ? { padding: 0 } : { padding: '0.5rem 1rem' }}
+                  transition={{ duration: 0.2, ease: 'easeIn' }}
+                >
+                  <div className='flex w-full items-center justify-between'>
+                    <div className='flex min-w-0 items-center justify-between space-x-3'>
+                      <Avatar className='size-10'>
+                        <AvatarImage
+                          className='h-auto object-cover object-center blur-sm transition-all duration-500 ease-in-out'
+                          src='https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80'
+                          loading='lazy'
+                          alt='avatar'
+                          onLoad={(e) => e.currentTarget.classList.remove('blur-sm')}
+                        />
+                        <AvatarFallback asChild>
+                          <Image
+                            className='h-auto object-cover object-center'
+                            src={AvatarFallbackImage}
+                            alt='avatar'
+                            loading='lazy'
+                          />
+                        </AvatarFallback>
+                      </Avatar>
+                      <AnimatePresence
+                        mode='wait'
+                        initial={false}
+                      >
+                        {collapsed ? null : (
+                          <MotionTypography
+                            className={cn(
+                              'flex min-w-0 flex-1 select-none flex-col',
+                              collapsed && 'hidden'
+                            )}
+                            initial='hidden'
+                            animate='show'
+                            exit='hidden'
+                            variants={fadeIn}
+                            transition={{ duration: 0.2, ease: 'easeIn' }}
+                          >
+                            <span className='truncate text-xs'>Jessy Schwarz</span>
+                            <span className='truncate text-xs text-muted-foreground'>
+                              @jessyschwarz
+                            </span>
+                          </MotionTypography>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <ChevronsUpDownIcon
+                      className={cn(
+                        'text-gray-400 size-5 shrink-0 text-muted-foreground/80 group-hover:text-muted-foreground',
+                        collapsed && 'hidden'
+                      )}
+                      aria-hidden='true'
                     />
-                  </AvatarFallback>
-                </Avatar>
-                <span className='flex min-w-0 flex-1 flex-col'>
-                  <span className='truncate text-xs'>Jessy Schwarz</span>
-                  <span className='text-gray-500 truncate text-xs'>@jessyschwarz</span>
-                </span>
-              </div>
-              <ChevronsUpDownIcon
-                className='text-gray-400 group-hover:text-gray-500 size-5 shrink-0'
-                aria-hidden='true'
-              />
-            </div>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          container={ref.current}
-          align='center'
-          sideOffset={8}
-          className='min-w-60 max-w-full'
-        >
-          {/* <DropdownMenuLabel>
+                  </div>
+                </MotionButton>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <DropdownMenuContent
+              align={collapsed ? 'end' : 'center'}
+              side={collapsed ? 'right' : 'top'}
+              sideOffset={8}
+              className='min-w-60 max-w-full'
+            >
+              {/* <DropdownMenuLabel>
           <span className='block truncate'>Username</span>
           <div className='flex items-center justify-between gap-x-2 pt-2'>
             <span className='text-xs text-muted-foreground/80'>Role</span>
@@ -69,39 +118,98 @@ export const UserAccountDropdown = () => {
           </div>
         </DropdownMenuLabel> */}
 
-          <UserDropdownList />
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+              <UserDropdownList />
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <TooltipContent
+            align='center'
+            side='right'
+            sideOffset={8}
+          >
+            使用者選單
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 };
 
 export const MobileUserAccountDropdown = () => {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          size='circle'
-          className='group ml-auto gap-2 p-0 lg:hidden'
+    <TooltipProvider
+      delayDuration={500}
+      disableHoverableContent
+    >
+      <Tooltip>
+        <DropdownMenu>
+          <TooltipTrigger asChild>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='ghost'
+                size='circle'
+                className='group ml-auto gap-2 p-0 lg:hidden'
+              >
+                <Avatar className='size-9'>
+                  <AvatarImage
+                    className='h-auto object-cover object-center blur-sm transition-all duration-500 ease-in-out'
+                    src='https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80'
+                    loading='lazy'
+                    alt='avatar'
+                    onLoad={(e) => e.currentTarget.classList.remove('blur-sm')}
+                  />
+                  <AvatarFallback asChild>
+                    <Image
+                      className='h-auto object-cover object-center'
+                      src={AvatarFallbackImage}
+                      alt='avatar'
+                      loading='lazy'
+                    />
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+          </TooltipTrigger>
+          <DropdownMenuContent
+            align='end'
+            sideOffset={8}
+            className='min-w-60 max-w-60'
+          >
+            <DropdownMenuLabel className='flex items-center justify-between space-x-3'>
+              <Avatar className='size-8'>
+                <AvatarImage
+                  className='h-auto object-cover object-center blur-sm transition-all duration-500 ease-in-out'
+                  src='https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80'
+                  loading='lazy'
+                  alt='avatar'
+                  onLoad={(e) => e.currentTarget.classList.remove('blur-sm')}
+                />
+                <AvatarFallback asChild>
+                  <Image
+                    className='h-auto object-cover object-center'
+                    src={AvatarFallbackImage}
+                    alt='avatar'
+                    loading='lazy'
+                  />
+                </AvatarFallback>
+              </Avatar>
+              <span className='flex min-w-0 flex-1 select-none flex-col'>
+                <span className='truncate text-xs'>Jessy Schwarz</span>
+                <span className='truncate text-xs text-muted-foreground'>@jessyschwarz</span>
+              </span>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <UserDropdownList />
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <TooltipContent
+          align='end'
+          side='bottom'
+          sideOffset={8}
         >
-          <Avatar className='size-8'>
-            <AvatarImage
-              src='/avatar.webp'
-              alt='avatar'
-            />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align='end'
-        sideOffset={8}
-        className='min-w-60 max-w-60'
-      >
-        <UserDropdownList />
-      </DropdownMenuContent>
-    </DropdownMenu>
+          使用者選單
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

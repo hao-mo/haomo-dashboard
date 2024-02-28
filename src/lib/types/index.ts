@@ -12,3 +12,10 @@ export interface INotification {
   date: Date;
   isRead: boolean;
 }
+
+export type IRoute = {
+  name: string;
+  href: string;
+  icon?: React.ReactNode;
+  routes?: IRoute[];
+};

@@ -64,11 +64,4 @@ declare global {
     pageSize: number;
     totalCount: number;
   }
-
-  export interface IRoute {
-    name: string;
-    href: string;
-    icon?: React.ReactNode;
-    routes?: IRoute[];
-  }
 }
