@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
           className='max-w-sm'
-          icon={
+          startDecorator={
             <Search
               className='text-muted-foreground/80'
               size={20}

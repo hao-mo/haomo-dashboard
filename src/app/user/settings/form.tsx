@@ -3,66 +3,55 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageIcon, UserCircleIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-});
+import { ProfileArea } from './_components/profile-area';
+import type { UserAccountSettingFieldValues } from './_lib';
+import { formSchema } from './_lib';
 
 export function UserAccountSettingForm() {
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<UserAccountSettingFieldValues>({
     resolver: zodResolver(formSchema),
+    mode: 'onBlur',
     defaultValues: {
       username: '',
+      website: '',
+      about: '',
     },
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: UserAccountSettingFieldValues) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
+  console.log('🚨 - form', form.getValues());
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className='space-y-8'
       >
-        <FormField
-          control={form.control}
-          name='username'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder='shadcn'
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type='submit'>Submit</Button>
+        <div className='space-y-12'>
+          <ProfileArea form={form} />
+        </div>
+
+        {/* Footer */}
+        <div className='mt-6 flex items-center justify-end gap-x-6'>
+          <button
+            type='button'
+            className='text-gray-900 text-sm font-semibold leading-6'
+          >
+            Cancel
+          </button>
+
+          <Button type='submit'>Submit</Button>
+        </div>
       </form>
       <form>
         <div className='space-y-12'>
@@ -467,21 +456,6 @@ export function UserAccountSettingForm() {
               </fieldset>
             </div>
           </div>
-        </div>
-
-        <div className='mt-6 flex items-center justify-end gap-x-6'>
-          <button
-            type='button'
-            className='text-gray-900 text-sm font-semibold leading-6'
-          >
-            Cancel
-          </button>
-          <button
-            type='submit'
-            className='bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2'
-          >
-            Save
-          </button>
         </div>
       </form>
     </Form>
