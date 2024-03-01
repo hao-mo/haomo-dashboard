@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRef } from 'react';
-import type { UseFormReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import AvatarFallbackImage from '@/public/avatar.webp';
 
@@ -24,7 +24,8 @@ import type { UserAccountSettingFieldValues } from '../_lib';
 
 import { UserSetting, UserSettingContent, UserSettingHeader } from './user-setting';
 
-export const ProfileArea = ({ form }: { form: UseFormReturn<UserAccountSettingFieldValues> }) => {
+export const ProfileSettingArea = () => {
+  const form = useFormContext<UserAccountSettingFieldValues>();
   const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = form.register('avatar');
 

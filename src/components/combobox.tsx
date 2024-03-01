@@ -14,9 +14,8 @@ import {
 } from '@/components/ui/command';
 import { FormControl } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import type { Option } from '@/lib/types';
 import { cn } from '@/utils';
-
-type Option = { value: string; name: string };
 
 interface ComboboxProps {
   name: string;
@@ -70,7 +69,7 @@ export const Combobox = ({
                 key={option.value}
                 value={searchBy === 'both' ? `${option.name} ${option.value}` : option[searchBy]}
                 onSelect={() => {
-                  setValue(name, option.value);
+                  setValue(name, option.value, { shouldDirty: true });
                 }}
               >
                 {option.name}

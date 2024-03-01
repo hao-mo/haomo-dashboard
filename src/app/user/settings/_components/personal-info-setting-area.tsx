@@ -1,4 +1,6 @@
-import { useFormContext, type UseFormReturn } from 'react-hook-form';
+'use client';
+
+import { useFormContext } from 'react-hook-form';
 
 import { Combobox } from '@/components/combobox';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -9,12 +11,9 @@ import { type UserAccountSettingFieldValues } from '../_lib';
 
 import { UserSetting, UserSettingContent, UserSettingHeader } from './user-setting';
 
-export const PersonalInfoArea = ({
-  form,
-}: {
-  form: UseFormReturn<UserAccountSettingFieldValues>;
-}) => {
-  const {} = useFormContext();
+export const PersonalInfoSettingArea = () => {
+  const form = useFormContext<UserAccountSettingFieldValues>();
+
   return (
     <UserSetting>
       <UserSettingHeader
@@ -61,6 +60,35 @@ export const PersonalInfoArea = ({
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name='country'
+          render={({ field }) => (
+            <FormItem className='flex flex-col sm:col-span-3'>
+              <FormLabel>Country</FormLabel>
+              <Combobox
+                options={countries}
+                name={field.name}
+                value={field.value}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='address'
+          render={({ field }) => (
+            <FormItem className='col-span-full'>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         {/* <FormField
           control={form.control}
           name='country'
@@ -91,34 +119,6 @@ export const PersonalInfoArea = ({
             </FormItem>
           )}
         /> */}
-        <FormField
-          control={form.control}
-          name='country'
-          render={({ field }) => (
-            <FormItem className='flex flex-col sm:col-span-4'>
-              <FormLabel>Country</FormLabel>
-              <Combobox
-                options={countries}
-                name={field.name}
-                value={field.value}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='address'
-          render={({ field }) => (
-            <FormItem className='col-span-full'>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
       </UserSettingContent>
     </UserSetting>
   );

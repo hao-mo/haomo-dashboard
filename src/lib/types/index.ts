@@ -19,3 +19,8 @@ export type IRoute = {
   icon?: React.ReactNode;
   routes?: IRoute[];
 };
+
+export interface Option {
+  value: string;
+  name: string;
+}

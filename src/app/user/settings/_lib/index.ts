@@ -1,7 +1,24 @@
 import { z } from 'zod';
 
+import type { Option } from '@/lib/types';
+
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
 const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
+export const pushNotificationOptions: Option[] = [
+  {
+    name: 'All',
+    value: 'all',
+  },
+  {
+    name: 'Direct messages and mentions',
+    value: 'mentions',
+  },
+  {
+    name: 'Nothing',
+    value: 'none',
+  },
+];
 
 export const formSchema = z.object({
   firstName: z.string().trim().min(2, {
@@ -25,7 +42,7 @@ export const formSchema = z.object({
   }),
   avatar: z
     .instanceof(File)
-    .nullable()
+    .optional()
     .refine((file) => {
       return !file || file.size <= MAX_UPLOAD_SIZE;
     }, `檔案大小必須小於 3MB`)
@@ -43,6 +60,10 @@ export const formSchema = z.object({
       (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : false),
       '只支援 .jpg, .jpeg, .png 和 .webp 格式的檔案'
     ),
+  email_comment_notification: z.boolean(),
+  email_candidate_notification: z.boolean(),
+  email_offer_notification: z.boolean(),
+  push_notification: z.enum(['all', 'mentions', 'none']),
 });
 
 export type UserAccountSettingFieldValues = z.infer<typeof formSchema>;
