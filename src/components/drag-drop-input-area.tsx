@@ -3,73 +3,81 @@
 import { m, useAnimation } from 'framer-motion';
 import { XCircleIcon } from 'lucide-react';
 import Image from 'next/image';
+import { forwardRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { cn } from '@/utils';
 
 import { Input } from './ui/input';
 
-interface FileInputAreaProps extends React.ComponentPropsWithRef<typeof Input> {
+interface FileInputAreaProps extends React.ComponentPropsWithoutRef<typeof Input> {
   previewImage: File | null;
 }
 
 const MotionImage = m(Image);
 
-export const FileInputArea = ({ className, previewImage, ...props }: FileInputAreaProps) => {
-  const { resetField } = useFormContext();
-  const controls = useAnimation();
-  const startAnimation = () => controls.start('hover');
-  const stopAnimation = () => controls.stop();
+export const DragDropInputArea = forwardRef<HTMLInputElement, FileInputAreaProps>(
+  ({ className, previewImage, ...props }, ref) => {
+    const { resetField } = useFormContext();
+    const controls = useAnimation();
+    const startAnimation = () => controls.start('hover');
+    const stopAnimation = () => controls.stop();
 
-  return (
-    <m.div
-      className={cn(
-        ' relative flex h-80 items-center justify-center rounded-lg border border-dashed border-muted-foreground px-6 py-10',
-        className
-      )}
-      initial='initial'
-      whileHover='hover'
-    >
-      {previewImage ? (
-        <>
-          <PreviewImage previewImage={previewImage} />
-          <button
-            className='group absolute inset-0 flex size-full items-center justify-center'
-            onClick={() => props.name && resetField(props.name)}
-          >
-            <XCircleIcon className='size-16 cursor-pointer rounded-full text-muted opacity-0 transition-all duration-200 ease-in-out group-hover:scale-105 group-hover:opacity-100' />
-          </button>
-        </>
-      ) : (
-        <>
-          <div className='space-y-4 text-center'>
-            <div className='relative mx-auto h-16 min-h-fit w-12 min-w-fit'>
-              {imagePlaceholders.map((image, index) => (
-                <ImagePlaceholder
-                  key={`image-placeholder-${index}`}
-                  index={index}
-                  {...image}
-                />
-              ))}
+    return (
+      <m.div
+        className={cn(
+          ' relative flex h-80 items-center justify-center rounded-lg border border-dashed border-muted-foreground px-6 py-10',
+          className
+        )}
+        initial='initial'
+        whileHover='hover'
+      >
+        {previewImage ? (
+          <>
+            <PreviewImage previewImage={previewImage} />
+            <button
+              className='group absolute inset-0 flex size-full items-center justify-center'
+              onClick={() => props.name && resetField(props.name)}
+            >
+              <XCircleIcon className='size-16 rounded-full text-muted opacity-0 transition-all duration-200 ease-in-out group-hover:scale-105 group-hover:opacity-100' />
+            </button>
+          </>
+        ) : (
+          <>
+            <div className='space-y-4 text-center'>
+              <div className='relative mx-auto h-16 min-h-fit w-12 min-w-fit'>
+                {imagePlaceholders.map((image, index) => (
+                  <ImagePlaceholder
+                    key={`image-placeholder-${index}`}
+                    index={index}
+                    {...image}
+                  />
+                ))}
+              </div>
+              <div className='space-y-2'>
+                <h2 className='text-lg font-medium text-primary'>將圖片拖至此區</h2>
+                <p className='text-muted-foreground'>或點擊選擇圖片</p>
+              </div>
             </div>
-            <div className='space-y-2'>
-              <h2 className='text-lg font-medium text-primary'>將圖片拖至此區</h2>
-              <p className='text-muted-foreground'>或點擊選擇圖片</p>
-            </div>
-          </div>
-          <Input
-            type='file'
-            onDragEnter={startAnimation}
-            onDragLeave={stopAnimation}
-            className={cn('absolute inset-0 z-1 block size-full bg-transparent opacity-0')}
-            inputClassName='size-full left-0 top-0 z-1 absolute bg-transparent'
-            {...props}
-          />
-        </>
-      )}
-    </m.div>
-  );
-};
+            <Input
+              type='file'
+              onDragEnter={startAnimation}
+              onDragLeave={stopAnimation}
+              className={cn(
+                'absolute inset-0 z-1 block size-full cursor-pointer bg-transparent opacity-0'
+              )}
+              inputClassName='size-full cursor-pointer left-0 top-0 z-1 absolute bg-transparent'
+              ref={ref}
+              {...props}
+            />
+          </>
+        )}
+      </m.div>
+    );
+  }
+);
+
+DragDropInputArea.displayName = 'FileInputArea';
 
 const imagePlaceholders: ImageDataProps[] = [
   {

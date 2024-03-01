@@ -6,7 +6,7 @@ import type { UseFormReturn } from 'react-hook-form';
 
 import AvatarFallbackImage from '@/public/avatar.webp';
 
-import { FileInputArea } from '@/components/file-input-area';
+import { DragDropInputArea } from '@/components/drag-drop-input-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -27,6 +27,7 @@ import { UserSetting, UserSettingContent, UserSettingHeader } from './user-setti
 export const ProfileArea = ({ form }: { form: UseFormReturn<UserAccountSettingFieldValues> }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = form.register('avatar');
+
   return (
     <UserSetting>
       <UserSettingHeader
@@ -72,7 +73,6 @@ export const ProfileArea = ({ form }: { form: UseFormReturn<UserAccountSettingFi
                 <Button
                   variant='outline'
                   type='button'
-                  className='rounded-md bg-white/10 px-3 py-2 text-sm font-semibold shadow-sm hover:bg-white/20'
                   onClick={() => inputRef.current?.click()}
                 >
                   Change avatar
@@ -129,7 +129,7 @@ export const ProfileArea = ({ form }: { form: UseFormReturn<UserAccountSettingFi
             <FormItem className='col-span-full'>
               <FormLabel>Cover Image</FormLabel>
               <FormControl>
-                <FileInputArea
+                <DragDropInputArea
                   previewImage={value}
                   {...field}
                   onChange={(event) => {
@@ -138,7 +138,6 @@ export const ProfileArea = ({ form }: { form: UseFormReturn<UserAccountSettingFi
                   }}
                 />
               </FormControl>
-              <FormDescription>Write a few sentences about yourself.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
