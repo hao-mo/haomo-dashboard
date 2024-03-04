@@ -135,6 +135,32 @@
   }
 }
 
+// TipTap Editor Styles
+@layer components {
+  .tiptap {
+    ul,
+    ol {
+      @apply list-outside pl-4;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    pre {
+      @apply relative rounded-md bg-muted p-4 font-mono text-muted-foreground before:absolute before:left-2 before:top-2 before:text-sm before:leading-none before:text-muted-foreground before:content-["```"] after:absolute after:bottom-0 after:left-2 after:text-sm after:leading-none after:text-muted-foreground after:content-["```"];
+    }
+
+    :not(pre) > code {
+      @apply relative rounded-md bg-muted p-1 font-mono text-muted-foreground before:absolute before:-left-0.5 before:top-0.5 before:text-sm before:leading-none before:text-muted-foreground before:content-["`"] after:absolute after:-right-0.5 after:top-0.5 after:text-sm after:leading-none after:text-muted-foreground after:content-["`"];
+    }
+  }
+}
+
 // @layer components {
 //   .mask {
 //     @apply absolute top-0 flex h-full w-full cursor-default items-center justify-center;

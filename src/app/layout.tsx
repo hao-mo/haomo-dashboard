@@ -20,11 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   return (
     <html
       lang='zh-TW'
@@ -39,7 +35,7 @@ export default function RootLayout({
             <Sidebar />
             <div className='relative flex max-h-screen flex-1 flex-col overflow-hidden'>
               <Header />
-              <main className='overflow-y-auto overflow-x-hidden py-10'>{children}</main>
+              <main className='flex-1 overflow-y-auto overflow-x-hidden py-10'>{children}</main>
             </div>
           </div>
         </Providers>

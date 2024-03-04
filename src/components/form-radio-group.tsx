@@ -38,8 +38,10 @@ export const FormRadioGroup = <
           {description && <FormDescription>{description}</FormDescription>}
           <FormControl>
             <RadioGroup
-              onValueChange={field.onChange}
+              name={field.name}
+              value={field.value}
               defaultValue={field.value}
+              onValueChange={field.onChange}
               className='flex flex-col space-y-6'
             >
               {options.map((option) => (

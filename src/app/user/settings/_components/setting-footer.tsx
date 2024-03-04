@@ -25,7 +25,7 @@ export const SettingFooter = () => {
             variants={fadeIn}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
           >
-            Cancel
+            取消
           </MotionButton>
         )}
       </AnimatePresence>
@@ -33,7 +33,7 @@ export const SettingFooter = () => {
         type='submit'
         disabled={!formState.isDirty}
       >
-        Submit
+        更新
       </Button>
     </div>
   );

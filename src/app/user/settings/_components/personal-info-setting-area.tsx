@@ -51,7 +51,7 @@ export const PersonalInfoSettingArea = () => {
           control={form.control}
           name='email'
           render={({ field }) => (
-            <FormItem className='sm:col-span-4'>
+            <FormItem className='col-span-full'>
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input {...field} />

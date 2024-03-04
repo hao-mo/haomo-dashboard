@@ -1,3 +1,5 @@
+'use client';
+
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 
 import { FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
