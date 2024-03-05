@@ -1,3 +1,3 @@
-export const SiteConfig = {
+export const siteConfig = {
   name: 'HaoMo',
 };

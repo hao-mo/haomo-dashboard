@@ -4,9 +4,11 @@ import Image from 'next/image';
 
 import Logo from '@/public/icon.ico';
 
-export const ThemedLogo = () => {
+import { cn } from '@/utils';
+
+export const ThemedLogo = ({ className }: WithClassName) => {
   return (
-    <div className='relative size-10 overflow-hidden'>
+    <div className={cn('relative flex size-10 shrink-0 items-center overflow-hidden', className)}>
       <Image
         src={Logo}
         className='w-full object-contain object-center'

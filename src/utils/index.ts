@@ -23,7 +23,6 @@ export async function fetcher<T = unknown>(input: RequestInfo, init?: RequestIni
  * @param target - 要轉換的字串
  */
 export const capitalize = (target: string) => {
-  if (typeof target !== 'string') return '';
   return target.charAt(0).toUpperCase() + target.slice(1);
 };
 

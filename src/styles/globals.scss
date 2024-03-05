@@ -25,7 +25,7 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
     --gw: 4vw;
-    --scroll-width: 0.5rem;
+    --scroll-size: 0.5rem;
     --duration: 0.5s;
     --delay: 0.2s;
   }
@@ -75,23 +75,23 @@
   }
 
   ::selection {
-    @apply bg-primary text-white;
+    @apply bg-primary text-primary-foreground;
   }
 
   /* width */
   ::-webkit-scrollbar {
-    width: var(--scroll-width);
+    width: var(--scroll-size);
+    height: var(--scroll-size);
   }
 
   /* Track */
   ::-webkit-scrollbar-track {
-    @apply rounded-md;
-    background: #c8c8c8;
+    @apply rounded-md bg-muted;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    @apply rounded-md bg-primary/70;
+    @apply rounded-md bg-primary/80 transition-colors duration-200 ease-in-out;
   }
 
   /* Handle on hover */
@@ -135,6 +135,32 @@
   }
 }
 
+// TipTap Editor Styles
+@layer components {
+  .tiptap {
+    ul,
+    ol {
+      @apply list-outside pl-4;
+    }
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    pre {
+      @apply relative rounded-md bg-muted p-4 font-mono text-muted-foreground before:absolute before:left-2 before:top-2 before:text-sm before:leading-none before:text-muted-foreground before:content-["```"] after:absolute after:bottom-0 after:left-2 after:text-sm after:leading-none after:text-muted-foreground after:content-["```"];
+    }
+
+    :not(pre) > code {
+      @apply relative rounded-md bg-muted p-1 font-mono text-muted-foreground before:absolute before:-left-0.5 before:top-0.5 before:text-sm before:leading-none before:text-muted-foreground before:content-["`"] after:absolute after:-right-0.5 after:top-0.5 after:text-sm after:leading-none after:text-muted-foreground after:content-["`"];
+    }
+  }
+}
+
 // @layer components {
 //   .mask {
 //     @apply absolute top-0 flex h-full w-full cursor-default items-center justify-center;
@@ -148,11 +174,6 @@
 // }
 
 @layer utilities {
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
   .auto-grid {
     --min-column-size: 15rem;
     display: grid;

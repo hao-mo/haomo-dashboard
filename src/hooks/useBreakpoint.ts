@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 const BREAKPOINTS = {
@@ -18,4 +18,26 @@ export function useBreakpoint(
   );
 
   return useMediaQuery({ query });
+}
+
+export default function useBetterMediaQuery(
+  breakpoint: keyof typeof BREAKPOINTS,
+  direction: 'min' | 'max' = 'min'
+) {
+  const [matches, setMatches] = useState<boolean>();
+
+  const mediaQueryString = useMemo(
+    () => `(${direction}-width: ${BREAKPOINTS[breakpoint]})`,
+    [breakpoint, direction]
+  );
+
+  useEffect(() => {
+    const mediaQueryList = window.matchMedia(mediaQueryString);
+    const listener = () => setMatches(!!mediaQueryList.matches);
+    listener();
+    mediaQueryList.addEventListener('change', listener); // updated from .addListener
+    return () => mediaQueryList.removeEventListener('change', listener); // updated from .removeListener
+  }, [mediaQueryString]);
+
+  return matches;
 }
