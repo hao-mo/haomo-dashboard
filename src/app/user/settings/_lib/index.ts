@@ -41,8 +41,12 @@ export const formSchema = z.object({
     message: '自我介紹最多只能有 100 個字元',
   }),
   avatar: z
-    .instanceof(File)
+    .unknown()
+    // .instanceof(File)
     .optional()
+    .transform((value) => {
+      return value as File | null | undefined;
+    })
     .refine((file) => {
       return !file || file.size <= MAX_UPLOAD_SIZE;
     }, `檔案大小必須小於 3MB`)
