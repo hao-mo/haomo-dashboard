@@ -174,10 +174,10 @@
 // }
 
 @layer utilities {
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
+  // .no-scrollbar {
+  //   scrollbar-width: none;
+  //   -ms-overflow-style: none;
+  // }
 
   .auto-grid {
     --min-column-size: 15rem;

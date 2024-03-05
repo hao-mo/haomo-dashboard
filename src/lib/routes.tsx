@@ -1,4 +1,12 @@
-import { FileSpreadsheet, PieChart, Sheet, StickyNote } from 'lucide-react';
+import {
+  FileSpreadsheet,
+  HeadsetIcon,
+  PieChart,
+  SettingsIcon,
+  Sheet,
+  StickyNote,
+  UserRoundIcon,
+} from 'lucide-react';
 
 import type { IRoute } from './types';
 
@@ -27,16 +35,19 @@ export const siteRoutes: IRoute[] = [
 
 export const userRoutes: IRoute[] = [
   {
-    name: 'View profile',
+    name: 'Account preferences',
     href: '/user/profile',
+    icon: <UserRoundIcon size={14} />,
   },
   {
     name: 'Settings',
     href: '/user/settings',
+    icon: <SettingsIcon size={14} />,
   },
   {
     name: 'Support',
     href: '/support',
+    icon: <HeadsetIcon size={14} />,
   },
 ];
 

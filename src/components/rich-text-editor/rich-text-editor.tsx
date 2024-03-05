@@ -63,3 +63,9 @@ export const RichTextEditor = ({ children }: Partial<PropsWithChildren>) => {
     </>
   );
 };
+
+// https://vikramthyagarajan.medium.com/how-to-build-a-notion-like-text-editor-in-react-and-tiptap-7f394c36ed9d
+
+// https://tiptap.dev/docs/editor/introduction
+// https://dev.to/brampayrequest/tiptap-image-resize-extension-2328
+// https://github.com/niuware/mui-rte

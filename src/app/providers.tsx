@@ -4,21 +4,21 @@
 import { ThemeProvider } from 'next-themes';
 
 import { MotionProvider } from '@/components/motion-provider';
-import { SidebarProvider } from '@/components/sidebar';
 // import { SmoothScroll } from '@/components/smooth-scroll';
 // import { ThemeProvider } from '@/components/theme-provider';
 
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
-    <ThemeProvider attribute='class'>
+    <ThemeProvider
+      attribute='class'
+      enableSystem
+    >
       <MotionProvider>
-        <SidebarProvider>
-          {/* <SmoothScroll>
+        {/* <SmoothScroll>
           <CustomCursorProvider> */}
-          {children}
-          {/* </CustomCursorProvider>
+        {children}
+        {/* </CustomCursorProvider>
         </SmoothScroll> */}
-        </SidebarProvider>
       </MotionProvider>
     </ThemeProvider>
   );

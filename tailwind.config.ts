@@ -118,6 +118,10 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      transitionProperty: {
+        height: 'height',
+        width: 'width',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -140,6 +144,15 @@ const config: Config = {
       addVariant('optional', '&:optional');
       addVariant('hocus', ['&:hover', '&:focus']);
       addVariant('inverted-colors', '@media (inverted-colors: inverted)');
+    }),
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.no-scrollbar': {
+          'scrollbar-width': 'none',
+          '-ms-overflow-style': 'none',
+          '-webkit-scrollbar': 'none',
+        },
+      });
     }),
     plugin(({ addUtilities, matchUtilities }) => {
       addUtilities({
