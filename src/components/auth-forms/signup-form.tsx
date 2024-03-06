@@ -3,14 +3,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { InfoIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import type { SignInFieldValues } from '@/lib/schemas/signin.schema';
 import { signInFormSchema } from '@/lib/schemas/signin.schema';
-import { handleFormRequest } from '@/utils/auth-helpers/client';
-import { signInWithPassword } from '@/utils/auth-helpers/server';
+import { signUp } from '@/utils/auth-helpers/server';
 
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
@@ -21,41 +18,32 @@ import { Label } from '../ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 const defaultValues: SignInFieldValues = {
-  email: 'qqharry21@gmail.com ',
-  password: 'Mamba800900+',
+  email: '',
+  password: '',
 };
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const form = useForm<SignInFieldValues>({
     resolver: zodResolver(signInFormSchema),
     mode: 'all',
     defaultValues,
   });
 
-  const router = useRouter();
-
-  const formRef = useRef<HTMLFormElement>(null);
-
-  console.log('🚨 - form', form.formState.isSubmitting);
   return (
     <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
       <Card className='px-6 py-12 sm:px-12'>
         <CardContent className='p-0'>
           <Form {...form}>
             <form
-              ref={formRef}
               className='space-y-8'
-              action={async (formData) => {
-                await handleFormRequest(formData, signInWithPassword, router);
-              }}
-              // onSubmit={form.handleSubmit(() => formRef.current?.requestSubmit())}
+              action={signUp}
             >
               <FormField
                 control={form.control}
                 name='email'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>信箱地址</FormLabel>
+                    <FormLabel>註冊信箱</FormLabel>
                     <FormControl>
                       <Input
                         placeholder='xxx@gmail.com'

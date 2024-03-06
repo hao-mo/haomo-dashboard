@@ -140,8 +140,6 @@ export async function signInWithPassword(formData: FormData) {
     email,
     password,
   });
-  console.log('🚨 - error', error);
-  console.log('🚨 - data', data);
 
   if (error) {
     redirectPath = getErrorRedirect('/signin/password_signin', 'Sign in failed.', error.message);
