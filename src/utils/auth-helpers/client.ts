@@ -9,14 +9,10 @@ import { createClient } from '@/utils/supabase/client';
 import { redirectToPath } from './server';
 
 export async function handleFormRequest(
-  e: React.FormEvent<HTMLFormElement>,
+  formData: FormData,
   requestFunc: (formData: FormData) => Promise<string>,
-  router: AppRouterInstance | null = null
+  router?: AppRouterInstance
 ): Promise<boolean | void> {
-  // Prevent default form submission refresh
-  e.preventDefault();
-
-  const formData = new FormData(e.currentTarget);
   const redirectUrl: string = await requestFunc(formData);
 
   if (router) {

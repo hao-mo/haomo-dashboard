@@ -1,6 +1,7 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
+import { Suspense } from 'react';
 
 import { MotionProvider } from '@/components/motion-provider';
 import { Toaster } from '@/components/ui/toaster';
@@ -15,7 +16,9 @@ export const Providers = ({ children }: PropsWithChildren) => {
       <MotionProvider>
         <TooltipProvider delayDuration={100}>
           {children}
-          <Toaster />
+          <Suspense>
+            <Toaster />
+          </Suspense>
         </TooltipProvider>
       </MotionProvider>
     </ThemeProvider>

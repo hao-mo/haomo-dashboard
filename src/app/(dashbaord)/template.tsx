@@ -4,7 +4,7 @@ import { fadeIn } from '@/lib/transitions';
 export default function Template({ children }: PropsWithChildren) {
   return (
     <MotionBox
-      className='container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'
+      className='mx-auto px-4 sm:px-6 lg:px-8'
       initial='hidden'
       animate='show'
       exit='hidden'

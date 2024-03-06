@@ -4,7 +4,8 @@ import { redirect } from 'next/navigation';
 
 import Logo from '@/public/logo.webp';
 
-import { SignInform } from '@/components/auth-forms/signin-form';
+import { SignInForm } from '@/components/auth-forms/signin-form';
+import { SignUpForm } from '@/components/auth-forms/signup-form';
 import {
   getAuthTypes,
   getDefaultSignInView,
@@ -32,7 +33,6 @@ export default async function Page({
     viewProp = params.type;
   } else {
     const preferredSignInView = cookies().get('preferredSignInView')?.value ?? 'password_signin';
-    console.log('🚨 - preferredSignInView', preferredSignInView);
     viewProp = getDefaultSignInView(preferredSignInView);
     return redirect(`/signin/${viewProp}`);
   }
@@ -43,6 +43,7 @@ export default async function Page({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  console.log('🚨 - user', user);
 
   if (user && viewProp !== 'update_password') {
     return redirect('/');
@@ -50,19 +51,34 @@ export default async function Page({
     return redirect('/signin');
   }
 
-  const title =
-    viewProp === 'forgot_password' ? '重設密碼' : viewProp === 'signup' ? '註冊畫面' : '登入畫面';
+  const renderTitle = () => {
+    switch (viewProp) {
+      case 'email_signin':
+        return '登入';
+      case 'password_signin':
+        return '登入';
+      case 'forgot_password':
+        return '重設密碼';
+      case 'update_password':
+        return '重設密碼';
+      case 'signup':
+        return '註冊';
+      default:
+        return '登入';
+    }
+  };
 
   const renderForm = () => {
     switch (viewProp) {
       case 'email_signin':
       case 'password_signin':
+        return <SignInForm />;
       case 'forgot_password':
       case 'update_password':
       case 'signup':
-        return <SignInform />;
+        return <SignUpForm />;
       default:
-        return <SignInform />;
+        return <SignInForm />;
     }
   };
 
@@ -77,10 +93,10 @@ export default async function Page({
           />
         </div>
         <h2 className='mt-6 text-center text-2xl font-bold  tracking-tight text-foreground'>
-          {title}
+          {renderTitle()}
         </h2>
       </div>
-      <SignInform />
+      {renderForm()}
     </>
   );
 }
