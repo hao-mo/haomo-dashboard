@@ -6,16 +6,15 @@ import { Combobox } from '@/components/combobox';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { countries } from '@/lib/countries';
+import { type UserAccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
 
-import { type UserAccountSettingFieldValues } from '../_lib';
-
-import { UserSetting, UserSettingContent, UserSettingHeader } from './user-setting';
+import { UserSettingContent, UserSettingGroup, UserSettingHeader } from './user-setting';
 
 export const PersonalInfoSettingArea = () => {
   const form = useFormContext<UserAccountSettingFieldValues>();
 
   return (
-    <UserSetting>
+    <UserSettingGroup>
       <UserSettingHeader
         title='Personal Information'
         description='Use a permanent address where you can receive mail.'
@@ -120,6 +119,6 @@ export const PersonalInfoSettingArea = () => {
           )}
         /> */}
       </UserSettingContent>
-    </UserSetting>
+    </UserSettingGroup>
   );
 };

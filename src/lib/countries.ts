@@ -26,6 +26,7 @@ export const searchCountry = (query: { id?: number; alpha2?: string; alpha3?: st
       // since "filter" returns an array we use pop to get just the data object
     })
     .pop();
+
   return {
     name: targetCountry?.name,
     value: targetCountry?.alpha2,

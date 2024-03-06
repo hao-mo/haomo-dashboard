@@ -1,6 +1,6 @@
 import { cn } from '@/utils';
 
-export const UserSetting = ({ className, children }: PropsWithChildren & WithClassName) => {
+export const UserSettingGroup = ({ className, children }: PropsWithChildren & WithClassName) => {
   return (
     <div
       className={cn(

@@ -1,5 +1,6 @@
 import type * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
+import { XIcon } from 'lucide-react';
 import * as React from 'react';
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { Controller, FormProvider, useFormContext } from 'react-hook-form';
@@ -69,7 +70,7 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
       <FormItemContext.Provider value={{ id }}>
         <div
           ref={ref}
-          className={cn('space-y-2', className)}
+          className={cn('relative space-y-2', className)}
           {...props}
         />
       </FormItemContext.Provider>
@@ -81,16 +82,25 @@ FormItem.displayName = 'FormItem';
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
+>(({ className, children, ...props }, ref) => {
   const { error, formItemId } = useFormField();
 
   return (
     <Label
       ref={ref}
-      className={cn(error && 'text-destructive', className)}
+      className={cn('inline-flex items-center gap-x-2', className)}
       htmlFor={formItemId}
       {...props}
-    />
+    >
+      {children}
+      <XIcon
+        size={18}
+        className={cn(
+          'text-destructive opacity-0 transition-opacity duration-200 ease-in-out',
+          error && 'opacity-100'
+        )}
+      />
+    </Label>
   );
 });
 FormLabel.displayName = 'FormLabel';
@@ -123,7 +133,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn('text-sm text-muted-foreground', className)}
+      className={cn('text-xs text-muted-foreground', className)}
       {...props}
     />
   );
@@ -138,15 +148,15 @@ const FormMessage = React.forwardRef<
 
   const body = error ? String(error?.message) : children;
 
-  if (!body) {
-    return null;
-  }
-
   return (
     <p
       ref={ref}
       id={formMessageId}
-      className={cn('text-sm font-medium text-destructive', className)}
+      className={cn(
+        'text-xs font-medium text-destructive transition-opacity duration-200 ease-in-out',
+        body ? 'opacity-100' : 'opacity-0',
+        className
+      )}
       {...props}
     >
       {body}
