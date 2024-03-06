@@ -19,10 +19,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import type { UserAccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
 
-import type { UserAccountSettingFieldValues } from '../_lib';
-
-import { UserSetting, UserSettingContent, UserSettingHeader } from './user-setting';
+import { UserSettingContent, UserSettingGroup, UserSettingHeader } from './user-setting';
 
 export const ProfileSettingArea = () => {
   const form = useFormContext<UserAccountSettingFieldValues>();
@@ -30,7 +29,7 @@ export const ProfileSettingArea = () => {
   const fileRef = form.register('avatar');
 
   return (
-    <UserSetting>
+    <UserSettingGroup>
       <UserSettingHeader
         title='Profile'
         description='This information will be displayed publicly so be careful what you share.'
@@ -144,6 +143,6 @@ export const ProfileSettingArea = () => {
           )}
         />
       </UserSettingContent>
-    </UserSetting>
+    </UserSettingGroup>
   );
 };

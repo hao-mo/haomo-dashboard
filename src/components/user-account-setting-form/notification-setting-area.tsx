@@ -4,16 +4,18 @@ import { useFormContext } from 'react-hook-form';
 
 import { FormCheckbox } from '@/components/form-checkbox';
 import { FormRadioGroup } from '@/components/form-radio-group';
+import {
+  pushNotificationOptions,
+  type UserAccountSettingFieldValues,
+} from '@/lib/schemas/user-setting.schema';
 
-import { pushNotificationOptions, type UserAccountSettingFieldValues } from '../_lib';
-
-import { UserSetting, UserSettingContent, UserSettingHeader } from './user-setting';
+import { UserSettingContent, UserSettingGroup, UserSettingHeader } from './user-setting';
 
 export const NotificationSettingArea = () => {
   const form = useFormContext<UserAccountSettingFieldValues>();
 
   return (
-    <UserSetting>
+    <UserSettingGroup>
       <UserSettingHeader
         title='Notifications'
         description="We'll always let you know about important changes, but you pick what else you
@@ -51,7 +53,7 @@ export const NotificationSettingArea = () => {
           />
         </NotificationSettingGroup>
       </UserSettingContent>
-    </UserSetting>
+    </UserSettingGroup>
   );
 };
 

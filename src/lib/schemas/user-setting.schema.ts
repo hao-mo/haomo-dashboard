@@ -20,7 +20,7 @@ export const pushNotificationOptions: Option[] = [
   },
 ];
 
-export const formSchema = z.object({
+export const userSettingFormSchema = z.object({
   firstName: z.string().trim().min(2, {
     message: '名字必須至少有 2 個字元',
   }),
@@ -41,12 +41,8 @@ export const formSchema = z.object({
     message: '自我介紹最多只能有 100 個字元',
   }),
   avatar: z
-    .unknown()
-    // .instanceof(File)
+    .instanceof(File)
     .optional()
-    .transform((value) => {
-      return value as File | null | undefined;
-    })
     .refine((file) => {
       return !file || file.size <= MAX_UPLOAD_SIZE;
     }, `檔案大小必須小於 3MB`)
@@ -56,7 +52,7 @@ export const formSchema = z.object({
     ),
   cover_image: z
     .instanceof(File)
-    .nullable()
+    .optional()
     .refine((file) => {
       return !file || file.size <= MAX_UPLOAD_SIZE;
     }, '檔案大小必須小於 3MB')
@@ -70,4 +66,4 @@ export const formSchema = z.object({
   push_notification: z.enum(['all', 'mentions', 'none']),
 });
 
-export type UserAccountSettingFieldValues = z.infer<typeof formSchema>;
+export type UserAccountSettingFieldValues = z.infer<typeof userSettingFormSchema>;

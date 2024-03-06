@@ -5,35 +5,36 @@ import { useForm } from 'react-hook-form';
 
 import { Form } from '@/components/ui/form';
 import { searchCountry } from '@/lib/countries';
+import type { UserAccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
+import { userSettingFormSchema } from '@/lib/schemas/user-setting.schema';
 
-import { NotificationSettingArea } from './_components/notification-setting-area';
-import { PersonalInfoSettingArea } from './_components/personal-info-setting-area';
-import { ProfileSettingArea } from './_components/profile-setting-area';
-import { SettingFooter } from './_components/setting-footer';
-import type { UserAccountSettingFieldValues } from './_lib';
-import { formSchema } from './_lib';
+import { NotificationSettingArea } from './notification-setting-area';
+import { PersonalInfoSettingArea } from './personal-info-setting-area';
+import { ProfileSettingArea } from './profile-setting-area';
+import { SettingFooter } from './setting-footer';
+
+const defaultValues: UserAccountSettingFieldValues = {
+  firstName: '',
+  lastName: '',
+  website: '',
+  about: '',
+  email: '',
+  address: '',
+  avatar: undefined,
+  cover_image: undefined,
+  email_comment_notification: false,
+  email_candidate_notification: false,
+  email_offer_notification: false,
+  push_notification: 'all',
+  country: searchCountry({ alpha2: 'TW' })?.value ?? '',
+};
 
 export function UserAccountSettingForm() {
-  // 1. Define your form.
   const form = useForm<UserAccountSettingFieldValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(userSettingFormSchema),
     mode: 'onBlur',
     reValidateMode: 'onChange',
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      website: '',
-      about: '',
-      email: '',
-      address: '',
-      avatar: undefined,
-      cover_image: undefined,
-      email_comment_notification: false,
-      email_candidate_notification: false,
-      email_offer_notification: false,
-      push_notification: 'all',
-      country: searchCountry({ alpha2: 'TW' })?.value,
-    },
+    defaultValues,
   });
 
   // 2. Define a submit handler.
@@ -43,7 +44,6 @@ export function UserAccountSettingForm() {
     console.log(values);
   }
 
-  console.log('🚨 - form', form.getValues());
   return (
     <Form {...form}>
       <form

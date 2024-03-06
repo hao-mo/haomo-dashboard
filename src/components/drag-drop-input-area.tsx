@@ -11,7 +11,7 @@ import { cn } from '@/utils';
 import { Input } from './ui/input';
 
 interface FileInputAreaProps extends React.ComponentPropsWithoutRef<typeof Input> {
-  previewImage: File | null;
+  previewImage?: File;
 }
 
 const MotionImage = m(Image);

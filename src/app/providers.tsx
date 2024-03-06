@@ -1,11 +1,10 @@
 'use client';
 
-// import { CustomCursorProvider } from '@/components/custom-cursor';
 import { ThemeProvider } from 'next-themes';
 
 import { MotionProvider } from '@/components/motion-provider';
-// import { SmoothScroll } from '@/components/smooth-scroll';
-// import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
@@ -14,11 +13,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
       enableSystem
     >
       <MotionProvider>
-        {/* <SmoothScroll>
-          <CustomCursorProvider> */}
-        {children}
-        {/* </CustomCursorProvider>
-        </SmoothScroll> */}
+        <TooltipProvider delayDuration={100}>
+          {children}
+          <Toaster />
+        </TooltipProvider>
       </MotionProvider>
     </ThemeProvider>
   );

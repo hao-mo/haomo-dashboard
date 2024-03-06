@@ -26,12 +26,12 @@
       {
         "groups": [
           ["^@?\\w", "^react\\w", "^next@?\\w"],
-          // Node.js builtins and third-party packages
-          ["^\\u0000"],
+
           // Your internal path aliases
           ["^@/public(\\/.*|$)"],
           ["^@/(components|hooks|styles|lib|utils)(\\/.*|$)"],
-
+          // Node.js builtins and third-party packages
+          ["^\\u0000"],
           ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
           // Other relative imports. Put same-folder imports and `.` last.
           ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
