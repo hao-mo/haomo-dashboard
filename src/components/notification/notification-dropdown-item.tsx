@@ -1,4 +1,5 @@
 import type { INotification } from '@/lib/types';
+
 import { capitalize } from '@/utils';
 import { formatDistance } from '@/utils/format';
 

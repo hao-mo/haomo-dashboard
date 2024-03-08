@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { siteRoutes } from '@/lib/routes';
 import type { IRoute } from '@/lib/types';
+
 import { cn } from '@/utils';
 
 export const MainSidebarNav = () => {

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { allRoutes } from '@/lib/routes';
 import { easeInExpo, fadeIn } from '@/lib/transitions';
+
 import { capitalize } from '@/utils';
 
 import { MotionTypography } from '../ui/typography';

@@ -1,4 +1,5 @@
 import { MotionBox } from '@/components/motion-box';
+
 import { fadeIn } from '@/lib/transitions';
 
 export default function Template({ children }: PropsWithChildren) {
