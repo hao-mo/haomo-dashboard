@@ -119,3 +119,12 @@ export const nextFrame = async (): Promise<void> => {
 export const toNumber = (target: string) => {
   return Number(target.replace(/[^0-9.-]+/g, ''));
 };
+
+/**
+ * 將物件轉換為 URLSearchParams
+ * @param params - 要轉換的物件
+ * @returns 轉換後的 URLSearchParams
+ */
+export const encodeSearchParams = (params: Record<string, string>) => {
+  return new URLSearchParams(params).toString();
+};

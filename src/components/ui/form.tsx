@@ -81,8 +81,11 @@ FormItem.displayName = 'FormItem';
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+    startElement?: React.ReactNode;
+    endElement?: React.ReactNode;
+  }
+>(({ className, children, startElement, endElement, ...props }, ref) => {
   const { error, formItemId } = useFormField();
 
   return (
@@ -92,6 +95,7 @@ const FormLabel = React.forwardRef<
       htmlFor={formItemId}
       {...props}
     >
+      {startElement}
       {children}
       <XIcon
         size={18}
@@ -100,6 +104,7 @@ const FormLabel = React.forwardRef<
           error && 'opacity-100'
         )}
       />
+      {endElement}
     </Label>
   );
 });

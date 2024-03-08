@@ -1,13 +1,13 @@
 'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-import type { SignUpFieldValues } from '@/lib/schemas/auth.schema';
-import { signUpFormSchema } from '@/lib/schemas/auth.schema';
+import type { ResetPasswordFieldValues } from '@/lib/schemas/auth.schema';
+import { resetPasswordFormSchema } from '@/lib/schemas/auth.schema';
 import { handleFormRequest } from '@/utils/auth-helpers/client';
-import { signUp } from '@/utils/auth-helpers/server';
+import { resetPassword } from '@/utils/auth-helpers/server';
 
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
@@ -16,19 +16,20 @@ import { Input } from '../ui/input';
 
 import { PasswordRules } from './password-rules';
 
-const defaultValues: SignUpFieldValues = {
-  email: '',
+const defaultValues: ResetPasswordFieldValues = {
   password: '',
   confirmPassword: '',
 };
 
-export const SignUpForm = () => {
+export const ResetPasswordForm = () => {
   const router = useRouter();
-  const form = useForm<SignUpFieldValues>({
-    resolver: zodResolver(signUpFormSchema),
+  const form = useForm<ResetPasswordFieldValues>({
+    resolver: zodResolver(resetPasswordFormSchema),
     mode: 'all',
     defaultValues,
   });
+
+  // Can use useTransition to add pending state
 
   return (
     <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
@@ -38,28 +39,9 @@ export const SignUpForm = () => {
             <form
               className='space-y-8'
               action={async (formData) => {
-                await handleFormRequest(formData, signUp, router);
+                await handleFormRequest(formData, resetPassword, router);
               }}
             >
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>註冊信箱</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='xxx@gmail.com'
-                        autoCapitalize='none'
-                        autoComplete='email'
-                        autoCorrect='off'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name='password'
@@ -99,39 +81,28 @@ export const SignUpForm = () => {
                   </FormItem>
                 )}
               />
-              {/* <div className='flex items-center justify-between'>
-                <div className='flex items-center'>
-                  <Checkbox
-                    id='remember-me'
-                    name='remember-me'
-                  />
-                  <Label
-                    htmlFor='remember-me'
-                    className='ml-3 block text-xs font-normal text-foreground'
-                  >
-                    記住我
-                  </Label>
-                </div>
-
-                <Link
-                  href='/signin/forgot_password'
-                  className='text-xs font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
-                >
-                  忘記密碼 ?
-                </Link>
-              </div> */}
               <div>
                 <Button
                   type='submit'
                   className='w-full'
                 >
-                  登入
+                  重設密碼
                 </Button>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
+
+      <p className='mt-10 text-center text-sm text-foreground'>
+        已經有帳號了嗎？
+        <Link
+          href='/signin'
+          className='ml-2 font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
+        >
+          登入
+        </Link>
+      </p>
     </div>
   );
 };

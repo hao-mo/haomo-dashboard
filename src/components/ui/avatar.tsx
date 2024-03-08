@@ -23,7 +23,11 @@ const AvatarImage = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    className={cn('aspect-square h-full w-full', className)}
+    className={cn(
+      'aspect-square h-full w-full blur-sm transition-all duration-500 ease-in-out',
+      className
+    )}
+    onLoad={(e) => e.currentTarget.classList.remove('blur-sm')}
     {...props}
   />
 ));

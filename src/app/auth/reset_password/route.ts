@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
   // by the `@supabase/ssr` package. It exchanges an auth code for the user's session.
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  console.log('🚨 - code', code);
 
   if (code) {
     const supabase = createClient();
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       return NextResponse.redirect(
         getErrorRedirect(
-          `${requestUrl.origin}/signin`,
+          `${requestUrl.origin}/signin/forgot_password`,
           error.name,
           "Sorry, we weren't able to log you in. Please try again."
         )
@@ -29,6 +28,10 @@ export async function GET(request: NextRequest) {
 
   // URL to redirect to after sign in process completes
   return NextResponse.redirect(
-    getStatusRedirect(`${requestUrl.origin}`, 'Success!', 'You are now signed in.')
+    getStatusRedirect(
+      `${requestUrl.origin}/signin/reset_password`,
+      'You are now signed in.',
+      'Please enter a new password for your account.'
+    )
   );
 }

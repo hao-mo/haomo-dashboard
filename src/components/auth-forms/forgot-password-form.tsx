@@ -5,27 +5,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
-import type { SignInFieldValues } from '@/lib/schemas/auth.schema';
-import { signInFormSchema } from '@/lib/schemas/auth.schema';
+import type { ForgotPasswordFieldValues } from '@/lib/schemas/auth.schema';
+import { forgotPasswordFormSchema } from '@/lib/schemas/auth.schema';
 import { handleFormRequest } from '@/utils/auth-helpers/client';
-import { signInWithPassword } from '@/utils/auth-helpers/server';
+import { requestPasswordUpdate } from '@/utils/auth-helpers/server';
 
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 
-import { PasswordRules } from './password-rules';
-
-const defaultValues: SignInFieldValues = {
+const defaultValues: ForgotPasswordFieldValues = {
   email: 'qqharry21@gmail.com',
-  password: 'Mamba800900-',
 };
 
-export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
+export const ForgotPasswordForm = ({ disabledButton }: { disabledButton: boolean }) => {
   const router = useRouter();
-  const form = useForm<SignInFieldValues>({
-    resolver: zodResolver(signInFormSchema),
+  const form = useForm<ForgotPasswordFieldValues>({
+    resolver: zodResolver(forgotPasswordFormSchema),
     mode: 'all',
     defaultValues,
   });
@@ -40,7 +37,7 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
             <form
               className='space-y-8'
               action={async (formData) => {
-                await handleFormRequest(formData, signInWithPassword, router);
+                await handleFormRequest(formData, requestPasswordUpdate, router);
               }}
             >
               <FormField
@@ -62,50 +59,29 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel
-                      className='flex'
-                      endElement={
-                        <Link
-                          href='/signin/forgot_password'
-                          className='ml-auto text-xs font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
-                        >
-                          忘記密碼 ?
-                        </Link>
-                      }
-                    >
-                      密碼
-                      <PasswordRules />
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type='password'
-                        placeholder='請輸入密碼'
-                        autoComplete='current-password'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <div>
                 <Button
                   type='submit'
                   className='w-full'
                   disabled={disabledButton}
                 >
-                  登入
+                  {disabledButton ? '已寄出' : '寄出信件'}
                 </Button>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
+
+      <p className='mt-10 text-center text-sm text-foreground'>
+        已經有帳號了嗎？
+        <Link
+          href='/signin'
+          className='ml-2 font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
+        >
+          登入
+        </Link>
+      </p>
     </div>
   );
 };

@@ -31,7 +31,7 @@ export async function signOut(formData: FormData) {
     );
   }
 
-  return '/signin';
+  return getStatusRedirect('/signin', 'Success!', 'You are now signed out.');
 }
 
 export async function signInWithEmail(formData: FormData) {
@@ -177,6 +177,7 @@ export async function signUp(formData: FormData) {
     email,
     password,
     options: {
+      data: { username: 'User' },
       emailRedirectTo: callbackURL,
     },
   });
@@ -193,7 +194,7 @@ export async function signUp(formData: FormData) {
     );
   } else if (data.user) {
     redirectPath = getStatusRedirect(
-      '/',
+      '/signin/signup_email_sent',
       'Success!',
       'Please check your email for a confirmation link. You may now close this tab.'
     );
@@ -208,15 +209,15 @@ export async function signUp(formData: FormData) {
   return redirectPath;
 }
 
-export async function updatePassword(formData: FormData) {
+export async function resetPassword(formData: FormData) {
   const password = String(formData.get('password')).trim();
-  const passwordConfirm = String(formData.get('passwordConfirm')).trim();
+  const confirmPassword = String(formData.get('confirmPassword')).trim();
   let redirectPath: string;
 
   // Check that the password and confirmation match
-  if (password !== passwordConfirm) {
+  if (password !== confirmPassword) {
     redirectPath = getErrorRedirect(
-      '/signin/update_password',
+      '/signin/reset_password',
       'Your password could not be updated.',
       'Passwords do not match.'
     );
@@ -229,7 +230,7 @@ export async function updatePassword(formData: FormData) {
 
   if (error) {
     redirectPath = getErrorRedirect(
-      '/signin/update_password',
+      '/signin/reset_password',
       'Your password could not be updated.',
       error.message
     );
@@ -237,7 +238,7 @@ export async function updatePassword(formData: FormData) {
     redirectPath = getStatusRedirect('/', 'Success!', 'Your password has been updated.');
   } else {
     redirectPath = getErrorRedirect(
-      '/signin/update_password',
+      '/signin/reset_password',
       'Hmm... Something went wrong.',
       'Your password could not be updated.'
     );

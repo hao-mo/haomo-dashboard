@@ -3,7 +3,8 @@
     "node_modules/": true,
     ".scannerwork": true,
     "tsconfig.tsbuildinfo": true,
-    "LICENSE": true
+    "LICENSE": true,
+    "supabase/.*": true
   },
   "css.validate": false,
   "less.validate": false,
