@@ -72,7 +72,6 @@ export const ForgotPasswordForm = ({ disabledButton }: { disabledButton: boolean
           </Form>
         </CardContent>
       </Card>
-
       <p className='mt-10 text-center text-sm text-foreground'>
         已經有帳號了嗎？
         <Link

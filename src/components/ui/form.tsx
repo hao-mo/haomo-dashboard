@@ -1,5 +1,7 @@
 import type * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
+import type { HTMLMotionProps } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { XIcon } from 'lucide-react';
 import * as React from 'react';
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
@@ -145,29 +147,32 @@ const FormDescription = React.forwardRef<
 });
 FormDescription.displayName = 'FormDescription';
 
-const FormMessage = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
-  const { error, formMessageId } = useFormField();
+const FormMessage = React.forwardRef<HTMLParagraphElement, HTMLMotionProps<'p'>>(
+  ({ className, children, ...props }, ref) => {
+    const { error, formMessageId } = useFormField();
 
-  const body = error ? String(error?.message) : children;
+    const body = error ? String(error?.message) : children;
 
-  return (
-    <p
-      ref={ref}
-      id={formMessageId}
-      className={cn(
-        'text-xs font-medium text-destructive transition-opacity duration-200 ease-in-out',
-        body ? 'opacity-100' : 'opacity-0',
-        className
-      )}
-      {...props}
-    >
-      {body}
-    </p>
-  );
-});
+    return (
+      <AnimatePresence>
+        {body && (
+          <m.p
+            ref={ref}
+            id={formMessageId}
+            className={cn('text-xs font-medium text-destructive', className)}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            {...props}
+          >
+            {body}
+          </m.p>
+        )}
+      </AnimatePresence>
+    );
+  }
+);
 FormMessage.displayName = 'FormMessage';
 
 export {

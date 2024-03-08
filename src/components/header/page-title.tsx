@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { allRoutes } from '@/lib/routes';
 import { easeInExpo, fadeIn } from '@/lib/transitions';
+import { capitalize } from '@/utils';
 
 import { MotionTypography } from '../ui/typography';
 
@@ -34,7 +35,7 @@ export const PageTitle = () => {
           transition={{ duration: 0.3, ease: easeInExpo }}
           className='text-lg font-bold will-change-transform md:text-xl'
         >
-          {currentPageName}
+          {capitalize(currentPageName)}
         </MotionTypography>
       </AnimatePresence>
     </div>

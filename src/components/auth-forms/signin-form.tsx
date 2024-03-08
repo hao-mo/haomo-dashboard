@@ -106,6 +106,15 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
           </Form>
         </CardContent>
       </Card>
+      <p className='mt-10 text-center text-sm text-foreground'>
+        還沒有帳號嗎？
+        <Link
+          href='/signin/signup'
+          className='ml-2 font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
+        >
+          註冊
+        </Link>
+      </p>
     </div>
   );
 };

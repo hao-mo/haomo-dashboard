@@ -19,11 +19,11 @@ export async function fetcher<T = unknown>(input: RequestInfo, init?: RequestIni
 }
 
 /**
- * 將字串的第一個字母轉為大寫
+ * 將字串的所有單字的首字母大寫
  * @param target - 要轉換的字串
  */
 export const capitalize = (target: string) => {
-  return target.charAt(0).toUpperCase() + target.slice(1);
+  return target.replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
 /**

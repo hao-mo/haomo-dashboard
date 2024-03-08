@@ -36,12 +36,12 @@ export const siteRoutes: IRoute[] = [
 export const userRoutes: IRoute[] = [
   {
     name: 'Account preferences',
-    href: '/user/profile',
+    href: '/account/preferences',
     icon: <UserRoundIcon size={14} />,
   },
   {
     name: 'Settings',
-    href: '/user/settings',
+    href: '/settings',
     icon: <SettingsIcon size={14} />,
   },
   {
