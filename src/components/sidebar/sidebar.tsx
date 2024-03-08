@@ -1,7 +1,6 @@
 'use client';
 
 import useHover from '@react-hook/hover';
-import type { User } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
@@ -11,7 +10,7 @@ import Logo from '@/public/icon.ico';
 import { MainSidebarNav } from './main-sidebar-nav';
 import { UserSidebarMenu } from './user-sidebar-menu';
 
-export const Sidebar = ({ user }: { user: User | null }) => {
+export const Sidebar = ({ username, email }: { username: string; email: string }) => {
   const ref = useRef<HTMLElement>(null);
   const isHover = useHover(ref);
 
@@ -42,7 +41,10 @@ export const Sidebar = ({ user }: { user: User | null }) => {
           <MainSidebarNav />
         </ul>
         <ul className='flex flex-col gap-y-1 px-2'>
-          <UserSidebarMenu user={user} />
+          <UserSidebarMenu
+            username={username}
+            email={email}
+          />
         </ul>
       </nav>
     </aside>

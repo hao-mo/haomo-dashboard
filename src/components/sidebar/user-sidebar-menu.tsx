@@ -1,9 +1,9 @@
-import type { User } from '@supabase/supabase-js';
 import { CircleUserRoundIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { userRoutes } from '@/lib/routes';
+
 import { handleFormRequest } from '@/utils/auth-helpers/client';
 import { signOut } from '@/utils/auth-helpers/server';
 
@@ -21,13 +21,13 @@ import {
 
 import { ThemeSwitch } from './theme-switch';
 
-const AccountName = ({ title }: { title?: string }) => {
+const AccountName = ({ username }: { username?: string }) => {
   return (
     <span
-      title={title}
+      title={username}
       className='w-full truncate text-left text-xs text-foreground'
     >
-      {title}
+      {username}
     </span>
   );
 };
@@ -43,10 +43,9 @@ const AccountEmail = ({ email }: { email?: string }) => {
   );
 };
 
-export const UserSidebarMenu = ({ user }: { user: User | null }) => {
+export const UserSidebarMenu = ({ username, email }: { username: string; email: string }) => {
   const pathname = usePathname();
   const router = useRouter();
-  if (!user) return null;
 
   return (
     <Menubar
@@ -77,8 +76,8 @@ export const UserSidebarMenu = ({ user }: { user: User | null }) => {
                 </figure>
               </Avatar>
               <span className='absolute left-7 flex w-40 flex-col items-start truncate text-sm font-normal transition-all group-data-[state=expanded]:left-10 group-data-[state=collapsed]:opacity-0 group-data-[state=expanded]:opacity-100'>
-                <AccountName title={user.user_metadata.username} />
-                <AccountEmail email={user.email} />
+                <AccountName username={username} />
+                <AccountEmail email={email} />
               </span>
             </div>
           </MenubarTrigger>
@@ -90,8 +89,8 @@ export const UserSidebarMenu = ({ user }: { user: User | null }) => {
             className='w-64 min-w-32 max-w-full p-1'
           >
             <div className='flex flex-col gap-0 px-2 py-1 text-sm'>
-              <AccountName title={user.user_metadata.username} />
-              <AccountEmail email={user.email} />
+              <AccountName username={username} />
+              <AccountEmail email={email} />
             </div>
             <MenubarSeparator />
             {userRoutes.map((route) => (

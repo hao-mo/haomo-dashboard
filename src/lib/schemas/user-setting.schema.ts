@@ -5,6 +5,12 @@ import type { Option } from '@/lib/types';
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
 const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
+const httpRegex = /^(http|https):/;
+
+const completeUrlRegex =
+  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/;
+// Research: https://spin.atomicobject.com/zod-transform-custom/
+
 export const pushNotificationOptions: Option[] = [
   {
     name: 'All',
@@ -21,11 +27,9 @@ export const pushNotificationOptions: Option[] = [
 ];
 
 export const accountSettingFormSchema = z.object({
+  id: z.string(),
   username: z.string().min(2, {
     message: 'Username must be at least 2 characters',
-  }),
-  email: z.string().email({
-    message: 'Please enter a valid email address',
   }),
 });
 
@@ -46,8 +50,20 @@ export const profileSettingFormSchema = z.object({
       (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : false),
       'Only .jpg, .jpeg, .png and .webp file types are supported'
     ),
-  website: z.string().refine((value) => /^(https?):\/\//i.test(value), {
-    message: 'Please enter a valid URL',
+  website: z.string().transform((val, ctx) => {
+    let completeUrl = val;
+    if (!httpRegex.test(completeUrl)) {
+      completeUrl = `https://${completeUrl}`;
+    }
+    if (!completeUrlRegex.test(completeUrl)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Please enter a valid URL',
+      });
+
+      return z.NEVER;
+    }
+    return completeUrl;
   }),
 });
 

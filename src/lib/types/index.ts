@@ -24,3 +24,7 @@ export interface Option {
   value: string;
   name: string;
 }
+
+export interface FormState {
+  message: string;
+}

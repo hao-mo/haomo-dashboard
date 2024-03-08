@@ -9,8 +9,9 @@ import { ForgotPasswordForm } from '@/components/auth-forms/forgot-password-form
 import { ResetPasswordForm } from '@/components/auth-forms/reset-password-form';
 import { SignInForm } from '@/components/auth-forms/signin-form';
 import { SignUpForm } from '@/components/auth-forms/signup-form';
+
 import { getAuthTypes, getDefaultSignInView, getViewTypes } from '@/utils/auth-helpers/settings';
-import { createClient } from '@/utils/supabase/server';
+import { getSupabaseServerClient } from '@/utils/supabase/server';
 
 interface PageProps {
   params: { type: string };
@@ -91,7 +92,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   }
 
   // Check if the user is already logged in and redirect to the account page if so
-  const supabase = createClient();
+  const supabase = getSupabaseServerClient();
 
   const {
     data: { user },
