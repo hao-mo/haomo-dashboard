@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { inter } from '@/styles/fonts';
+
 import { getURL } from '@/utils/helpers';
 
 import { Providers } from './providers';

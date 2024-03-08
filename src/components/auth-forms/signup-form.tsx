@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 
 import type { SignUpFieldValues } from '@/lib/schemas/auth.schema';
 import { signUpFormSchema } from '@/lib/schemas/auth.schema';
+
 import { handleFormRequest } from '@/utils/auth-helpers/client';
 import { signUp } from '@/utils/auth-helpers/server';
 
