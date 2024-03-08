@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
@@ -99,39 +100,27 @@ export const SignUpForm = () => {
                   </FormItem>
                 )}
               />
-              {/* <div className='flex items-center justify-between'>
-                <div className='flex items-center'>
-                  <Checkbox
-                    id='remember-me'
-                    name='remember-me'
-                  />
-                  <Label
-                    htmlFor='remember-me'
-                    className='ml-3 block text-xs font-normal text-foreground'
-                  >
-                    記住我
-                  </Label>
-                </div>
-
-                <Link
-                  href='/signin/forgot_password'
-                  className='text-xs font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
-                >
-                  忘記密碼 ?
-                </Link>
-              </div> */}
               <div>
                 <Button
                   type='submit'
                   className='w-full'
                 >
-                  登入
+                  註冊
                 </Button>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
+      <p className='mt-10 text-center text-sm text-foreground'>
+        已經有帳號了嗎？
+        <Link
+          href='/signin'
+          className='ml-2 font-semibold text-primary transition-colors duration-200 ease-in-out hover:text-primary/90'
+        >
+          登入
+        </Link>
+      </p>
     </div>
   );
 };

@@ -20,50 +20,46 @@ export const pushNotificationOptions: Option[] = [
   },
 ];
 
-export const userSettingFormSchema = z.object({
-  firstName: z.string().trim().min(2, {
-    message: '名字必須至少有 2 個字元',
+export const accountSettingFormSchema = z.object({
+  username: z.string().min(2, {
+    message: 'Username must be at least 2 characters',
   }),
-  lastName: z.string().trim().min(1, {
-    message: '姓氏必須至少有 1 個字元',
+  email: z.string().email({
+    message: 'Please enter a valid email address',
   }),
-  email: z.string().trim().email({
-    message: '請輸入有效的電子郵件地址',
+});
+
+export const profileSettingFormSchema = z.object({
+  full_name: z.string().min(2, {
+    message: 'Full name must be at least 2 characters',
   }),
-  country: z.string().min(2).max(2),
-  address: z.string().trim().max(100, {
-    message: '地址最多只能有 100 個字元',
+  bio: z.string().max(160, {
+    message: 'Bio must be at most 160 characters',
   }),
-  website: z.string().trim().url({
-    message: '請輸入有效的網址連結',
-  }),
-  about: z.string().max(100, {
-    message: '自我介紹最多只能有 100 個字元',
-  }),
-  avatar: z
+  avatar_url: z
     .instanceof(File)
     .optional()
     .refine((file) => {
       return !file || file.size <= MAX_UPLOAD_SIZE;
-    }, `檔案大小必須小於 3MB`)
+    }, 'File size must be less than 3MB')
     .refine(
       (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : false),
-      '只支援 .jpg, .jpeg, .png 和 .webp 格式的檔案'
+      'Only .jpg, .jpeg, .png and .webp file types are supported'
     ),
-  cover_image: z
-    .instanceof(File)
-    .optional()
-    .refine((file) => {
-      return !file || file.size <= MAX_UPLOAD_SIZE;
-    }, '檔案大小必須小於 3MB')
-    .refine(
-      (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : false),
-      '只支援 .jpg, .jpeg, .png 和 .webp 格式的檔案'
-    ),
+  website: z.string().refine((value) => /^(https?):\/\//i.test(value), {
+    message: 'Please enter a valid URL',
+  }),
+});
+
+export const notificationSettingFormSchema = z.object({
   email_comment_notification: z.boolean(),
   email_candidate_notification: z.boolean(),
   email_offer_notification: z.boolean(),
   push_notification: z.enum(['all', 'mentions', 'none']),
 });
 
-export type UserAccountSettingFieldValues = z.infer<typeof userSettingFormSchema>;
+export type AccountSettingFieldValues = z.infer<typeof accountSettingFormSchema>;
+
+export type ProfileSettingFieldValues = z.infer<typeof profileSettingFormSchema>;
+
+export type NotificationSettingFieldValues = z.infer<typeof notificationSettingFormSchema>;
