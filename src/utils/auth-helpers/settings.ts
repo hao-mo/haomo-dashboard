@@ -1,6 +1,6 @@
 // Boolean toggles to determine which auth types are allowed
-const allowOauth = true;
-const allowEmail = true;
+const allowOauth = false;
+const allowEmail = false;
 const allowPassword = true;
 
 // Boolean toggle to determine whether auth interface should route through server or client
@@ -22,7 +22,7 @@ export const getViewTypes = () => {
     viewTypes = [...viewTypes, 'email_signin'];
   }
   if (allowPassword) {
-    viewTypes = [...viewTypes, 'password_signin', 'forgot_password', 'update_password', 'signup'];
+    viewTypes = [...viewTypes, 'password_signin', 'forgot_password', 'reset_password', 'signup'];
   }
 
   return viewTypes;

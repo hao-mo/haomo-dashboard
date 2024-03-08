@@ -1,29 +1,82 @@
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 
 import Logo from '@/public/logo.webp';
 
+import { ForgotPasswordForm } from '@/components/auth-forms/forgot-password-form';
+import { ResetPasswordForm } from '@/components/auth-forms/reset-password-form';
 import { SignInForm } from '@/components/auth-forms/signin-form';
 import { SignUpForm } from '@/components/auth-forms/signup-form';
-import {
-  getAuthTypes,
-  getDefaultSignInView,
-  getRedirectMethod,
-  getViewTypes,
-} from '@/utils/auth-helpers/settings';
+import { getAuthTypes, getDefaultSignInView, getViewTypes } from '@/utils/auth-helpers/settings';
 import { createClient } from '@/utils/supabase/server';
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
+interface PageProps {
   params: { type: string };
   searchParams: { disable_button: boolean };
-}) {
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const viewProps = params.type;
+  const getTitle = () => {
+    switch (viewProps) {
+      case 'email_signin':
+        return '登入';
+      case 'password_signin':
+        return '登入';
+      case 'forgot_password':
+        return '重設密碼';
+      case 'reset_password':
+        return '重設密碼';
+      case 'signup':
+        return '註冊';
+      default:
+        return '登入';
+    }
+  };
+  const getDescription = () => {
+    switch (viewProps) {
+      case 'email_signin':
+        return '使用電子郵件登入以繼續';
+      case 'password_signin':
+        return '使用密碼登入以繼續';
+      case 'forgot_password':
+        return '重設密碼以繼續';
+      case 'reset_password':
+        return '重設密碼以繼續';
+      case 'signup':
+        return '註冊新帳號以繼續';
+      default:
+        return '登入以繼續';
+    }
+  };
+  const getKeywords = () => {
+    switch (viewProps) {
+      case 'email_signin':
+        return ['登入', '電子郵件', '帳號'];
+      case 'password_signin':
+        return ['登入', '密碼', '帳號'];
+      case 'forgot_password':
+        return ['重設密碼', '忘記密碼', '帳號'];
+      case 'reset_password':
+        return ['重設密碼', '忘記密碼', '帳號'];
+      case 'signup':
+        return ['註冊', '新帳號', '帳號'];
+      default:
+        return ['登入', '帳號'];
+    }
+  };
+  return {
+    title: getTitle(),
+    description: getDescription(),
+    keywords: getKeywords(),
+  };
+}
+
+export default async function Page({ params, searchParams }: PageProps) {
   const { allowOauth, allowEmail, allowPassword } = getAuthTypes();
   const viewTypes = getViewTypes();
-  const redirectMethod = getRedirectMethod();
 
   // Declare 'viewProp' and initialize with the default value
   let viewProp: string;
@@ -43,11 +96,10 @@ export default async function Page({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log('🚨 - user', user);
 
-  if (user && viewProp !== 'update_password') {
+  if (user && viewProp !== 'reset_password') {
     return redirect('/');
-  } else if (!user && viewProp === 'update_password') {
+  } else if (!user && viewProp === 'reset_password') {
     return redirect('/signin');
   }
 
@@ -59,7 +111,7 @@ export default async function Page({
         return '登入';
       case 'forgot_password':
         return '重設密碼';
-      case 'update_password':
+      case 'reset_password':
         return '重設密碼';
       case 'signup':
         return '註冊';
@@ -72,13 +124,15 @@ export default async function Page({
     switch (viewProp) {
       case 'email_signin':
       case 'password_signin':
-        return <SignInForm />;
+        return <SignInForm disabledButton={searchParams.disable_button} />;
       case 'forgot_password':
-      case 'update_password':
+        return <ForgotPasswordForm disabledButton={searchParams.disable_button} />;
+      case 'reset_password':
+        return <ResetPasswordForm />;
       case 'signup':
         return <SignUpForm />;
       default:
-        return <SignInForm />;
+        return <SignInForm disabledButton={searchParams.disable_button} />;
     }
   };
 

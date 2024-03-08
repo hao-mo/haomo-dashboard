@@ -41,4 +41,48 @@ export const signInFormSchema = z
     }
   });
 
+export const signUpFormSchema = z
+  .object({
+    email: z.string().trim().email({
+      message: '請輸入有效的電子郵件地址',
+    }),
+    password: z
+      .string()
+      .min(8, {
+        message: '密碼必須至少有 8 個字元',
+      })
+      .max(16, {
+        message: '密碼最多只能有 16 個字元',
+      }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
+
+export const forgotPasswordFormSchema = z.object({
+  email: z.string().trim().email({
+    message: '請輸入有效的電子郵件地址',
+  }),
+});
+
+export const resetPasswordFormSchema = z.object({
+  password: z
+    .string()
+    .min(8, {
+      message: '密碼必須至少有 8 個字元',
+    })
+    .max(16, {
+      message: '密碼最多只能有 16 個字元',
+    }),
+  confirmPassword: z.string(),
+});
+
 export type SignInFieldValues = z.infer<typeof signInFormSchema>;
+
+export type SignUpFieldValues = z.infer<typeof signUpFormSchema>;
+
+export type ForgotPasswordFieldValues = z.infer<typeof forgotPasswordFormSchema>;
+
+export type ResetPasswordFieldValues = z.infer<typeof resetPasswordFormSchema>;
