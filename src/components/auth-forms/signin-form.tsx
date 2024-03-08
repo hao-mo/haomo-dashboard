@@ -18,8 +18,8 @@ import { Input } from '../ui/input';
 import { PasswordRules } from './password-rules';
 
 const defaultValues: SignInFieldValues = {
-  email: 'qqharry21@gmail.com',
-  password: 'Mamba800900-',
+  email: process.env.NODE_ENV === 'production' ? '' : process.env.NEXT_PUBLIC_USER_EMAIL,
+  password: process.env.NODE_ENV === 'production' ? '' : process.env.NEXT_PUBLIC_USER_PASSWORD,
 };
 
 export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
