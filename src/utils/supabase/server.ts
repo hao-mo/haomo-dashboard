@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 import type { Database } from '@/lib/types/database.types';
 
-export function createClient() {
+export function getSupabaseServerClient() {
   const cookieStore = cookies();
 
   return createServerClient<Database>(

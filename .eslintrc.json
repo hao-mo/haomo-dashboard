@@ -29,7 +29,10 @@
 
           // Your internal path aliases
           ["^@/public(\\/.*|$)"],
-          ["^@/(components|hooks|styles|lib|utils)(\\/.*|$)"],
+          ["^@/(components|hooks|styles)(\\/.*|$)"],
+          ["^@/server(\\/.*|$)"],
+          ["^@/lib(\\/.*|$)"],
+          ["^@/utils(\\/.*|$)"],
           // Node.js builtins and third-party packages
           ["^\\u0000"],
           ["^\\.\\.(?!/?$)", "^\\.\\./?$"],

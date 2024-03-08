@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+
 import type { ProfileSettingFieldValues } from '@/lib/schemas/user-setting.schema';
 import { profileSettingFormSchema } from '@/lib/schemas/user-setting.schema';
 
@@ -122,6 +123,11 @@ export const ProfileSettingsForm = () => {
                 <UserSettingFormContent>
                   <FormControl>
                     <Input
+                      startDecorator={
+                        <span className='inline-flex select-none items-center text-muted-foreground sm:text-sm'>
+                          http://
+                        </span>
+                      }
                       placeholder='www.example.com'
                       {...field}
                     />

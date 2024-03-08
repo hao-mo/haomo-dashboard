@@ -2,6 +2,10 @@
 // import type Stripe from 'stripe';
 // import type { Database, Tables, TablesInsert } from 'types_db';
 
+import { createClient } from '@supabase/supabase-js';
+
+import type { Database } from '@/lib/types/database.types';
+
 // import { toDateTime } from '@/utils/helpers';
 // import { stripe } from '@/utils/stripe/config';
 
@@ -13,10 +17,10 @@
 
 // // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // // as it has admin privileges and overwrites RLS policies!
-// const supabaseAdmin = createClient<Database>(
-//   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-//   process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-// );
+export const getSupabaseAdminClient = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
+);
 
 // const upsertProductRecord = async (product: Stripe.Product) => {
 //   const productData: Product = {
