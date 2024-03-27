@@ -8,6 +8,7 @@ declare namespace NodeJS {
     readonly SENTRY_AUTH_TOKEN: string;
     readonly ACCESS_TOKEN_KEY: string;
     readonly REFRESH_TOKEN_KEY: string;
+    readonly DATABASE_URL: string;
     readonly NEXT_PUBLIC_USER_EMAIL: string;
     readonly NEXT_PUBLIC_USER_PASSWORD: string;
     readonly NEXT_PUBLIC_SUPABASE_URL: string;

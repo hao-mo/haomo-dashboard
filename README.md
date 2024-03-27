@@ -1,118 +1,52 @@
-## Supabase Local Development
+# HaoMo Dashboard
 
-### Setup
+這個專案是讓我們的客戶能透過此平台來切換管理他們已建立的網站內容，並且能夠即時看到網站的狀態。
 
-Run the following commands to start the local development environment:
+## Motivation
 
-#### Login to Supabase CLI
+Motivate your research question or business problem. Clearly explain which problem is solved.
 
-```bash
-supabase login
-```
+## Method and results
 
-#### Initialize your project
+First, introduce and motivate your chosen method, and explain how it contributes to solving the research question/business problem.
 
-```bash
-supabase init
-```
+Second, summarize your results concisely. Make use of subheaders where appropriate.
 
-#### Start Supabase services
+## Repository overview
 
-The `start` command uses Docker to start the Supabase services.
+Provide an overview of the directory structure and files, for example:
 
-```bash
-supabase start
-```
+├── src
+│ ├── app
+│ │ ├── (auth)
+│ │ ├── (dashbaord)
+│ │ ├── auth
+│ ├── components
+│ │ ├── ui
+│ ├── hooks
+│ ├── lib
+│ │ ├── schemas
+│ │ └── types
+│ ├── middleware.ts
+│ ├── server
+│ ├── stores
+│ ├── styles
+│ │ ├── fonts.ts
+│ │ └── globals.scss
+│ └── utils
+├── supabase
+│ ├── config.toml
+│ ├── migrations
+│ └── seed.sql
 
-#### Stop Supabase services
+## Running instructions
 
-You can stop the all the services without resetting your local database by running the following command:
+Explain to potential users how to run/replicate your workflow. If necessary, touch upon the required input data, which secret credentials are required (and how to obtain them), which software tools are needed to run the workflow (including links to the installation instructions), and how to run the workflow.
 
-```bash
-supabase stop
-```
+## More resources
 
-Use `supabase stop --no-backup` to stop all services and reset your local database.
+Point interested users to any related literature and/or documentation.
 
-### Database migrations
+## About
 
-#### Create a new migration
-
-It will create a `.sql` file after running the following command:
-
-```bash
-supabase migration new <migration_name>
-
-```
-
-After editing the migration files, use the `reset` command here to reset the database to the current migrations:
-
-```bash
-supabase db reset
-```
-
-#### Add new columns to a table
-
-Add the following SQL to the sql file:
-
-```sql
-alter table
-if exists public.<table_name> add <column_name> <column_type> default <default_value>;
-```
-
-#### Add sample data
-
-```sql
-
--- in supabase/seed.sql
-insert into
-public.employees (name)
-values
-(<insert_value>),
-(<insert_value>),
-(<insert_value>);
-```
-
-And run `supabase db reset` to apply the changes.
-
-### Deploy your project
-
-#### Link your project
-
-```bash
-supabase link --project-ref <project-id>
-# You can get <project-id> from your project's dashboard URL: https://supabase.com/dashboard/project/<project-id>
-
-supabase db pull
-# Capture any changes that you have made to your remote database before you went through the steps above
-# If you have not made any changes to the remote database, skip this step
-```
-
-`supabase/migrations` is now populated with a migration in `<timestamp>_remote_schema.sql`.
-This migration captures any changes required for your local database to match the schema of your remote Supabase project.
-
-Review the generated migration file and once happy, apply the changes to your local instance:
-
-```bash
-# To apply the new migration to your local database:
-supabase migration up
-
-# To reset your local database completely:
-supabase db reset
-```
-
-#### Deploy Database Changes
-
-Deploy any changes to your remote database:
-
-```bash
-supabase db push
-```
-
-#### Deploy Edge Functions
-
-If you have any edge functions, you can run the following command to deploy them:
-
-```bash
-supabase functions deploy <function_name>
-```
+Explain who has contributed to the repository. You can say it has been part of a class you've taken at Tilburg University.
