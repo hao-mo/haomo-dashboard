@@ -4,7 +4,7 @@ import { inter } from '@/styles/fonts';
 
 import { getURL } from '@/utils/helpers';
 
-import { Providers } from './providers';
+import { Providers } from '../providers/providers';
 
 import '../styles/globals.scss';
 
