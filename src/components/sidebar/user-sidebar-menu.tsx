@@ -110,7 +110,7 @@ export const UserSidebarMenu = ({ username, email }: { username: string; email: 
             <MenubarSeparator />
             <form
               action={(formData) => handleFormRequest(formData, signOut, router)}
-              className='w-full px-2 py-1'
+              className='w-full'
             >
               <input
                 type='hidden'
@@ -119,7 +119,7 @@ export const UserSidebarMenu = ({ username, email }: { username: string; email: 
               />
               <button
                 type='submit'
-                className='w-full cursor-pointer text-left text-xs'
+                className='w-full cursor-pointer px-2 py-1 text-left text-xs hocus:bg-accent hocus:text-accent-foreground'
               >
                 Sign out
               </button>

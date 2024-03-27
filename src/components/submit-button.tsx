@@ -3,22 +3,22 @@ import { Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
 
 export const SubmitButton = ({
-  isPending,
+  isSubmitting,
+  children,
   ...props
-}: React.ComponentPropsWithoutRef<typeof Button> & { isPending?: boolean }) => {
+}: React.ComponentPropsWithoutRef<typeof Button> & { isSubmitting?: boolean }) => {
   return (
     <Button
       type='submit'
-      className='gap-x-2'
       {...props}
     >
-      {isPending && (
+      {isSubmitting && (
         <Loader2
-          className='animate-spin'
+          className='mr-2 animate-spin'
           size={16}
         />
       )}
-      更新
+      {children}
     </Button>
   );
 };
