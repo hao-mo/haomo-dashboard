@@ -15,6 +15,10 @@ export const cn = (...args: ClassValue[]) => {
 export async function fetcher<T = unknown>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const response = await fetch(input, { ...init, cache: 'no-store' });
 
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
   return response.json() as T;
 }
 

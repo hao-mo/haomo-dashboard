@@ -3,9 +3,9 @@
 import { ThemeProvider } from 'next-themes';
 import { Suspense } from 'react';
 
-import { MotionProvider } from '@/components/motion-provider';
 import { Toaster } from '@/components/ui/toaster';
-import { TooltipProvider } from '@/components/ui/tooltip';
+
+import { MotionProvider } from '@/providers/motion-provider';
 
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
@@ -14,12 +14,10 @@ export const Providers = ({ children }: PropsWithChildren) => {
       enableSystem
     >
       <MotionProvider>
-        <TooltipProvider delayDuration={100}>
-          {children}
-          <Suspense>
-            <Toaster />
-          </Suspense>
-        </TooltipProvider>
+        {children}
+        <Suspense>
+          <Toaster />
+        </Suspense>
       </MotionProvider>
     </ThemeProvider>
   );

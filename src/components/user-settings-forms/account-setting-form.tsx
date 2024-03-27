@@ -8,8 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import { updateAccountInfo } from '@/server/actions/update-account-info';
-
 import type { AccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
 import { accountSettingFormSchema } from '@/lib/schemas/user-setting.schema';
 
@@ -24,6 +22,8 @@ import {
   UserSettingFormLabel,
   UserSettingHeader,
 } from './user-setting';
+
+import { updateAccountInfo } from '@/actions/update-account-info';
 
 export const AccountSettingsForm = ({
   userId,
