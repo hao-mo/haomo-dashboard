@@ -22,16 +22,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const viewProps = params.type;
   const getTitle = () => {
     switch (viewProps) {
-      case 'email_signin':
-        return '登入';
-      case 'password_signin':
-        return '登入';
       case 'forgot_password':
         return '重設密碼';
       case 'reset_password':
         return '重設密碼';
       case 'signup':
         return '註冊';
+      case 'email_signin':
+      case 'password_signin':
       default:
         return '登入';
     }

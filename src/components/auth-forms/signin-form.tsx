@@ -11,7 +11,7 @@ import { signInFormSchema } from '@/lib/schemas/auth.schema';
 import { handleFormRequest } from '@/utils/auth-helpers/client';
 import { signInWithPassword } from '@/utils/auth-helpers/server';
 
-import { Button } from '../ui/button';
+import { SubmitButton } from '../submit-button';
 import { Card, CardContent } from '../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
@@ -31,7 +31,12 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
     defaultValues,
   });
 
-  // Can use useTransition to add pending state
+  const action: () => void = form.handleSubmit(async (value) => {
+    const formData = new FormData();
+    formData.append('email', value.email);
+    formData.append('password', value.password);
+    await handleFormRequest(formData, signInWithPassword, router);
+  });
 
   return (
     <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
@@ -40,9 +45,7 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
           <Form {...form}>
             <form
               className='space-y-8'
-              action={async (formData) => {
-                await handleFormRequest(formData, signInWithPassword, router);
-              }}
+              action={action}
             >
               <FormField
                 control={form.control}
@@ -95,13 +98,14 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
                 )}
               />
               <div>
-                <Button
+                <SubmitButton
                   type='submit'
                   className='w-full'
-                  disabled={disabledButton}
+                  disabled={disabledButton || form.formState.isSubmitting}
+                  isSubmitting={form.formState.isSubmitting}
                 >
                   登入
-                </Button>
+                </SubmitButton>
               </div>
             </form>
           </Form>

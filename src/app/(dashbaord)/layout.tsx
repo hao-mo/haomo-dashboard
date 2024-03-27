@@ -20,7 +20,7 @@ export default async function Layout({ children }: PropsWithChildren) {
   return (
     <div className='relative flex h-screen min-h-full w-full overflow-hidden'>
       <Sidebar
-        username={profile?.username ?? 'User'}
+        username={profile?.username ?? user.user_metadata.username}
         email={user.email ?? ''}
       />
       <div className='relative flex max-h-screen flex-1 flex-col overflow-hidden border-l border-border'>

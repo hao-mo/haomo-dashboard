@@ -11,7 +11,7 @@ import { signUpFormSchema } from '@/lib/schemas/auth.schema';
 import { handleFormRequest } from '@/utils/auth-helpers/client';
 import { signUp } from '@/utils/auth-helpers/server';
 
-import { Button } from '../ui/button';
+import { SubmitButton } from '../submit-button';
 import { Card, CardContent } from '../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
@@ -32,6 +32,14 @@ export const SignUpForm = () => {
     defaultValues,
   });
 
+  const action: () => void = form.handleSubmit(async (value) => {
+    const formData = new FormData();
+    formData.append('email', value.email);
+    formData.append('password', value.password);
+    formData.append('confirmPassword', value.confirmPassword);
+    await handleFormRequest(formData, signUp, router);
+  });
+
   return (
     <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]'>
       <Card className='px-6 py-12 sm:px-12'>
@@ -39,9 +47,7 @@ export const SignUpForm = () => {
           <Form {...form}>
             <form
               className='space-y-8'
-              action={async (formData) => {
-                await handleFormRequest(formData, signUp, router);
-              }}
+              action={action}
             >
               <FormField
                 control={form.control}
@@ -102,12 +108,14 @@ export const SignUpForm = () => {
                 )}
               />
               <div>
-                <Button
+                <SubmitButton
                   type='submit'
                   className='w-full'
+                  disabled={form.formState.isSubmitting}
+                  isSubmitting={form.formState.isSubmitting}
                 >
                   註冊
-                </Button>
+                </SubmitButton>
               </div>
             </form>
           </Form>
