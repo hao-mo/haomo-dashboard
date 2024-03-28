@@ -97,7 +97,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   } = await supabase.auth.getUser();
 
   if (user && viewProp !== 'reset_password') {
-    return redirect('/');
+    return redirect('/dashboard');
   } else if (!user && viewProp === 'reset_password') {
     return redirect('/signin');
   }

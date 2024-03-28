@@ -31,7 +31,7 @@ export async function signOut(formData: FormData) {
     );
   }
 
-  return getStatusRedirect('/signin', 'Success!', 'You are now signed out.');
+  return getStatusRedirect('/signin', 'Bye bye~', 'You are now signed out.');
 }
 
 export async function signInWithEmail(formData: FormData) {
@@ -61,7 +61,7 @@ export async function signInWithEmail(formData: FormData) {
   if (error) {
     return getErrorRedirect('/signin/email_signin', 'You could not be signed in.', error.message);
   } else if (data) {
-    cookieStore.set('preferredSignInView', 'email_signin', { path: '/' });
+    cookieStore.set('preferredSignInView', 'email_signin', { path: '/dashboard' });
     return getStatusRedirect(
       '/signin/email_signin',
       'Success!',
@@ -129,8 +129,8 @@ export async function signInWithPassword(formData: FormData) {
   if (error) {
     return getErrorRedirect('/signin/password_signin', 'Sign in failed.', error.message);
   } else if (data.user) {
-    cookieStore.set('preferredSignInView', 'password_signin', { path: '/' });
-    return getStatusRedirect('/', 'Success!', 'You are now signed in.');
+    cookieStore.set('preferredSignInView', 'password_signin', { path: '/dashboard' });
+    return getStatusRedirect('/dashboard', 'Success!', 'You are now signed in.');
   } else {
     return getErrorRedirect(
       '/signin/password_signin',
@@ -163,7 +163,7 @@ export async function signUp(formData: FormData) {
   if (error) {
     return getErrorRedirect('/signin/signup', 'Sign up failed.', error.message);
   } else if (data.session) {
-    return getStatusRedirect('/', 'Success!', 'You are now signed in.');
+    return getStatusRedirect('/dashboard', 'Success!', 'You are now signed in.');
   } else if (data.user?.identities && data.user?.identities.length == 0) {
     return getErrorRedirect(
       '/signin/signup',
@@ -210,7 +210,7 @@ export async function resetPassword(formData: FormData) {
       error.message
     );
   } else if (data.user) {
-    return getStatusRedirect('/', 'Success!', 'Your password has been updated.');
+    return getStatusRedirect('/dashboard', 'Success!', 'Your password has been updated.');
   } else {
     return getErrorRedirect(
       '/signin/reset_password',
