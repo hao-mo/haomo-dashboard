@@ -52,6 +52,8 @@ const config: Config = {
         DEFAULT: 'hsl(var(--card))',
         foreground: 'hsl(var(--card-foreground))',
       },
+      success: '#26ba1c',
+      warning: '#f5a623',
     },
     screens,
     fontSize,
