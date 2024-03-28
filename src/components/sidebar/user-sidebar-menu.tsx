@@ -1,8 +1,6 @@
-import { CircleUserRoundIcon } from 'lucide-react';
+import { CircleUserRoundIcon, HeadsetIcon, SettingsIcon, UserRoundIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-
-import { userRoutes } from '@/lib/routes';
 
 import { handleFormRequest } from '@/utils/auth-helpers/client';
 import { signOut } from '@/utils/auth-helpers/server';
@@ -46,6 +44,24 @@ const AccountEmail = ({ email }: { email?: string }) => {
 export const UserSidebarMenu = ({ username, email }: { username: string; email: string }) => {
   const pathname = usePathname();
   const router = useRouter();
+
+  const routes = [
+    {
+      name: 'Account preferences',
+      href: '/dashboard/account/preferences',
+      icon: <UserRoundIcon size={14} />,
+    },
+    {
+      name: 'Settings',
+      href: '/dashboard/settings',
+      icon: <SettingsIcon size={14} />,
+    },
+    {
+      name: 'Support',
+      href: '/dashboard/support',
+      icon: <HeadsetIcon size={14} />,
+    },
+  ];
 
   return (
     <Menubar
@@ -93,7 +109,7 @@ export const UserSidebarMenu = ({ username, email }: { username: string; email: 
               <AccountEmail email={email} />
             </div>
             <MenubarSeparator />
-            {userRoutes.map((route) => (
+            {routes.map((route) => (
               <MenubarItem key={`user-route-${route.name}`}>
                 <Link
                   href={route.href}

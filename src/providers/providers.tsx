@@ -10,6 +10,7 @@ import { MotionProvider } from '@/providers/motion-provider';
 
 export const Providers = ({ children }: PropsWithChildren) => {
   useSearchParamsToast();
+
   return (
     <ThemeProvider
       attribute='class'

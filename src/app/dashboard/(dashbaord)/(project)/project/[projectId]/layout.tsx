@@ -1,8 +1,12 @@
 import { Header } from '@/components/header';
 import { Sidebar } from '@/components/sidebar';
 
+import prismadb from '@/lib/prismadb';
+
 import { redirectToPath } from '@/utils/auth-helpers/server';
 import { getSupabaseServerClient } from '@/utils/supabase/server';
+
+export const revalidate = 0;
 
 export default async function Layout({ children }: PropsWithChildren) {
   const supabase = getSupabaseServerClient();
@@ -15,6 +19,17 @@ export default async function Layout({ children }: PropsWithChildren) {
     return redirectToPath('/signin');
   }
 
+  const project = await prismadb.projects.findFirst({
+    where: {
+      userId: user.id,
+    },
+  });
+  console.log('🚨 - project', project);
+
+  if (!project) {
+    return redirectToPath(`/`);
+  }
+
   const { data: profile } = await supabase.from('profiles').select().eq('id', user?.id).single();
 
   return (
@@ -24,7 +39,7 @@ export default async function Layout({ children }: PropsWithChildren) {
         email={user.email ?? ''}
       />
       <div className='relative flex max-h-screen flex-1 flex-col overflow-hidden border-l border-border'>
-        <Header />
+        <Header userId={user.id} />
         <main className='flex-1 overflow-y-auto overflow-x-hidden py-10'>{children}</main>
       </div>
     </div>

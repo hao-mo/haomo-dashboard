@@ -21,7 +21,7 @@ export default async function SetupLayout({ children }: { children: React.ReactN
   });
 
   if (project) {
-    return redirectToPath(`/${project.id}`);
+    return redirectToPath(`/dashboard/project/${project.id}`);
   }
 
   return <>{children}</>;
