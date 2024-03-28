@@ -2,30 +2,37 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { projects } from '@prisma/client';
+import { CheckIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { useProjectModal } from '@/hooks/use-project-modal';
 
 import type { ProjectFormValues } from '@/lib/schemas/project.schema';
 import { projectFormSchema } from '@/lib/schemas/project.schema';
 
-import { fetcher } from '@/utils';
+import { fetcher, wait } from '@/utils';
 
+import { SubmitButton } from '../submit-button';
 import { Button } from '../ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Modal } from '../ui/modal';
-import { toast } from '../ui/use-toast';
 
 export const ProjectModal = () => {
   const { isOpen, onClose } = useProjectModal();
+  const router = useRouter();
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: { name: '' },
   });
 
+  const disabled = form.formState.isSubmitting || form.formState.isSubmitSuccessful;
+
   const onSubmit = async (values: ProjectFormValues) => {
     try {
+      await wait(1000);
       const response = await fetcher<projects>('/api/projects', {
         method: 'POST',
         headers: {
@@ -34,13 +41,14 @@ export const ProjectModal = () => {
         body: JSON.stringify(values),
       });
 
-      console.log('🚨 - response', response);
-      window.location.assign(`/${response.id}`);
+      router.push(`/${response.id}`);
+
+      toast.success('新增成功', {
+        description: '專案已建立',
+      });
     } catch (error) {
-      toast({
-        title: 'Something went wrong',
-        description: 'An error occurred',
-        variant: 'destructive',
+      toast.error('新增失敗', {
+        description: '發生一些問題',
       });
     }
   };
@@ -65,7 +73,7 @@ export const ProjectModal = () => {
                       <FormLabel>專案名稱</FormLabel>
                       <FormControl>
                         <Input
-                          disabled={form.formState.isSubmitting}
+                          disabled={disabled}
                           placeholder='我的專案'
                           {...field}
                         />
@@ -76,18 +84,26 @@ export const ProjectModal = () => {
                 />
                 <div className='flex w-full items-center justify-end space-x-2 pt-6'>
                   <Button
-                    disabled={form.formState.isSubmitting}
+                    type='button'
+                    disabled={disabled}
                     variant='outline'
                     onClick={onClose}
                   >
-                    Cancel
+                    取消
                   </Button>
-                  <Button
-                    disabled={form.formState.isSubmitting}
+                  <SubmitButton
+                    isSubmitting={form.formState.isSubmitting}
+                    disabled={disabled}
                     type='submit'
                   >
-                    Continue
-                  </Button>
+                    {form.formState.isSubmitSuccessful && (
+                      <CheckIcon
+                        size={16}
+                        className='mr-2'
+                      />
+                    )}
+                    新增
+                  </SubmitButton>
                 </div>
               </form>
             </Form>

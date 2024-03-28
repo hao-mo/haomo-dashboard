@@ -11,8 +11,8 @@ import { Input } from '@/components/ui/input';
 import type { AccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
 import { accountSettingFormSchema } from '@/lib/schemas/user-setting.schema';
 
+import { toast } from '../../hooks/use-toast';
 import { SubmitButton } from '../submit-button';
-import { toast } from '../ui/use-toast';
 
 import {
   UserSettingArea,
