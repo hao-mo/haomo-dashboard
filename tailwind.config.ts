@@ -149,6 +149,11 @@ const config: Config = {
     plugin(({ addVariant }) => {
       addVariant('optional', '&:optional');
       addVariant('hocus', ['&:hover', '&:focus']);
+      addVariant('group-hocus', [':merge(.group):hover &', ':merge(.group):focus &']);
+      addVariant('group-hocus-visible', [
+        ':merge(.group):hover &',
+        ':merge(.group):focus-visible &',
+      ]);
       addVariant('inverted-colors', '@media (inverted-colors: inverted)');
     }),
     plugin(({ addUtilities }) => {
