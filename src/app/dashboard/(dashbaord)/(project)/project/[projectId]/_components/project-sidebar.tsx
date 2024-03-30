@@ -3,10 +3,10 @@
 import useHover from '@react-hook/hover';
 import { useRef } from 'react';
 
-import { MainSidebarNav } from './main-sidebar-nav';
+import { ProjectSidebarNav } from './project-sidebar-nav';
 import { UserSidebarMenu } from './user-sidebar-menu';
 
-export const Sidebar = ({ username, email }: { username: string; email: string }) => {
+export const ProjectSidebar = ({ username, email }: { username: string; email: string }) => {
   const ref = useRef<HTMLElement>(null);
   const isHover = useHover(ref);
 
@@ -20,21 +20,7 @@ export const Sidebar = ({ username, email }: { username: string; email: string }
         data-state={isHover ? 'expanded' : 'collapsed'}
       >
         <ul className='flex flex-col justify-start gap-y-1 px-2'>
-          {/* <li className='relative mx-2'>
-            <Link
-              href='/'
-              className='flex h-20 w-full shrink-0 items-center rounded'
-            >
-              <Image
-                src={Logo}
-                className='absolute h-20 w-6 object-contain object-center'
-                alt='Logo'
-                sizes='2.5rem'
-                priority
-              />
-            </Link>
-          </li> */}
-          <MainSidebarNav />
+          <ProjectSidebarNav />
         </ul>
         <ul className='flex flex-col gap-y-1 px-2'>
           <UserSidebarMenu

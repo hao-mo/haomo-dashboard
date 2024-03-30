@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 
 import { cn } from '@/utils';
 
-export const MainSidebarNav = () => {
+export const ProjectSidebarNav = () => {
   const pathname = usePathname();
   const params = useParams();
 
@@ -67,7 +67,7 @@ export const MainSidebarNav = () => {
                 {route.icon}
               </span>
             )}
-            <span className='absolute left-12 min-w-32 -translate-x-7 text-sm opacity-0 transition-[transform,opacity] duration-200 group-data-[state=expanded]:-translate-x-0 group-data-[state=expanded]:opacity-100'>
+            <span className='absolute left-12 min-w-32 -translate-x-7 text-xs opacity-0 transition-[transform,opacity] duration-200 group-data-[state=expanded]:-translate-x-0 group-data-[state=expanded]:opacity-100'>
               {route.label}
             </span>
           </Link>

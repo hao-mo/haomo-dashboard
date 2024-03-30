@@ -64,8 +64,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   });
 
   return (
-    <>
-      <div className='sticky -top-10 z-5 flex items-center gap-x-2 bg-background py-4'>
+    <div className='relative'>
+      <div className='flex items-center gap-x-2 bg-background pb-4'>
         <Input
           placeholder='Filter emails...'
           value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -132,6 +132,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </div>
         <DataTableSelectedRowsInfo table={table} />
       </div>
-    </>
+    </div>
   );
 }

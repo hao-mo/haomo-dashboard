@@ -1,6 +1,6 @@
 'use client';
 
-import { BoxIcon, Check, ChevronsUpDown, PlusCircle } from 'lucide-react';
+import { BoxIcon, CheckIcon, ChevronsUpDownIcon, PlusCircleIcon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import * as React from 'react';
 
@@ -41,7 +41,7 @@ export default function ProjectSwitcher({ className, items = [] }: ProjectSwitch
 
   const onProjectSelect = (project: { value: string; label: string }) => {
     setOpen(false);
-    router.push(`/project/${project.value}`);
+    router.push(`/dashboard/project/${project.value}`);
   };
 
   return (
@@ -59,24 +59,27 @@ export default function ProjectSwitcher({ className, items = [] }: ProjectSwitch
         >
           <BoxIcon className='mr-2 size-4' />
           {currentProject?.label}
-          <ChevronsUpDown className='ml-auto size-4 shrink-0 opacity-50' />
+          <ChevronsUpDownIcon className='ml-auto size-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-[200px] p-0'>
         <Command>
           <CommandList>
-            <CommandInput placeholder='Search project...' />
+            <CommandInput
+              placeholder='Search project...'
+              className='text-xs placeholder:text-xs'
+            />
             <CommandEmpty>No project found.</CommandEmpty>
             <CommandGroup heading='Projects'>
               {formattedItems.map((project) => (
                 <CommandItem
                   key={project.value}
                   onSelect={() => onProjectSelect(project)}
-                  className='text-sm'
+                  className='cursor-pointer text-xs'
                 >
                   <BoxIcon className='mr-2 size-4' />
                   {project.label}
-                  <Check
+                  <CheckIcon
                     className={cn(
                       'ml-auto h-4 w-4',
                       currentProject?.value === project.value ? 'opacity-100' : 'opacity-0'
@@ -90,12 +93,13 @@ export default function ProjectSwitcher({ className, items = [] }: ProjectSwitch
           <CommandList>
             <CommandGroup>
               <CommandItem
+                className='cursor-pointer text-xs'
                 onSelect={() => {
                   setOpen(false);
                   projectModal.onOpen();
                 }}
               >
-                <PlusCircle className='mr-2 size-5' />
+                <PlusCircleIcon className='mr-2 size-4' />
                 Create Project
               </CommandItem>
             </CommandGroup>

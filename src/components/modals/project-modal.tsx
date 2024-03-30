@@ -41,7 +41,7 @@ export const ProjectModal = () => {
         body: JSON.stringify(values),
       });
 
-      router.push(`/${response.id}`);
+      router.push(`/dashboard/project/${response.id}`);
 
       toast.success('新增成功', {
         description: '專案已建立',

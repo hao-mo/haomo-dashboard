@@ -1,12 +1,9 @@
-import { CircleUserRoundIcon, HeadsetIcon, SettingsIcon, UserRoundIcon } from 'lucide-react';
+import { CircleUserRoundIcon, LogOutIcon, UserRoundIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { handleFormRequest } from '@/utils/auth-helpers/client';
-import { signOut } from '@/utils/auth-helpers/server';
-
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Button } from '../ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Menubar,
   MenubarContent,
@@ -15,7 +12,10 @@ import {
   MenubarMenu,
   MenubarSeparator,
   MenubarTrigger,
-} from '../ui/menubar';
+} from '@/components/ui/menubar';
+
+import { handleFormRequest } from '@/utils/auth-helpers/client';
+import { signOut } from '@/utils/auth-helpers/server';
 
 import { ThemeSwitch } from './theme-switch';
 
@@ -50,16 +50,6 @@ export const UserSidebarMenu = ({ username, email }: { username: string; email: 
       name: 'Account preferences',
       href: '/dashboard/account/preferences',
       icon: <UserRoundIcon size={14} />,
-    },
-    {
-      name: 'Settings',
-      href: '/dashboard/settings',
-      icon: <SettingsIcon size={14} />,
-    },
-    {
-      name: 'Support',
-      href: '/dashboard/support',
-      icon: <HeadsetIcon size={14} />,
     },
   ];
 
@@ -110,10 +100,13 @@ export const UserSidebarMenu = ({ username, email }: { username: string; email: 
             </div>
             <MenubarSeparator />
             {routes.map((route) => (
-              <MenubarItem key={`user-route-${route.name}`}>
+              <MenubarItem
+                key={`user-route-${route.name}`}
+                className='p-0'
+              >
                 <Link
                   href={route.href}
-                  className='flex w-full items-center gap-2 px-2 py-1 text-left text-xs'
+                  className='flex w-full items-center gap-2 px-4 py-2 text-left text-xs'
                 >
                   {route.icon}
                   {route.name}
@@ -135,9 +128,13 @@ export const UserSidebarMenu = ({ username, email }: { username: string; email: 
               />
               <button
                 type='submit'
-                className='w-full cursor-pointer px-2 py-1 text-left text-xs hocus:bg-accent hocus:text-accent-foreground'
+                className='flex w-full items-center rounded-sm px-4 py-2 hocus:bg-accent hocus:text-accent-foreground'
               >
-                Sign out
+                <LogOutIcon
+                  size={16}
+                  className='mr-2 text-foreground'
+                />
+                <span className='text-xs'>Sign out</span>
               </button>
             </form>
           </MenubarContent>
