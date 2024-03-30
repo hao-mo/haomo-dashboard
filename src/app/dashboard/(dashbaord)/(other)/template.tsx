@@ -5,7 +5,7 @@ import { fadeIn } from '@/lib/transitions';
 export default function Template({ children }: PropsWithChildren) {
   return (
     <MotionBox
-      className='mx-auto flex  flex-col gap-8 px-4 py-6 sm:px-6 lg:px-16 xl:px-24 2xl:px-32'
+      className='mx-auto flex  flex-col gap-8 px-4 py-6 sm:px-6 lg:px-16 lg:py-8 xl:px-24 2xl:px-32'
       initial='hidden'
       animate='show'
       exit='hidden'

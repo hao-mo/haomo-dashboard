@@ -34,7 +34,7 @@ export const DashboardSidebar = () => {
     <aside
       ref={ref}
       className={cn(
-        'absolute z-5 h-full w-64 overflow-visible border-r border-border bg-background transition-all duration-500 ease-in-expo lg:relative lg:translate-x-0',
+        'absolute z-5 h-full w-64 overflow-visible border-r border-border bg-background transition-transform duration-500 ease-in-expo lg:relative lg:translate-x-0',
         open ? 'translate-x-0 shadow-sm' : '-translate-x-full'
       )}
     >

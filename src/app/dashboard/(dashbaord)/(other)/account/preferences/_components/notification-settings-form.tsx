@@ -3,6 +3,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import { FormCheckbox } from '@/components/form-checkbox';
+import { FormRadioGroup } from '@/components/form-radio-group';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 
@@ -11,9 +13,6 @@ import {
   notificationSettingFormSchema,
   pushNotificationOptions,
 } from '@/lib/schemas/user-setting.schema';
-
-import { FormCheckbox } from '../form-checkbox';
-import { FormRadioGroup } from '../form-radio-group';
 
 import {
   UserSettingArea,

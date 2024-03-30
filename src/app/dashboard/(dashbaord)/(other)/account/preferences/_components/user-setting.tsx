@@ -1,5 +1,7 @@
-import { FormItem, FormLabel } from '../ui/form';
-import { Label } from '../ui/label';
+'use client';
+
+import { FormItem, FormLabel } from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
 
 export const UserSettingHeader = ({
   title,
@@ -10,15 +12,15 @@ export const UserSettingHeader = ({
 }) => {
   return (
     <div className='mb-6 flex flex-col justify-center text-left'>
-      <h2 className='mb-1 w-fit text-base font-semibold text-foreground'>{title}</h2>
-      {description && <p className='w-fit text-sm text-foreground/80'>{description}</p>}
+      <h2 className='mb-1 w-fit text-sm font-semibold text-foreground'>{title}</h2>
+      {description && <p className='w-fit text-xs text-foreground/80'>{description}</p>}
     </div>
   );
 };
 
 export const UserSettingArea = ({ children }: PropsWithChildren) => {
   return (
-    <div className='overflow-hidden rounded-md border border-border bg-muted/50 shadow'>
+    <div className='overflow-hidden rounded-md border border-border bg-muted/50'>
       <fieldset className='relative flex flex-col gap-0 divide-y divide-border'>
         {children}
       </fieldset>
@@ -38,9 +40,9 @@ export const UserSettingGroupLabel = ({
   description?: string;
 }) => {
   return (
-    <div className='col-span-12 text-sm text-foreground lg:col-span-5'>
-      <Label>{title}</Label>
-      {description && <p className='text-sm text-foreground/80'>{description}</p>}
+    <div className='col-span-12 text-foreground lg:col-span-5'>
+      <Label className='text-sm font-medium'>{title}</Label>
+      {description && <p className='text-xs text-foreground/80'>{description}</p>}
     </div>
   );
 };
@@ -59,12 +61,12 @@ export const UserSettingFormContent = ({ children }: PropsWithChildren) => {
 
 export const UserSettingFormLabel = ({ children }: PropsWithChildren) => {
   return (
-    <div className='col-span-12 text-sm text-foreground lg:col-span-5'>
+    <div className='col-span-12 text-xs text-foreground lg:col-span-5'>
       <FormLabel>{children}</FormLabel>
     </div>
   );
 };
 
 export const UserSettingFooter = ({ children }: PropsWithChildren) => {
-  return <footer className='flex items-center justify-end gap-x-2 p-8'>{children}</footer>;
+  return <footer className='flex items-center justify-end gap-x-2 px-8 py-4'>{children}</footer>;
 };
