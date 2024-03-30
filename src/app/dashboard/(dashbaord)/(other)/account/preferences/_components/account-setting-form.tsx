@@ -4,15 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { SubmitButton } from '@/components/submit-button';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
 
 import type { AccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
 import { accountSettingFormSchema } from '@/lib/schemas/user-setting.schema';
-
-import { toast } from '../../hooks/use-toast';
-import { SubmitButton } from '../submit-button';
 
 import {
   UserSettingArea,

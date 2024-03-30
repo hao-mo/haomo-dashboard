@@ -1,7 +1,7 @@
-import prismadb from '@/lib/prismadb';
+import { NotificationDropdown } from '@/components/notification/notification-dropdown';
+import { ProjectSwitcher } from '@/components/project-switcher';
 
-import { NotificationDropdown } from '../../../../../../../components/notification/notification-dropdown';
-import ProjectSwitcher from '../../../../../../../components/project-switcher';
+import prismadb from '@/lib/prismadb';
 
 export const ProjectHeader = async ({ userId }: { userId: string }) => {
   const projects = await prismadb.projects.findMany({

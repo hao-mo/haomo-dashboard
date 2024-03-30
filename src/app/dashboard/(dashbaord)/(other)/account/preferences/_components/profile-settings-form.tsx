@@ -124,7 +124,7 @@ export const ProfileSettingsForm = () => {
                   <FormControl>
                     <Input
                       startDecorator={
-                        <span className='inline-flex select-none items-center text-muted-foreground sm:text-sm'>
+                        <span className='inline-flex select-none items-center text-xs text-muted-foreground'>
                           http://
                         </span>
                       }

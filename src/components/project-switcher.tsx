@@ -25,7 +25,7 @@ interface ProjectSwitcherProps extends PopoverTriggerProps {
   items: Record<string, any>[];
 }
 
-export default function ProjectSwitcher({ className, items = [] }: ProjectSwitcherProps) {
+export const ProjectSwitcher = ({ className, items = [] }: ProjectSwitcherProps) => {
   const projectModal = useProjectModal();
   const params = useParams();
   const router = useRouter();
@@ -108,4 +108,4 @@ export default function ProjectSwitcher({ className, items = [] }: ProjectSwitch
       </PopoverContent>
     </Popover>
   );
-}
+};

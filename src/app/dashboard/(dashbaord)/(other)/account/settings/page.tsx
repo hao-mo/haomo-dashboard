@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 
-import { AccountSettingsForm } from '@/components/user-settings-forms/account-setting-form';
-import { NotificationSettingsForm } from '@/components/user-settings-forms/notification-settings-form';
-import { ProfileSettingsForm } from '@/components/user-settings-forms/profile-settings-form';
-
 import { getSupabaseServerClient } from '@/utils/supabase/server';
+
+import { AccountSettingsForm } from '@/app/dashboard/(dashbaord)/(other)/account/preferences/_components/account-setting-form';
+import { NotificationSettingsForm } from '@/app/dashboard/(dashbaord)/(other)/account/preferences/_components/notification-settings-form';
+import { ProfileSettingsForm } from '@/app/dashboard/(dashbaord)/(other)/account/preferences/_components/profile-settings-form';
 
 export default async function Page() {
   const supabase = getSupabaseServerClient();
