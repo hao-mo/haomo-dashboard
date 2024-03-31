@@ -12,7 +12,7 @@ export const RichTextToolbar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) return null;
 
   return (
-    <div className='mb-4 flex w-full flex-wrap items-center gap-y-2 rounded-md border border-muted-foreground/30 p-2 shadow-md'>
+    <div className='mb-4 flex w-full flex-wrap items-center gap-2 rounded-md border border-border p-2'>
       <RichTextHeading editor={editor} />
       <RichTextTextStyle editor={editor} />
       <RichTextFormatting editor={editor} />

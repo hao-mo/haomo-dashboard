@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import type { projects } from '@prisma/client';
 import { CheckIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -22,13 +23,17 @@ import { Modal } from '../ui/modal';
 
 export const ProjectModal = () => {
   const { isOpen, onClose } = useProjectModal();
+
   const router = useRouter();
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
     defaultValues: { name: '' },
   });
 
-  const disabled = form.formState.isSubmitting || form.formState.isSubmitSuccessful;
+  const disabled = useMemo(
+    () => form.formState.isSubmitting || form.formState.isSubmitSuccessful,
+    [form.formState.isSubmitting, form.formState.isSubmitSuccessful]
+  );
 
   const onSubmit = async (values: ProjectFormValues) => {
     try {
@@ -41,17 +46,33 @@ export const ProjectModal = () => {
         body: JSON.stringify(values),
       });
 
-      router.push(`/dashboard/project/${response.id}`);
-
       toast.success('新增成功', {
         description: '專案已建立',
       });
+
+      router.push(`/dashboard/project/${response.id}`);
     } catch (error) {
       toast.error('新增失敗', {
         description: '發生一些問題',
       });
+      form.setError('name', {
+        type: 'manual',
+        message: '專案名稱已存在',
+      });
     }
   };
+
+  useEffect(() => {
+    const resetAfterSuccess = async () => {
+      if (form.formState.isSubmitSuccessful) {
+        await wait(1000);
+        onClose();
+        await wait(500);
+        form.reset({ name: '' }, { keepIsSubmitSuccessful: false });
+      }
+    };
+    resetAfterSuccess();
+  }, [form.formState.isSubmitSuccessful]);
 
   return (
     <Modal
@@ -92,9 +113,8 @@ export const ProjectModal = () => {
                     取消
                   </Button>
                   <SubmitButton
-                    isSubmitting={form.formState.isSubmitting}
                     disabled={disabled}
-                    type='submit'
+                    isSubmitting={form.formState.isSubmitting}
                   >
                     {form.formState.isSubmitSuccessful && (
                       <CheckIcon

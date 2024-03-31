@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import { useCallback } from 'react';
 
+import { cn } from '@/utils';
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const HeadingSelectItem = ({ value, size }: { value: string; size: number }) => {
@@ -29,7 +31,7 @@ const HeadingSelectItem = ({ value, size }: { value: string; size: number }) => 
   );
 };
 
-export const RichTextHeading = ({ editor }: { editor: Editor }) => {
+export const RichTextHeading = ({ editor, className }: { editor: Editor } & WithClassName) => {
   const handleValueChange = useCallback(
     (level: string) => {
       if (level === '0') {
@@ -51,7 +53,7 @@ export const RichTextHeading = ({ editor }: { editor: Editor }) => {
       value={String(editor.getAttributes('heading')?.level ?? '0')}
       onValueChange={handleValueChange}
     >
-      <SelectTrigger className='w-20 md:w-30'>
+      <SelectTrigger className={cn('w-20 md:w-30', className)}>
         <SelectValue className='!text-sm' />
       </SelectTrigger>
       <SelectContent side='bottom'>

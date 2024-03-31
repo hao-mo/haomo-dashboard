@@ -8,6 +8,10 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    esmExternals: 'loose',
+    serverComponentsExternalPackages: ['mongoose', '@typegoose/typegoose'],
+  },
 };
 
 export default nextConfig;

@@ -1,5 +1,3 @@
-import { ProjectModal } from '@/components/modals/project-modal';
-
 import prismadb from '@/lib/prismadb';
 
 import { redirectToPath } from '@/utils/auth-helpers/server';
@@ -28,7 +26,7 @@ export default async function Layout({ children }: PropsWithChildren) {
   });
 
   if (!project) {
-    return redirectToPath(`/`);
+    return redirectToPath(`/dashboard`);
   }
 
   const { data: profile } = await supabase.from('profiles').select().eq('id', user.id).single();
@@ -42,7 +40,6 @@ export default async function Layout({ children }: PropsWithChildren) {
           email={user.email ?? ''}
         />
         <main className='relative h-full flex-1 overflow-y-auto overflow-x-hidden'>{children}</main>
-        <ProjectModal />
       </div>
     </div>
   );
