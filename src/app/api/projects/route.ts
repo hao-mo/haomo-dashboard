@@ -25,6 +25,19 @@ export async function POST(req: NextRequest) {
       return new NextResponse('Name is required', { status: 400 });
     }
 
+    const existingProject = await prismadb.projects.findFirst({
+      where: {
+        name,
+        userId: user.id,
+      },
+    });
+
+    if (existingProject) {
+      return new NextResponse('Project already exists', {
+        status: 400,
+      });
+    }
+
     const projects = await prismadb.projects.create({
       data: {
         name,
@@ -32,7 +45,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(projects);
+    return NextResponse.json(projects, { status: 200 });
   } catch (error) {
     console.log('[PROJECTS_POST]', error);
     return new NextResponse('Internal error', { status: 500 });

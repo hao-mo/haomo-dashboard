@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 
-import { ProjectModal } from '@/components/modals/project-modal';
 import { useProjectModal } from '@/hooks/use-project-modal';
 
 export default function SetupPage() {
@@ -13,7 +12,7 @@ export default function SetupPage() {
     if (!isOpen) {
       onOpen();
     }
-  }, [isOpen, onOpen]);
+  }, [isOpen]);
 
-  return <ProjectModal />;
+  return null;
 }
