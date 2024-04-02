@@ -15,7 +15,9 @@ export const formatDate = (date: Date | number, formatString = 'PPPP') => {
 };
 
 export const formatRelative = (date: number | Date, baseDate: number | Date = new Date()) => {
-  return formatAsRelativeDate(date, baseDate);
+  return formatAsRelativeDate(date, baseDate, {
+    locale: zhTW,
+  });
 };
 
 export const formatTime = (date: Date | number) => {

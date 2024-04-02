@@ -20,10 +20,10 @@ export const ProjectSidebarNav = () => {
         active: pathname === `/dashboard/project/${params.projectId}`,
       },
       {
-        label: 'Blogs',
-        href: `/dashboard/project/${params.projectId}/blogs`,
+        label: 'News',
+        href: `/dashboard/project/${params.projectId}/news`,
         icon: <StickyNote size={20} />,
-        active: pathname === `/dashboard/project/${params.projectId}/blogs`,
+        active: pathname === `/dashboard/project/${params.projectId}/news`,
       },
       {
         label: 'Reports',
