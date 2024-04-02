@@ -1,7 +1,6 @@
 'use client';
 
 import { ThemeProvider } from 'next-themes';
-import { Suspense } from 'react';
 
 import { ProjectModal } from '@/components/modals/project-modal';
 import { Toaster } from '@/components/ui/sonner';
@@ -21,9 +20,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
     >
       <MotionProvider>
         {children}
-        <Suspense>
-          <Toaster />
-        </Suspense>
+        <Toaster />
         {isMounted && <ProjectModal />}
       </MotionProvider>
     </ThemeProvider>

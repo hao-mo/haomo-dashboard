@@ -47,7 +47,7 @@ export function DataTableColumnHeader<TData, TValue>({
             size='sm'
             className='-ml-3 h-8 data-[state=open]:bg-accent'
           >
-            <span>{title}</span>
+            <span className='text-xs'>{title}</span>
             {renderSortIcon()}
           </Button>
         </DropdownMenuTrigger>
@@ -55,18 +55,24 @@ export function DataTableColumnHeader<TData, TValue>({
           align='start'
           sideOffset={8}
         >
+          {column.getIsSorted() && (
+            <DropdownMenuItem onClick={() => column.clearSorting()}>
+              <ArrowUpIcon className='mr-2 size-3.5 text-muted-foreground/70' />
+              移除排序
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className='mr-2 size-3.5 text-muted-foreground/70' />
-            Asc
+            最舊
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <ArrowDownIcon className='mr-2 size-3.5 text-muted-foreground/70' />
-            Desc
+            最新
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <EyeOffIcon className='mr-2 size-3.5 text-muted-foreground/70' />
-            Hide
+            隱藏
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

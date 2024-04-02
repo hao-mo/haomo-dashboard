@@ -8,7 +8,7 @@ import { ProjectSidebar } from './_components/project-sidebar';
 
 export const revalidate = 0;
 
-export default async function Layout({ children }: PropsWithChildren) {
+export default async function Layout({ children }: PropsWithChildren & { modal: React.ReactNode }) {
   const supabase = getSupabaseServerClient();
 
   const {
