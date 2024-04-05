@@ -72,12 +72,13 @@ export const AccountSettingsForm = ({
         id='profile-setting-form'
       >
         <UserSettingHeader title='Account Information' />
+        <Input
+          className='absolute hidden'
+          type='hidden'
+          name='id'
+          value={userId}
+        />
         <UserSettingArea>
-          <input
-            type='hidden'
-            name='id'
-            value={userId}
-          />
           <FormField
             control={form.control}
             name='username'

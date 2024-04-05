@@ -11,7 +11,7 @@ export function DataTablePagination<T>({ table }: DataTablePaginationProps<T>) {
   return (
     <div className='flex items-center justify-center gap-2 md:gap-4'>
       <span className='text-sm max-md:hidden'>
-        Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+        第 {table.getState().pagination.pageIndex + 1} 頁，共 {table.getPageCount()} 頁
       </span>
       <div className='flex items-center space-x-2'>
         <Button
