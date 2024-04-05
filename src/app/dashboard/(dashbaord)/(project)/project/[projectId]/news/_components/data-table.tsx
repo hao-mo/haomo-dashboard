@@ -28,7 +28,6 @@ import {
   DataTableViewOptions,
 } from '@/components/data-table';
 import { DebouncedSearchInput } from '@/components/data-table/search-input';
-import DataTableSelectedRowsInfo from '@/components/data-table/selected-rows-info';
 import { DeleteModal } from '@/components/modals/delete-modal';
 import { Button } from '@/components/ui/button';
 import {
@@ -110,6 +109,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       await wait(3000);
       console.log('rows', table.getSelectedRowModel().rows);
       toast.success('刪除成功');
+
+      router.refresh();
     } catch (error) {
       toast.error('刪除失敗');
     } finally {
@@ -148,7 +149,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           ) : (
             <>
               <AddButton
-                onClick={() => router.push(`/dashboard/project/${params.projectId}/news/add-news`)}
+                onClick={() => router.push(`/dashboard/project/${params.projectId}/news/new`)}
               />
               <DataTableViewOptions table={table} />
             </>
@@ -199,7 +200,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  未找到符合條件的資料
                 </TableCell>
               </TableRow>
             )}
@@ -212,7 +213,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <DataTablePageSizeSelector table={table} />
           <DataTablePagination table={table} />
         </div>
-        <DataTableSelectedRowsInfo table={table} />
       </div>
     </div>
   );

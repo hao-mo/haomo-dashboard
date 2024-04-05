@@ -22,7 +22,6 @@ import {
   DataTablePagination,
   DataTableViewOptions,
 } from '@/components/data-table';
-import DataTableSelectedRowsInfo from '@/components/data-table/selected-rows-info';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -130,7 +129,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <DataTablePageSizeSelector table={table} />
           <DataTablePagination table={table} />
         </div>
-        <DataTableSelectedRowsInfo table={table} />
       </div>
     </div>
   );

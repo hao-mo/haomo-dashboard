@@ -78,9 +78,12 @@ export default async function Page() {
   const data = await getData();
 
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-    />
+    <>
+      <h2 className='text-lg font-semibold'></h2>
+      <DataTable
+        columns={columns}
+        data={data}
+      />
+    </>
   );
 }

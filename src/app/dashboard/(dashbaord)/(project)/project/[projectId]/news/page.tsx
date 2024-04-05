@@ -7,9 +7,12 @@ export const revalidate = 0;
 export default async function Page() {
   const data = await getTotalNews();
   return (
-    <DataTable
-      columns={columns}
-      data={data}
-    />
+    <>
+      <h2 className='text-lg font-semibold'>活動消息</h2>
+      <DataTable
+        columns={columns}
+        data={data}
+      />
+    </>
   );
 }

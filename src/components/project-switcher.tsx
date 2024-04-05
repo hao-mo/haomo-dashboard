@@ -55,7 +55,7 @@ export const ProjectSwitcher = ({ className, items = [] }: ProjectSwitcherProps)
           size='sm'
           aria-expanded={open}
           aria-label='Select a project'
-          className={cn('w-[200px] justify-between', className)}
+          className={cn('w-[200px] select-none justify-between', className)}
         >
           <BoxIcon className='mr-2 size-4' />
           {currentProject?.label}

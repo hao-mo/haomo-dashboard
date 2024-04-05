@@ -31,7 +31,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
           ) : (
             <EyeOffIcon className='size-4' />
           )}
-          <span className='ml-2 max-md:hidden'>切換顯示</span>
+          <span className='ml-2 select-none max-md:hidden'>切換顯示</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
