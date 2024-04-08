@@ -1,13 +1,15 @@
+import type { LocaleString } from '@/lib/locales';
+
 export type News = {
   id: string;
   slug: string;
   headline: string;
-  // formattedHeadline: LocaleString;
+  formattedHeadline: LocaleString;
   description: string;
-  // formattedDescription: LocaleString;
+  formattedDescription: LocaleString;
   imageUrl: string;
   alt: string;
-  // formattedAlt: LocaleString;
+  formattedAlt: LocaleString;
   date: Date;
   isDeleted: boolean;
   createdAt: Date;

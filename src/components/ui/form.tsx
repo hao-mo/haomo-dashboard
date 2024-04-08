@@ -73,7 +73,7 @@ const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivEl
       <FormItemContext.Provider value={{ id }}>
         <div
           ref={ref}
-          className={cn('relative space-y-2', className)}
+          className={cn('relative', className)}
           {...props}
         />
       </FormItemContext.Provider>
@@ -94,7 +94,7 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      className={cn('inline-flex items-center gap-x-2 font-normal', className)}
+      className={cn('inline-flex items-center gap-x-2 font-medium', className)}
       htmlFor={formItemId}
       {...props}
     >
@@ -160,7 +160,10 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, HTMLMotionProps<'p'>>
           <m.p
             ref={ref}
             id={formMessageId}
-            className={cn('text-xs font-medium text-destructive', className)}
+            className={cn(
+              'absolute left-0 top-full mt-1 text-xs font-medium text-destructive',
+              className
+            )}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
