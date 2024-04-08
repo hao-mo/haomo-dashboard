@@ -6,25 +6,19 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ScreenReader } from '@/components/ui/screen-reader';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 
-import { defaultLocaleString, localeString } from '@/lib/locales';
+import { defaultLocaleString, localeSchema } from '@/lib/locales';
 
 import type { News } from '../../type';
 
+import { LocaleFormItem } from './locale-form-item';
+
 const formSchema = z.object({
   // format is an object of locales key to string
-  formattedHeadline: localeString,
-  formattedDescription: localeString,
+  formattedHeadline: localeSchema,
+  formattedDescription: localeSchema,
   date: z.date(),
 });
 
@@ -38,6 +32,7 @@ export const NewsForm = ({ initialData }: { initialData?: News }) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<NewsFormValues>({
+    mode: 'all',
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       formattedHeadline: defaultLocaleString,
@@ -45,6 +40,7 @@ export const NewsForm = ({ initialData }: { initialData?: News }) => {
       date: new Date(),
     },
   });
+
   console.log('form values', form.getValues());
 
   const onSubmit = async (data: NewsFormValues) => {};
@@ -53,130 +49,33 @@ export const NewsForm = ({ initialData }: { initialData?: News }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Accordion
-          type='multiple'
-          defaultValue={['headline', 'description']}
-        >
-          <AccordionItem value='headline'>
-            <div className='flex flex-col py-2 lg:flex-row lg:items-center lg:justify-between'>
-              <Label className='shrink-0'>標題</Label>
-              <FormField
-                control={form.control}
-                name='formattedHeadline.zh-TW'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <div className='flex items-center justify-end'>
-                      <FormControl>
-                        <Input
-                          className='w-full max-w-lg'
-                          {...field}
-                        />
-                      </FormControl>
-                      <AccordionTrigger className='pl-2'>
-                        <ScreenReader>Toggle</ScreenReader>
-                      </AccordionTrigger>
-                    </div>
-                  </FormItem>
-                )}
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-4'
+      >
+        <FormField
+          name='date'
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='text-sm'>發布日期</FormLabel>
+              <DatePicker
+                selected={field.value}
+                onSelect={field.onChange}
+                required
+                withForm
               />
-            </div>
-
-            <AccordionContent className='pb-4 pr-6 pt-1'>
-              <div className='flex w-full flex-col items-end justify-center gap-y-2'>
-                <FormField
-                  control={form.control}
-                  name='formattedHeadline.en-US'
-                  render={({ field }) => (
-                    <FormItem className='flex w-full flex-col lg:flex-row lg:items-center lg:justify-between'>
-                      <FormLabel className='shrink-0 text-xs'>英文 / English</FormLabel>
-                      <FormControl>
-                        <Input
-                          className='w-full max-w-lg'
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='formattedHeadline.ja-JP'
-                  render={({ field }) => (
-                    <FormItem className='flex w-full flex-col lg:flex-row lg:items-center lg:justify-between'>
-                      <FormLabel className='shrink-0 text-xs'>日文 / Japanese</FormLabel>
-                      <FormControl>
-                        <Input
-                          className='w-full max-w-lg'
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value='description'>
-            <div className='flex flex-col py-2 lg:flex-row lg:items-center lg:justify-between'>
-              <Label className='shrink-0'>說明</Label>
-              <FormField
-                control={form.control}
-                name='formattedDescription.zh-TW'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <div className='flex items-center justify-end'>
-                      <FormControl>
-                        <Input
-                          className='w-full max-w-lg'
-                          {...field}
-                        />
-                      </FormControl>
-                      <AccordionTrigger className='pl-2'>
-                        <ScreenReader>Toggle</ScreenReader>
-                      </AccordionTrigger>
-                    </div>
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <AccordionContent className='pb-4 pr-6 pt-1'>
-              <div className='flex w-full flex-col items-end justify-center gap-y-2'>
-                <FormField
-                  control={form.control}
-                  name='formattedDescription.en-US'
-                  render={({ field }) => (
-                    <FormItem className='flex w-full flex-col lg:flex-row lg:items-center lg:justify-between'>
-                      <FormLabel className='shrink-0 text-xs'>英文 / English</FormLabel>
-                      <FormControl>
-                        <Input
-                          className='w-full max-w-lg'
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name='formattedDescription.ja-JP'
-                  render={({ field }) => (
-                    <FormItem className='flex w-full flex-col lg:flex-row lg:items-center lg:justify-between'>
-                      <FormLabel className='shrink-0 text-xs'>日文 / Japanese</FormLabel>
-                      <FormControl>
-                        <Input
-                          className='w-full max-w-lg'
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+            </FormItem>
+          )}
+        />
+        <LocaleFormItem
+          label='標題'
+          name='formattedHeadline'
+        />
+        <LocaleFormItem
+          label='說明'
+          name='formattedDescription'
+        />
       </form>
     </Form>
   );
