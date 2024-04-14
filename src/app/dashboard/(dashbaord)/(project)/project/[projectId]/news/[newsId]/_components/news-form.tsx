@@ -1,11 +1,14 @@
 'use client';
 
+import { DndContext } from '@dnd-kit/core';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { Draggable } from '@/components/draggable';
+import { Droppable } from '@/components/droppable';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 
@@ -30,6 +33,9 @@ export const NewsForm = ({ initialData }: { initialData?: News }) => {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [isDropped, setIsDropped] = useState(false);
+  const draggableMarkup = <Draggable>Drag me</Draggable>;
 
   const form = useForm<NewsFormValues>({
     mode: 'all',
@@ -76,6 +82,16 @@ export const NewsForm = ({ initialData }: { initialData?: News }) => {
           label='說明'
           name='formattedDescription'
         />
+        <DndContext
+          onDragEnd={(event) => {
+            if (event.over && event.over.id === 'droppable') {
+              setIsDropped(true);
+            }
+          }}
+        >
+          {!isDropped ? draggableMarkup : null}
+          <Droppable>{isDropped ? draggableMarkup : 'Drop here'}</Droppable>
+        </DndContext>
       </form>
     </Form>
   );
