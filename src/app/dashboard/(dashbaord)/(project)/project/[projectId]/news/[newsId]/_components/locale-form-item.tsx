@@ -9,8 +9,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 import { locales } from '@/lib/locales';
 
-import { cn } from '@/utils';
-
 const localeOptions = Object.entries(locales);
 
 export const LocaleFormItem = ({ label, name }: { label: string; name: string }) => {
@@ -32,24 +30,21 @@ export const LocaleFormItem = ({ label, name }: { label: string; name: string })
                   <FormLabel className='shrink-0 text-xs font-normal'>{localeName}</FormLabel>
 
                   <div className='relative inline-flex w-full items-center justify-end'>
-                    <TooltipProvider delayDuration={50}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <CircleAlertIcon
-                            className={cn(
-                              'mr-4 size-4 text-destructive transition-opacity duration-200 ease-in-out',
-                              fieldState.error ? 'opacity-100' : 'opacity-0'
-                            )}
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent
-                          variant='destructive'
-                          side='left'
-                        >
-                          {fieldState.error?.message}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    {fieldState.error && (
+                      <TooltipProvider delayDuration={50}>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <CircleAlertIcon className='mr-4 size-4 text-destructive' />
+                          </TooltipTrigger>
+                          <TooltipContent
+                            variant='destructive'
+                            side='left'
+                          >
+                            {fieldState.error.message}
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
                     <FormControl>
                       <Input
                         {...field}
