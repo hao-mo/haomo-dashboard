@@ -18,9 +18,9 @@ import {
 
 import { fetcher } from '@/utils';
 
-import type { News } from '../type';
+import type { FormattedNews } from '../type';
 
-export const CellAction = ({ data }: { data: News }) => {
+export const CellAction = ({ data }: { data: FormattedNews }) => {
   const params = useParams();
   const router = useRouter();
   const [open, setOpen] = useState(false);

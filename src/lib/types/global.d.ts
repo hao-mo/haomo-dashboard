@@ -64,4 +64,9 @@ declare global {
     pageSize: number;
     totalCount: number;
   }
+
+  interface CustomResponse<T> {
+    items: T;
+    pagination: Pagination;
+  }
 }

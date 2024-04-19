@@ -1,4 +1,4 @@
-import type { RefObject } from 'react';
+import type { DependencyList, RefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
@@ -8,6 +8,7 @@ function useEventListener<K extends keyof MediaQueryListEventMap>(
   eventName: K,
   handler: (event: MediaQueryListEventMap[K]) => void,
   element: RefObject<MediaQueryList>,
+  deps?: DependencyList,
   options?: boolean | AddEventListenerOptions
 ): void;
 
@@ -16,6 +17,7 @@ function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (event: WindowEventMap[K]) => void,
   element?: undefined,
+  deps?: DependencyList,
   options?: boolean | AddEventListenerOptions
 ): void;
 
@@ -27,6 +29,7 @@ function useEventListener<
   eventName: K,
   handler: (event: HTMLElementEventMap[K]) => void,
   element: RefObject<T>,
+  deps?: DependencyList,
   options?: boolean | AddEventListenerOptions
 ): void;
 
@@ -35,6 +38,7 @@ function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
   handler: (event: DocumentEventMap[K]) => void,
   element: RefObject<Document>,
+  deps?: DependencyList,
   options?: boolean | AddEventListenerOptions
 ): void;
 
@@ -49,6 +53,7 @@ function useEventListener<
     event: WindowEventMap[KW] | HTMLElementEventMap[KH] | MediaQueryListEventMap[KM] | Event
   ) => void,
   element?: RefObject<T>,
+  deps?: DependencyList,
   options?: boolean | AddEventListenerOptions
 ): void {
   // Create a ref that stores handler
@@ -73,7 +78,7 @@ function useEventListener<
     return () => {
       targetElement.removeEventListener(eventName, listener, options);
     };
-  }, [eventName, element, options]);
+  }, [eventName, element, deps, options]);
 }
 
 export default useEventListener;
