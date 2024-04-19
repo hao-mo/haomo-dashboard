@@ -6,16 +6,16 @@ import { DataTableColumnHeader } from '@/components/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
-import { formatDate, formatRelative } from '@/utils/format';
+import { formatRelative } from '@/utils/format';
 
-import type { News } from '../type';
+import type { FormattedNews, News } from '../type';
 
 import { CellAction } from './cell-action';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<News>[] = [
+export const columns: ColumnDef<FormattedNews>[] = [
   {
     id: 'select',
 
@@ -81,20 +81,20 @@ export const columns: ColumnDef<News>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'headline',
+    accessorKey: 'formattedHeadline',
     header: () => '標題',
     enableHiding: false,
   },
-  {
-    accessorKey: 'date',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='發布時間'
-      />
-    ),
-    cell: ({ row }) => formatDate(row.getValue('date'), 'YYYY/MM/dd'),
-  },
+  // {
+  //   accessorKey: 'date',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader
+  //       column={column}
+  //       title='發布時間'
+  //     />
+  //   ),
+  //   cell: ({ row }) => formatDate(row.getValue('date'), 'YYYY/MM/dd'),
+  // },
   {
     accessorKey: 'createdAt',
     header: ({ column }) => (

@@ -22,17 +22,6 @@ export const locales = {
 
 export type Locale = keyof typeof locales;
 
-export type LocaleString = {
-  'zh-TW': string;
-  'en-US'?: string;
-  'ja-JP'?: string;
-};
-
-export const localeSchema = z.object({
-  'zh-TW': z.string().min(1, '繁體中文 是必填欄位'),
-  'en-US': z.string().optional(),
-  'ja-JP': z.string().optional(),
-});
 // .superRefine((obj, ctx) => {
 //   // Ensure only known locale keys are used (add your locale keys here)
 //   const allowedKeys = ['zh-TW', 'en-US', 'ja-JP'];

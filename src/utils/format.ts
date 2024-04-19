@@ -14,9 +14,21 @@ export const formatDate = (date: Date | number, formatString = 'PPPP') => {
   });
 };
 
+const formatRelativeLocale = {
+  lastWeek: "'上個' eeee p",
+  yesterday: "'昨天' p",
+  today: "'今天' p",
+  tomorrow: "'明天' p",
+  nextWeek: "'下個' eeee p",
+  other: 'PPPP',
+};
+
 export const formatRelative = (date: number | Date, baseDate: number | Date = new Date()) => {
   return formatAsRelativeDate(date, baseDate, {
-    locale: zhTW,
+    locale: {
+      ...zhTW,
+      formatRelative: (token) => formatRelativeLocale[token],
+    },
   });
 };
 
@@ -33,5 +45,5 @@ export const formatTime = (date: Date | number) => {
 };
 
 export const formatDistance = (date: Date | number, baseDate: Date | number = new Date()) => {
-  return formatAsDistance(date, baseDate, { addSuffix: true });
+  return formatAsDistance(date, baseDate, { addSuffix: true, locale: zhTW });
 };
