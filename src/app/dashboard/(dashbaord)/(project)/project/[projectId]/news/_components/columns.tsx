@@ -11,6 +11,7 @@ import { formatRelative } from '@/utils/format';
 import type { FormattedNews, News } from '../type';
 
 import { CellAction } from './cell-action';
+import { CellLink } from './cell-link';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -18,7 +19,6 @@ import { CellAction } from './cell-action';
 export const columns: ColumnDef<FormattedNews>[] = [
   {
     id: 'select',
-
     header: ({ table }) => (
       <div className='flex size-full items-center justify-center pr-4 text-center'>
         <Checkbox
@@ -84,6 +84,7 @@ export const columns: ColumnDef<FormattedNews>[] = [
     accessorKey: 'formattedHeadline',
     header: () => '標題',
     enableHiding: false,
+    cell: ({ row }) => <CellLink data={row.original} />,
   },
   // {
   //   accessorKey: 'date',

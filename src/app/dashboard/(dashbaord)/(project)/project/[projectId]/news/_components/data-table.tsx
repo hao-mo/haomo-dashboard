@@ -124,8 +124,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       <div className='flex items-center justify-between gap-x-2 bg-background pb-4'>
         <DebouncedSearchInput
           placeholder='輸入標題...'
-          value={(table.getColumn('headline')?.getFilterValue() as string) ?? ''}
-          onChange={(value) => table.getColumn('headline')?.setFilterValue(value)}
+          value={(table.getColumn('formattedHeadline')?.getFilterValue() as string) ?? ''}
+          onChange={(value) => table.getColumn('formattedHeadline')?.setFilterValue(value)}
         />
         <div className='flex items-center gap-x-2'>
           {table.getSelectedRowModel().rows.length > 0 ? (
@@ -166,7 +166,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     <TableHead
                       key={header.id}
                       style={getCommonPinningStyles(header.column)}
-                      onClick={() => header.column.pin('left')}
+                      // onClick={() => header.column.pin('left')}
                     >
                       {header.isPlaceholder
                         ? null
