@@ -36,6 +36,13 @@ export type LocaleString = {
   'ja-JP'?: string;
 };
 
+export enum CONTENT_TYPE {
+  PARAGRAPH = 'PARAGRAPH',
+  IMAGE = 'IMAGE',
+  HEADING = 'SUBHEADLINE',
+  LIST = 'LIST',
+}
+
 type TextStyle = {
   bold?: boolean;
   italic?: boolean;
@@ -59,13 +66,13 @@ type Text = {
 
 // Define a paragraph which contains multiple texts
 type Paragraph = {
-  type: 'paragraph';
+  type: CONTENT_TYPE.PARAGRAPH;
   text: Text;
 };
 
 // Define an image type
 type Image = {
-  type: 'image';
+  type: CONTENT_TYPE.IMAGE;
   src: string;
   alt: LocaleString;
   formattedAlt: string;
@@ -79,14 +86,14 @@ type ListItem = {
 
 // Define a list with items that could have nested lists
 type List = {
-  type: 'list';
+  type: CONTENT_TYPE.LIST;
   listType: 'ordered' | 'unordered';
   items: ListItem[];
 };
 
 // Define heading types with levels
 type Heading = {
-  type: 'heading';
+  type: CONTENT_TYPE.HEADING;
   text: Text;
   level: 1 | 2 | 3 | 4 | 5 | 6;
 };

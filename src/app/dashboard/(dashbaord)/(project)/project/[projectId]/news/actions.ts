@@ -15,7 +15,7 @@ export async function getTotalNews() {
       isDeleted: false,
     }),
   });
-  console.log('🚨 - data', data.items);
+
   return data.items.map((item) => ({
     ...item,
     articles: item.articles.flatMap((article) => article.contents),

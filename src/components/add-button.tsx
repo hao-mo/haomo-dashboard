@@ -2,11 +2,19 @@ import { PlusIcon } from 'lucide-react';
 
 import { Button } from './ui/button';
 
-export const AddButton = ({ onClick }: { onClick: () => void }) => {
+interface AddButtonProps extends React.ComponentPropsWithoutRef<typeof Button> {
+  text?: string;
+}
+
+export const AddButton = ({ text = '新增', onClick, ...props }: AddButtonProps) => {
   return (
-    <Button onClick={onClick}>
+    <Button
+      onClick={onClick}
+      {...props}
+    >
       <PlusIcon className='size-4' />
-      <span className='ml-2'>新增</span>
+      <span className='ml-2'>{text}</span>
+      {props.children}
     </Button>
   );
 };

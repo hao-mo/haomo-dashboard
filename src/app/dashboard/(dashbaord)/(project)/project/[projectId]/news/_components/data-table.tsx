@@ -149,7 +149,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           ) : (
             <>
               <AddButton
-                onClick={() => router.push(`/dashboard/project/${params.projectId}/news/new`)}
+                onClick={() => router.push(`/dashboard/project/${params.projectId}/news/add-news`)}
               />
               <DataTableViewOptions table={table} />
             </>

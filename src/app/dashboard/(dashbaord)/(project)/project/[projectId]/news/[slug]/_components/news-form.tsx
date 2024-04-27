@@ -2,105 +2,46 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, Reorder } from 'framer-motion';
-import { nanoid } from 'nanoid';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { useFieldArray, useForm } from 'react-hook-form';
 
+import { AddButton } from '@/components/add-button';
 import { ContentDragListItem } from '@/components/content-editor/content-drag-list-item';
-import { ContentForm } from '@/components/content-editor/content-form';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
+import { Modal } from '@/components/ui/modal';
 import useEventListener from '@/hooks/use-event-listener';
 import { useMount } from '@/hooks/use-mount';
+import { useOpen } from '@/hooks/use-open';
 
 import { defaultLocaleString } from '@/lib/locales';
-import { contentSchema } from '@/lib/schemas/content.schema';
-import { localeSchema } from '@/lib/schemas/locale.schema';
-import type { ContentWithId } from '@/lib/types';
+import { CONTENT_TYPE, type ContentWithId } from '@/lib/types';
 
 import type { FormattedNews } from '../../type';
+import type { NewsFormValues } from '../schema';
+import { newsFormSchema } from '../schema';
 
 import { LocaleFieldInputList } from './locale-field-input-list';
-
-// const articleSchema = z.object({
-//   contents: z.array(contentSchema),
-// });
-
-const formSchema = z.object({
-  // format is an object of locales key to string
-  headline: localeSchema,
-  description: localeSchema,
-  date: z.date(),
-  articles: z.array(contentSchema),
-});
-
-type NewsFormValues = z.infer<typeof formSchema>;
+import { NewsCreateContentForm } from './news-create-content-form';
 
 export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
   const router = useRouter();
   const params = useParams();
 
-  const [open, setOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useOpen();
   const [loading, setLoading] = useState(false);
 
-  const [items, setItems] = useState<ContentWithId[]>([
-    {
-      id: nanoid(),
-      type: 'heading',
-      text: {
-        content: {
-          default: 'Heading',
-          'zh-TW': '標題',
-          'en-US': 'Heading',
-          'ja-JP': '見出し',
-        },
-        formattedContent: '標題',
-      },
-      level: 1,
-    },
-    {
-      id: nanoid(),
-      type: 'paragraph',
-      text: {
-        formattedContent: '歡迎來到我們的範例文字',
-        content: {
-          default: '歡迎來到我們的範例文字',
-          'zh-TW': '歡迎來到我們的範例文字',
-          'en-US': 'Welcome to our example text',
-          'ja-JP': '私たちの例文へようこそ',
-        },
-      },
-    },
-    {
-      id: nanoid(),
-      type: 'heading',
-      text: {
-        content: {
-          default: 'Heading',
-          'zh-TW': '標題',
-          'en-US': 'Heading',
-          'ja-JP': '見出し',
-        },
-        formattedContent: '標題',
-      },
-      level: 2,
-    },
-  ]);
-
-  const [selectItem, setSelectItem] = useState<ContentWithId | null>(items[0] ?? null);
-
   const form = useForm<NewsFormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(newsFormSchema),
     defaultValues: initialData ?? {
       headline: defaultLocaleString,
       description: defaultLocaleString,
       date: new Date(),
       articles: [
         {
-          type: 'heading',
+          type: CONTENT_TYPE.HEADING,
           text: {
             content: {
               default: 'Heading',
@@ -113,7 +54,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
           level: 1,
         },
         {
-          type: 'paragraph',
+          type: CONTENT_TYPE.PARAGRAPH,
           text: {
             formattedContent: '歡迎來到我們的範例文字',
             content: {
@@ -125,7 +66,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
           },
         },
         {
-          type: 'heading',
+          type: CONTENT_TYPE.HEADING,
           text: {
             content: {
               default: 'Heading',
@@ -141,12 +82,21 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
     },
   });
 
+  const { fields, update, remove, append } = useFieldArray({
+    control: form.control,
+    name: 'articles',
+  });
+
+  const [items, setItems] = useState<ContentWithId[]>(fields);
+
+  const [selectIndex, setSelectIndex] = useState<number>(0);
+
   const isMount = useMount();
 
-  // console.log('form values', form.getValues());
+  console.log('form values', form.getValues());
 
   const handleSelectItem = (index: number) => {
-    setSelectItem(items[index]);
+    setSelectIndex(index);
   };
 
   const handleDeleteItem = (index: number) => {
@@ -154,6 +104,18 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
   };
 
   const onSubmit = async (data: NewsFormValues) => {};
+
+  const onUpdateContent = async (index: number, content: ContentWithId) => {
+    const newItems = items.map((item, i) => (i === index ? content : item));
+    setItems(newItems);
+    update(index, content);
+  };
+
+  const onCreate = async (data: ContentWithId) => {
+    append(data);
+    setItems([...items, data]);
+    onClose();
+  };
 
   const onDelete = async (data: NewsFormValues) => {};
 
@@ -175,7 +137,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4'
+        className='space-y-4 divide-y divide-border'
       >
         <FormField
           name='date'
@@ -202,40 +164,42 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
           control={form.control}
           name='description'
         />
-        <div className='w-full'>
-          <Label className='text-sm'>內文</Label>
-          <div className='mt-2 grid w-full grid-cols-12 gap-4'>
-            <div className='col-span-full lg:col-span-5'>
-              <Reorder.Group
-                axis='y'
-                values={items}
-                onReorder={setItems}
-                layoutScroll
-                className='space-y-4 overflow-hidden rounded-md border bg-muted/50 p-4'
-              >
-                <AnimatePresence initial={false}>
-                  {items.map((item, index) => (
-                    <ContentDragListItem
-                      key={item.id}
-                      item={item}
-                      isSelected={selectItem?.id === item.id}
-                      onSelect={() => handleSelectItem(index)}
-                      onDelete={() => handleDeleteItem(index)}
-                    />
-                  ))}
-                </AnimatePresence>
-              </Reorder.Group>
-            </div>
-            <div className='col-span-full lg:col-span-7'>
-              <ContentForm
-                content={selectItem}
-                onUpdate={() => {}}
-                onCreate={() => {}}
-              />
-            </div>
+        <div className='w-full py-4'>
+          <div className='mb-4 flex items-center justify-between'>
+            <Label className='text-sm'>內文</Label>
+            <AddButton
+              onClick={() => {
+                setSelectIndex(-1);
+                onOpen();
+              }}
+            />
           </div>
+          <Modal
+            title='新增內文區塊'
+            description='請選擇一個區塊類型，並填寫內容'
+            isOpen={isOpen}
+            onClose={onClose}
+          >
+            <NewsCreateContentForm onCreate={onCreate} />
+          </Modal>
+          <Reorder.Group
+            axis='y'
+            values={items}
+            onReorder={setItems}
+            layoutScroll
+            className='mt-2 space-y-4 overflow-hidden rounded-md border bg-muted/50 p-4 md:p-8'
+          >
+            <AnimatePresence initial={false}>
+              {items.map((item, index) => (
+                <ContentDragListItem
+                  key={item.id}
+                  item={item}
+                  onDelete={() => handleDeleteItem(index)}
+                />
+              ))}
+            </AnimatePresence>
+          </Reorder.Group>
         </div>
-        {/* <ContentEditor name='articles' /> */}
       </form>
     </Form>
   );

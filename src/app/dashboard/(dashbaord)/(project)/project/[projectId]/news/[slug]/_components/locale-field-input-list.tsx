@@ -23,10 +23,10 @@ export const LocaleFieldInputList = <
   label: string;
 } & Pick<ControllerProps<TFieldValues, TName>, 'control' | 'name' | 'disabled'>) => {
   return (
-    <div className='w-full'>
+    <div className='w-full py-4'>
       <Label className='text-sm'>{label}</Label>
 
-      <div className='mt-2 w-full space-y-4 rounded-md border border-border bg-muted/50 p-4'>
+      <div className='mt-2 w-full space-y-4 p-4'>
         {localeOptions.map(([locale, { name: localeName }]) => (
           <LocaleFiledInput
             key={`${name}.${locale}`}

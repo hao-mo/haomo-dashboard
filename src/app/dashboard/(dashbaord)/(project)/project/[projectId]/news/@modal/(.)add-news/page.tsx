@@ -16,8 +16,8 @@ export default function AddNewsModal() {
 
   return (
     <Modal
-      title='Add'
-      description='Create a new blog post'
+      title='新增'
+      description='建立一則最新消息'
       isOpen={open}
       onClose={onClose}
     >

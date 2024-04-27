@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { CONTENT_TYPE } from '../types';
+
 import { localeSchema } from './locale.schema';
 
 const textSchema = z.object({
@@ -22,7 +24,7 @@ const textSchema = z.object({
 });
 
 const headingSchema = z.object({
-  type: z.literal('heading'),
+  type: z.literal(CONTENT_TYPE.HEADING),
   text: textSchema,
   level: z.union([
     z.literal(1),
@@ -35,12 +37,12 @@ const headingSchema = z.object({
 });
 
 const paragraphSchema = z.object({
-  type: z.literal('paragraph'),
+  type: z.literal(CONTENT_TYPE.PARAGRAPH),
   text: textSchema,
 });
 
 const imageSchema = z.object({
-  type: z.literal('image'),
+  type: z.literal(CONTENT_TYPE.IMAGE),
   src: z.string(),
   alt: localeSchema,
   formattedAlt: z.string(),

@@ -1,13 +1,12 @@
 import { AnimatePresence, Reorder } from 'framer-motion';
 import type { Control, ControllerProps } from 'react-hook-form';
-import { useFieldArray } from 'react-hook-form';
 
 import type { Content } from '@/lib/types';
 
+import { NewsContentForm } from '../../app/dashboard/(dashbaord)/(project)/project/[projectId]/news/[slug]/_components/news-content-form';
 import { Label } from '../ui/label';
 
 import { ContentDragListItem } from './content-drag-list-item';
-import { ContentForm } from './content-form';
 
 interface ContentEditorProps {
   name: string;
@@ -39,7 +38,7 @@ export const ContentEditor = ({ name, control }: ControllerProps) => {
           </Reorder.Group>
         </div>
         <div className='col-span-8'>
-          <ContentForm />
+          <NewsContentForm />
         </div>
       </div>
     </div>

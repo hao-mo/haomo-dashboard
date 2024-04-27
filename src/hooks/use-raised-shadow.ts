@@ -2,7 +2,7 @@ import type { MotionValue } from 'framer-motion';
 import { animate, useMotionValue, useMotionValueEvent } from 'framer-motion';
 import { useRef } from 'react';
 
-const inactiveShadow = '0px 2px 8px 0px rgba(0,0,0,0.1)';
+const inactiveShadow = '0px 0px 0px 0px rgba(0,0,0,0.1)';
 
 export function useRaisedShadow(value: MotionValue<number>) {
   const boxShadow = useMotionValue(inactiveShadow);
