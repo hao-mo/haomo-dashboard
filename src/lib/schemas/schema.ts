@@ -2,14 +2,67 @@ import { z } from 'zod';
 
 import type { Option } from '@/lib/types';
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
-const ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+import { ACCEPTED_FILE_TYPES, completeUrlRegex, httpRegex, MAX_UPLOAD_SIZE } from '../regex';
+import { CONTENT_TYPE } from '../types';
 
-const httpRegex = /^(http|https):/;
+import { localeSchema } from './locale.schema';
 
-const completeUrlRegex =
-  /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/;
-// Research: https://spin.atomicobject.com/zod-transform-custom/
+const textSchema = z.object({
+  content: localeSchema,
+  formattedContent: z.string(),
+  style: z
+    .object({
+      bold: z.boolean().optional(),
+      italic: z.boolean().optional(),
+      underline: z.boolean().optional(),
+      link: z
+        .object({
+          href: z.string(),
+          text: localeSchema,
+          formattedText: z.string(),
+        })
+        .optional(),
+    })
+    .optional(),
+});
+
+export const headingSchema = z.object({
+  type: z.literal(CONTENT_TYPE.HEADING),
+  text: textSchema,
+  level: z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+    z.literal(6),
+  ]),
+});
+
+export const paragraphSchema = z.object({
+  type: z.literal(CONTENT_TYPE.PARAGRAPH),
+  text: textSchema,
+});
+
+export const fileSchema = z
+  .instanceof(File)
+  .refine((file) => {
+    return !file || file.size <= MAX_UPLOAD_SIZE;
+  }, 'File size must be less than 3MB')
+  .refine(
+    (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : false),
+    'Only .jpg, .jpeg, .png and .webp file types are supported'
+  );
+
+export const imageSchema = z.object({
+  type: z.literal(CONTENT_TYPE.IMAGE),
+  src: z.string(),
+  alt: localeSchema,
+  formattedAlt: z.string(),
+  file: fileSchema.optional(),
+});
+
+export const contentSchema = z.union([headingSchema, paragraphSchema, imageSchema]);
 
 export const pushNotificationOptions: Option[] = [
   {
@@ -34,13 +87,10 @@ export const accountSettingFormSchema = z.object({
 });
 
 export const profileSettingFormSchema = z.object({
-  full_name: z.string().min(2, {
-    message: 'Full name must be at least 2 characters',
-  }),
   bio: z.string().max(160, {
     message: 'Bio must be at most 160 characters',
   }),
-  avatar_url: z
+  avatar: z
     .instanceof(File)
     .optional()
     .refine((file) => {

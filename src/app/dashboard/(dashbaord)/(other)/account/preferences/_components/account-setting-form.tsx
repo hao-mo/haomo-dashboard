@@ -10,8 +10,8 @@ import { Form, FormControl, FormField, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 
-import type { AccountSettingFieldValues } from '@/lib/schemas/user-setting.schema';
-import { accountSettingFormSchema } from '@/lib/schemas/user-setting.schema';
+import type { AccountSettingFieldValues } from '@/lib/schemas/schema';
+import { accountSettingFormSchema } from '@/lib/schemas/schema';
 
 import {
   UserSettingArea,

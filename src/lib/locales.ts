@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 export const defaultLocale = {
   'zh-TW': {
     name: '繁體中文',

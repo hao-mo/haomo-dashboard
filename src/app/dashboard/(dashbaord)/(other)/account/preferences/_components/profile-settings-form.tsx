@@ -13,8 +13,8 @@ import { Form, FormControl, FormDescription, FormField, FormMessage } from '@/co
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-import type { ProfileSettingFieldValues } from '@/lib/schemas/user-setting.schema';
-import { profileSettingFormSchema } from '@/lib/schemas/user-setting.schema';
+import type { ProfileSettingFieldValues } from '@/lib/schemas/schema';
+import { profileSettingFormSchema } from '@/lib/schemas/schema';
 
 import {
   UserSettingArea,
@@ -26,10 +26,9 @@ import {
 } from './user-setting';
 
 const defaultValues: ProfileSettingFieldValues = {
-  avatar_url: undefined,
+  avatar: undefined,
   website: '',
   bio: '',
-  full_name: '',
 };
 
 export const ProfileSettingsForm = () => {
@@ -40,12 +39,12 @@ export const ProfileSettingsForm = () => {
     defaultValues,
   });
   const inputRef = useRef<HTMLInputElement>(null);
-  const fileRef = form.register('avatar_url');
+  const fileRef = form.register('avatar');
 
   function onSubmit(values: ProfileSettingFieldValues) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    console.log('profile setting', values);
   }
 
   return (
@@ -61,7 +60,7 @@ export const ProfileSettingsForm = () => {
         <UserSettingArea>
           <FormField
             control={form.control}
-            name='avatar_url'
+            name='avatar'
             render={({ field }) => (
               <UserSettingFormItem>
                 <UserSettingFormLabel>Avatar</UserSettingFormLabel>

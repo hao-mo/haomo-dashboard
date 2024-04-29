@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { contentSchema } from '@/lib/schemas/content.schema';
 import { localeSchema } from '@/lib/schemas/locale.schema';
+import { contentSchema } from '@/lib/schemas/schema';
 
 // const articleSchema = z.object({
 //   contents: z.array(contentSchema),

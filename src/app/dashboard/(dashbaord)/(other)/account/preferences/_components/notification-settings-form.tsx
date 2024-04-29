@@ -8,11 +8,8 @@ import { FormRadioGroup } from '@/components/form-radio-group';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 
-import type { NotificationSettingFieldValues } from '@/lib/schemas/user-setting.schema';
-import {
-  notificationSettingFormSchema,
-  pushNotificationOptions,
-} from '@/lib/schemas/user-setting.schema';
+import type { NotificationSettingFieldValues } from '@/lib/schemas/schema';
+import { notificationSettingFormSchema, pushNotificationOptions } from '@/lib/schemas/schema';
 
 import {
   UserSettingArea,

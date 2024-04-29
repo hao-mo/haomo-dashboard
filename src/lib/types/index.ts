@@ -73,9 +73,10 @@ type Paragraph = {
 // Define an image type
 type Image = {
   type: CONTENT_TYPE.IMAGE;
-  src: string;
   alt: LocaleString;
   formattedAlt: string;
+  src: string;
+  file?: File;
 };
 
 // Define a list item which might contain more lists or styled text

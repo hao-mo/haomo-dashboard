@@ -1,7 +1,7 @@
 'use client';
 
 import { CircleAlertIcon } from 'lucide-react';
-import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
+import type { Control, ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -22,6 +22,7 @@ export const LocaleFieldInputList = <
 }: {
   label: string;
 } & Pick<ControllerProps<TFieldValues, TName>, 'control' | 'name' | 'disabled'>) => {
+  const { control } = useFormContext();
   return (
     <div className='w-full py-4'>
       <Label className='text-sm'>{label}</Label>
@@ -30,7 +31,7 @@ export const LocaleFieldInputList = <
         {localeOptions.map(([locale, { name: localeName }]) => (
           <LocaleFiledInput
             key={`${name}.${locale}`}
-            // control={control}
+            control={control}
             name={`${name}.${locale}`}
             label={localeName}
           />
@@ -43,13 +44,12 @@ export const LocaleFieldInputList = <
 const LocaleFiledInput = ({
   label,
   name,
-  // control,
+  control,
 }: {
   label: string;
   name: string;
-  // control: Control;
+  control: Control;
 }) => {
-  const { control } = useFormContext();
   return (
     <FormField
       key={name}
@@ -58,7 +58,7 @@ const LocaleFiledInput = ({
       render={({ field, fieldState }) => (
         <FormItem className='w-full'>
           <div className='flex w-full flex-col lg:flex-row lg:items-center lg:justify-between'>
-            <FormLabel className='shrink-0 text-xs font-normal'>{label}</FormLabel>
+            <FormLabel className='mb-0 shrink-0 text-xs font-normal'>{label}</FormLabel>
 
             <div className='relative inline-flex w-full items-center justify-end'>
               {fieldState.error && (
