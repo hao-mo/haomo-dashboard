@@ -29,14 +29,14 @@ const textSchema = z.object({
 export const headingSchema = z.object({
   type: z.literal(CONTENT_TYPE.HEADING),
   text: textSchema,
-  level: z.union([
-    z.literal(1),
-    z.literal(2),
-    z.literal(3),
-    z.literal(4),
-    z.literal(5),
-    z.literal(6),
-  ]),
+  // level: z.union([
+  //   z.literal(1),
+  //   z.literal(2),
+  //   z.literal(3),
+  //   z.literal(4),
+  //   z.literal(5),
+  //   z.literal(6),
+  // ]),
 });
 
 export const paragraphSchema = z.object({

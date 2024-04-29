@@ -14,26 +14,38 @@ import { CONTENT_TYPE } from '@/lib/types';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 
-interface NewsContentCreateFormProps {
+interface NewsCreateContentFormProps {
   onCreate: (content: ContentWithId) => void;
 }
 
-export const NewsCreateContentForm = ({ onCreate }: NewsContentCreateFormProps) => {
+interface NewsUpdateContentFormProps {
+  content: ContentWithId;
+  onUpdate: (content: ContentWithId) => void;
+  onDelete: () => void;
+}
+
+type NewsContentFormProps = NewsCreateContentFormProps | NewsUpdateContentFormProps;
+
+export const NewsContentForm = (props: NewsContentFormProps) => {
+  const isUpdateMode = 'content' in props;
+
   const form = useForm<ContentWithId>({
     resolver: zodResolver(contentSchema),
-    defaultValues: {
-      type: CONTENT_TYPE.HEADING,
-      text: {
-        content: {
-          default: '',
-          'zh-TW': '',
-          'en-US': '',
-          'ja-JP': '',
+    defaultValues: isUpdateMode
+      ? props.content
+      : {
+          type: CONTENT_TYPE.HEADING,
+          text: {
+            content: {
+              default: '',
+              'zh-TW': '',
+              'en-US': '',
+              'ja-JP': '',
+            },
+            formattedContent: '',
+          },
+          // level: 1,
         },
-        formattedContent: '',
-      },
-      level: 1,
-    },
   });
 
   const handleTabChange = (value: string) => {
@@ -64,7 +76,7 @@ export const NewsCreateContentForm = ({ onCreate }: NewsContentCreateFormProps) 
           },
           formattedContent: '',
         },
-        level: 1,
+        // level: 1,
       });
     } else {
       form.reset({
@@ -79,6 +91,15 @@ export const NewsCreateContentForm = ({ onCreate }: NewsContentCreateFormProps) 
           formattedContent: '',
         },
       });
+    }
+  };
+
+  const handleSubmit = () => {
+    const values = form.getValues();
+    if (isUpdateMode) {
+      props.onUpdate(values);
+    } else {
+      props.onCreate(values);
     }
   };
 
@@ -166,7 +187,7 @@ export const NewsCreateContentForm = ({ onCreate }: NewsContentCreateFormProps) 
       <div className='flex items-center justify-end'>
         <Button
           type='button'
-          onClick={() => onCreate(form.getValues())}
+          onClick={handleSubmit}
         >
           新增
         </Button>

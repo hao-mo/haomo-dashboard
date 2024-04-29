@@ -96,7 +96,7 @@ type List = {
 type Heading = {
   type: CONTENT_TYPE.HEADING;
   text: Text;
-  level: 1 | 2 | 3 | 4 | 5 | 6;
+  // level: 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 export type Content = Paragraph | Image | Heading;

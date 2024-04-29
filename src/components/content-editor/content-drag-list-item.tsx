@@ -11,14 +11,12 @@ import { DoubleConfirmButton } from '../double-confirm-button';
 import { AlertModal } from '../ui/alert-modal';
 import { Button } from '../ui/button';
 
-import { NewsUpdateContentForm } from '@/app/dashboard/(dashbaord)/(project)/project/[projectId]/news/[slug]/_components/news-update-content-form';
-
-interface ContentDragListItemProps {
+interface ContentDragListItemProps extends PropsWithChildren {
   item: Content & { id: string };
   onDelete: () => void;
 }
 
-export const ContentDragListItem = ({ item, onDelete }: ContentDragListItemProps) => {
+export const ContentDragListItem = ({ item, children, onDelete }: ContentDragListItemProps) => {
   const { isOpen, onOpen, onClose } = useOpen();
   const dragControls = useDragControls();
   const y = useMotionValue<number>(0);
@@ -92,7 +90,7 @@ export const ContentDragListItem = ({ item, onDelete }: ContentDragListItemProps
         isOpen={isOpen}
         onClose={onClose}
       >
-        <NewsUpdateContentForm />
+        {children}
       </AlertModal>
     </Reorder.Item>
   );

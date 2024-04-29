@@ -24,7 +24,7 @@ import type { NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
 import { LocaleFieldInputList } from './locale-field-input-list';
-import { NewsCreateContentForm } from './news-create-content-form';
+import { NewsContentForm } from './news-content-form';
 
 export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
   const router = useRouter();
@@ -51,7 +51,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
             },
             formattedContent: '標題',
           },
-          level: 1,
+          // level: 1,
         },
         {
           type: CONTENT_TYPE.PARAGRAPH,
@@ -76,7 +76,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
             },
             formattedContent: '標題',
           },
-          level: 2,
+          // level: 2,
         },
       ],
     },
@@ -89,35 +89,30 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
 
   const [items, setItems] = useState<ContentWithId[]>(fields);
 
-  const [selectIndex, setSelectIndex] = useState<number>(0);
-
   const isMount = useMount();
 
   console.log('form values', form.getValues());
 
-  const handleSelectItem = (index: number) => {
-    setSelectIndex(index);
-  };
-
-  const handleDeleteItem = (index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index));
-  };
+  const onDelete = async (data: NewsFormValues) => {};
 
   const onSubmit = async (data: NewsFormValues) => {};
 
-  const onUpdateContent = async (index: number, content: ContentWithId) => {
+  const handleUpdateContent = (index: number) => async (content: ContentWithId) => {
     const newItems = items.map((item, i) => (i === index ? content : item));
     setItems(newItems);
     update(index, content);
   };
 
-  const onCreate = async (data: ContentWithId) => {
+  const handleDeleteContent = (index: number) => {
+    remove(index);
+    setItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleCreateContent = async (data: ContentWithId) => {
     append(data);
     setItems([...items, data]);
     onClose();
   };
-
-  const onDelete = async (data: NewsFormValues) => {};
 
   useEventListener(
     'beforeunload',
@@ -167,12 +162,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
         <div className='w-full py-4'>
           <div className='mb-4 flex items-center justify-between'>
             <Label className='text-sm'>內文</Label>
-            <AddButton
-              onClick={() => {
-                setSelectIndex(-1);
-                onOpen();
-              }}
-            />
+            <AddButton onClick={onOpen} />
           </div>
           <Modal
             title='新增內文區塊'
@@ -180,7 +170,7 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
             isOpen={isOpen}
             onClose={onClose}
           >
-            <NewsCreateContentForm onCreate={onCreate} />
+            <NewsContentForm onCreate={handleCreateContent} />
           </Modal>
           <Reorder.Group
             axis='y'
@@ -194,8 +184,14 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
                 <ContentDragListItem
                   key={item.id}
                   item={item}
-                  onDelete={() => handleDeleteItem(index)}
-                />
+                  onDelete={() => handleDeleteContent(index)}
+                >
+                  <NewsContentForm
+                    content={item}
+                    onUpdate={handleUpdateContent(index)}
+                    onDelete={() => handleDeleteContent(index)}
+                  />
+                </ContentDragListItem>
               ))}
             </AnimatePresence>
           </Reorder.Group>
