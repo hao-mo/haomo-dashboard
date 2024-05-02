@@ -10,8 +10,10 @@ import { AddButton } from '@/components/add-button';
 import { ContentDragListItem } from '@/components/content-editor/content-drag-list-item';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Modal } from '@/components/ui/modal';
+import { Textarea } from '@/components/ui/textarea';
 import useEventListener from '@/hooks/use-event-listener';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
@@ -23,10 +25,10 @@ import type { FormattedNews } from '../../type';
 import type { NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
-import { LocaleFieldInputList } from './locale-field-input-list';
+import { LocaleFieldList } from './locale-field-list';
 import { NewsContentForm } from './news-content-form';
 
-export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
+export const NewsForm = ({ initialData }: { initialData: FormattedNews | null }) => {
   const router = useRouter();
   const params = useParams();
 
@@ -36,6 +38,8 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema),
     defaultValues: initialData ?? {
+      slug: '',
+      isDeleted: false,
       headline: defaultLocaleString,
       description: defaultLocaleString,
       date: new Date(),
@@ -43,39 +47,32 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
         {
           type: CONTENT_TYPE.HEADING,
           text: {
-            content: {
-              default: 'Heading',
-              'zh-TW': '標題',
-              'en-US': 'Heading',
-              'ja-JP': '見出し',
-            },
-            formattedContent: '標題',
+            default: 'Heading',
+            'zh-TW': '標題',
+            'en-US': 'Heading',
+            'ja-JP': '見出し',
           },
-          // level: 1,
+          formattedText: '標題',
         },
         {
           type: CONTENT_TYPE.PARAGRAPH,
+          formattedText: '歡迎來到我們的範例文字',
           text: {
-            formattedContent: '歡迎來到我們的範例文字',
-            content: {
-              default: '歡迎來到我們的範例文字',
-              'zh-TW': '歡迎來到我們的範例文字',
-              'en-US': 'Welcome to our example text',
-              'ja-JP': '私たちの例文へようこそ',
-            },
+            default: '歡迎來到我們的範例文字',
+            'zh-TW': '歡迎來到我們的範例文字',
+            'en-US': 'Welcome to our example text',
+            'ja-JP': '私たちの例文へようこそ',
           },
         },
         {
           type: CONTENT_TYPE.HEADING,
           text: {
-            content: {
-              default: 'Heading',
-              'zh-TW': '標題',
-              'en-US': 'Heading',
-              'ja-JP': '見出し',
-            },
-            formattedContent: '標題',
+            default: 'Heading',
+            'zh-TW': '標題',
+            'en-US': 'Heading',
+            'ja-JP': '見出し',
           },
+          formattedText: '標題',
           // level: 2,
         },
       ],
@@ -119,7 +116,6 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
     (event) => {
       if (!form.formState.isDirty) return;
       event.preventDefault();
-      event.returnValue = '';
     },
     undefined,
     [form.formState.isDirty],
@@ -138,9 +134,10 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
           name='date'
           control={form.control}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className='py-4'>
               <FormLabel className='text-sm'>發布日期</FormLabel>
               <DatePicker
+                className='flex'
                 selected={field.value}
                 onSelect={field.onChange}
                 required
@@ -149,16 +146,49 @@ export const NewsForm = ({ initialData }: { initialData?: FormattedNews }) => {
             </FormItem>
           )}
         />
-        <LocaleFieldInputList
-          label='標題'
-          control={form.control}
-          name='headline'
-        />
-        <LocaleFieldInputList
-          label='說明'
-          control={form.control}
-          name='description'
-        />
+
+        <div className='relative py-4'>
+          <FormLabel className='text-sm'>標題</FormLabel>
+          <LocaleFieldList
+            name='headline'
+            control={form.control}
+          >
+            {({ name, control }) => (
+              <FormField
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Input {...field} />
+                  </FormItem>
+                )}
+              />
+            )}
+          </LocaleFieldList>
+        </div>
+        <div className='relative py-4'>
+          <FormLabel className='text-sm'>說明</FormLabel>
+          <LocaleFieldList
+            name='description'
+            control={form.control}
+          >
+            {({ name, control }) => (
+              <FormField
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Textarea
+                      {...field}
+                      className='h-32'
+                    />
+                  </FormItem>
+                )}
+              />
+            )}
+          </LocaleFieldList>
+        </div>
+
         <div className='w-full py-4'>
           <div className='mb-4 flex items-center justify-between'>
             <Label className='text-sm'>內文</Label>

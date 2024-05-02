@@ -67,7 +67,8 @@ type Text = {
 // Define a paragraph which contains multiple texts
 type Paragraph = {
   type: CONTENT_TYPE.PARAGRAPH;
-  text: Text;
+  text: LocaleString;
+  formattedText: string;
 };
 
 // Define an image type
@@ -75,7 +76,7 @@ type Image = {
   type: CONTENT_TYPE.IMAGE;
   alt: LocaleString;
   formattedAlt: string;
-  src: string;
+  imageUrl: string;
   file?: File;
 };
 
@@ -95,7 +96,8 @@ type List = {
 // Define heading types with levels
 type Heading = {
   type: CONTENT_TYPE.HEADING;
-  text: Text;
+  text: LocaleString;
+  formattedText: string;
   // level: 1 | 2 | 3 | 4 | 5 | 6;
 };
 

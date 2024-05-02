@@ -28,7 +28,8 @@ const textSchema = z.object({
 
 export const headingSchema = z.object({
   type: z.literal(CONTENT_TYPE.HEADING),
-  text: textSchema,
+  text: localeSchema,
+  formattedText: z.string(),
   // level: z.union([
   //   z.literal(1),
   //   z.literal(2),
@@ -41,7 +42,8 @@ export const headingSchema = z.object({
 
 export const paragraphSchema = z.object({
   type: z.literal(CONTENT_TYPE.PARAGRAPH),
-  text: textSchema,
+  text: localeSchema,
+  formattedText: z.string(),
 });
 
 export const fileSchema = z
@@ -56,7 +58,7 @@ export const fileSchema = z
 
 export const imageSchema = z.object({
   type: z.literal(CONTENT_TYPE.IMAGE),
-  src: z.string(),
+  imageUrl: z.string(),
   alt: localeSchema,
   formattedAlt: z.string(),
   file: fileSchema.optional(),

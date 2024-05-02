@@ -3,14 +3,15 @@ import { z } from 'zod';
 import { localeSchema } from '@/lib/schemas/locale.schema';
 import { contentSchema } from '@/lib/schemas/schema';
 
-// const articleSchema = z.object({
-//   contents: z.array(contentSchema),
-// });
 export const newsFormSchema = z.object({
-  // format is an object of locales key to string
+  slug: z.string(),
+  isDeleted: z.boolean().default(false),
+  date: z.date(),
   headline: localeSchema,
   description: localeSchema,
-  date: z.date(),
+  imageUrl: z.string(),
+  alt: localeSchema,
+  formattedAlt: z.string(),
   articles: z.array(contentSchema),
 });
 

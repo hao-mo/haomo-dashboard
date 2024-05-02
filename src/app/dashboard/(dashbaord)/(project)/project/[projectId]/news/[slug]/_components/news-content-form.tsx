@@ -27,7 +27,9 @@ interface NewsUpdateContentFormProps {
 type NewsContentFormProps = NewsCreateContentFormProps | NewsUpdateContentFormProps;
 
 export const NewsContentForm = (props: NewsContentFormProps) => {
+  console.log('🚨 - props', props);
   const isUpdateMode = 'content' in props;
+  console.log('🚨 - isUpdateMode', isUpdateMode);
 
   const form = useForm<ContentWithId>({
     resolver: zodResolver(contentSchema),
@@ -36,25 +38,29 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
       : {
           type: CONTENT_TYPE.HEADING,
           text: {
-            content: {
-              default: '',
-              'zh-TW': '',
-              'en-US': '',
-              'ja-JP': '',
-            },
-            formattedContent: '',
+            default: '',
+            'zh-TW': '',
+            'en-US': '',
+            'ja-JP': '',
           },
+          formattedText: '',
           // level: 1,
         },
   });
 
+  console.log('type', form.getValues());
+
   const handleTabChange = (value: string) => {
     const contentType = value as ContentType;
 
+    if (isUpdateMode && props.content.type === contentType) {
+      form.reset(props.content);
+      return;
+    }
     if (contentType === CONTENT_TYPE.IMAGE) {
       form.reset({
         type: CONTENT_TYPE.IMAGE,
-        src: '',
+        imageUrl: '',
         alt: {
           default: '',
           'zh-TW': '',
@@ -68,28 +74,23 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
       form.reset({
         type: CONTENT_TYPE.HEADING,
         text: {
-          content: {
-            default: '',
-            'zh-TW': '',
-            'en-US': '',
-            'ja-JP': '',
-          },
-          formattedContent: '',
+          default: '',
+          'zh-TW': '',
+          'en-US': '',
+          'ja-JP': '',
         },
-        // level: 1,
+        formattedText: '',
       });
     } else {
       form.reset({
         type: CONTENT_TYPE.PARAGRAPH,
         text: {
-          content: {
-            default: '',
-            'zh-TW': '',
-            'en-US': '',
-            'ja-JP': '',
-          },
-          formattedContent: '',
+          default: '',
+          'zh-TW': '',
+          'en-US': '',
+          'ja-JP': '',
         },
+        formattedText: '',
       });
     }
   };
@@ -107,7 +108,7 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
     <div className='space-y-4'>
       <Tabs
         className='w-full'
-        defaultValue={CONTENT_TYPE.HEADING}
+        defaultValue={isUpdateMode ? props.content.type : CONTENT_TYPE.HEADING}
         onValueChange={handleTabChange}
       >
         <TabsList className='grid h-fit w-full grid-cols-3'>
@@ -119,7 +120,7 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
           <div className='relative'>
             <FormLabel className='text-sm'>標題</FormLabel>
             <LocaleFieldList
-              name='text.content'
+              name='text'
               control={form.control}
             >
               {({ name, control }) => (
@@ -140,7 +141,7 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
           <div className='relative'>
             <FormLabel className='text-sm'>內容</FormLabel>
             <LocaleFieldList
-              name='text.content'
+              name='text'
               control={form.control}
             >
               {({ name, control }) => (
@@ -151,7 +152,7 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
                     <FormItem>
                       <Textarea
                         {...field}
-                        className='h-32 w-full rounded-md border border-border p-2'
+                        className='h-32'
                       />
                     </FormItem>
                   )}
@@ -189,7 +190,7 @@ export const NewsContentForm = (props: NewsContentFormProps) => {
           type='button'
           onClick={handleSubmit}
         >
-          新增
+          {isUpdateMode ? '更新' : '新增'}
         </Button>
       </div>
     </div>
