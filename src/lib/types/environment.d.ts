@@ -17,5 +17,7 @@ declare namespace NodeJS {
     readonly NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY: string;
     // MongoDB
     readonly MONGODB_URI: string;
+    // OPENAI
+    readonly OPENAI_API_KEY: string;
   }
 }
