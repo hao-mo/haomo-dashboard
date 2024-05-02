@@ -6,5 +6,9 @@ export const useOpen = () => {
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
-  return { isOpen, onOpen, onClose };
+  const onOpenChange = (open: boolean) => {
+    setIsOpen(open);
+  };
+
+  return { isOpen, onOpen, onClose, onOpenChange };
 };

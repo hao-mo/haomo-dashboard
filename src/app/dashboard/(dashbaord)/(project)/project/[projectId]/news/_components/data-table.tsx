@@ -19,7 +19,6 @@ import { TrashIcon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import type { CSSProperties } from 'react';
 import { useState } from 'react';
-import { toast } from 'sonner';
 
 import { AddButton } from '@/components/add-button';
 import {
@@ -38,8 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-import { wait } from '@/utils';
+import { useOpen } from '@/hooks/use-open';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -79,8 +77,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const { isOpen, onClose, onOpen } = useOpen();
+
   const params = useParams();
   const router = useRouter();
 
@@ -103,20 +102,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     },
   });
 
+  // TODO: Add api for delete multiple rows
   const onConfirm = async () => {
-    try {
-      setLoading(true);
-      await wait(3000);
-      console.log('rows', table.getSelectedRowModel().rows);
-      toast.success('刪除成功');
-
-      router.refresh();
-    } catch (error) {
-      toast.error('刪除失敗');
-    } finally {
-      setOpen(false);
-      setLoading(false);
-    }
+    // await fetcher(`/api/${params.projectId}/news/${data.id}`, {
+    //   method: 'DELETE',
+    // });
   };
 
   return (
@@ -131,16 +121,16 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           {table.getSelectedRowModel().rows.length > 0 ? (
             <>
               <DeleteModal
-                isOpen={open}
-                loading={loading}
-                onClose={() => setOpen(false)}
+                isOpen={isOpen}
+                onClose={onClose}
                 title={`你確定要刪除這${table.getSelectedRowModel().rows.length}筆資料嗎？`}
-                description='此動作不可復原，這將永久刪除這些資料並從我們的服務器中刪除數據。'
+                description='這些資料可在 “刪除列表” 中進行復原'
                 onConfirm={onConfirm}
+                onSuccess={() => router.refresh()}
               />
               <Button
                 variant='destructive'
-                onClick={() => setOpen(true)}
+                onClick={onOpen}
               >
                 <TrashIcon className='mr-2 size-4' />
                 刪除 {table.getSelectedRowModel().rows.length} 筆

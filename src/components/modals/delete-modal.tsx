@@ -1,4 +1,6 @@
 import { TrashIcon } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 import {
   AlertDialog,
@@ -17,23 +19,39 @@ import { Loader } from '../ui/loader';
 interface DeleteModalProps {
   title: string;
   description: string;
-  loading: boolean;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: () => Promise<void>;
+  onSuccess?: (() => Promise<void>) | (() => void);
 }
 export const DeleteModal = ({
   title,
   description,
-  loading,
   isOpen,
   onClose,
   onConfirm,
+  onSuccess,
 }: DeleteModalProps) => {
+  const [loading, setLoading] = useState(false);
+
   const isMount = useMount();
 
   const onChange = (open: boolean) => {
     if (!open) onClose();
+  };
+
+  const handleConfirm = async () => {
+    try {
+      setLoading(true);
+      await onConfirm();
+      toast.success('刪除成功');
+      onSuccess && (await onSuccess());
+    } catch (error) {
+      toast.error('刪除失敗');
+    } finally {
+      onClose();
+      setLoading(false);
+    }
   };
 
   if (!isMount) return null;
@@ -53,7 +71,7 @@ export const DeleteModal = ({
           <Button
             variant='destructive'
             disabled={loading}
-            onClick={onConfirm}
+            onClick={handleConfirm}
           >
             {loading ? <Loader className='mr-2 size-4' /> : <TrashIcon className='mr-2 size-4' />}
             確定

@@ -9,10 +9,12 @@ interface RouterBackButtonProps extends React.ComponentPropsWithRef<typeof Butto
 
 export const RouterBackButton = ({ children, onClick, ...props }: RouterBackButtonProps) => {
   const router = useRouter();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     onClick && onClick(event);
     router.back();
   };
+
   return (
     <Button
       onClick={handleClick}

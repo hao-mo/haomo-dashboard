@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { wait } from '@/utils';
 import { getSupabaseServerClient } from '@/utils/supabase/server';
 
+// TODO: Update params newsId to slug
 export async function DELETE(
   req: Request,
   { params }: { params: { newsId: string; projectId: string } }
