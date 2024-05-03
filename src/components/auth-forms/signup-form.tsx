@@ -110,10 +110,9 @@ export const SignUpForm = () => {
               />
               <div>
                 <SubmitButton
-                  type='submit'
                   className='w-full'
                   disabled={form.formState.isSubmitting}
-                  isSubmitting={form.formState.isSubmitting}
+                  loading={form.formState.isSubmitting}
                 >
                   註冊
                 </SubmitButton>

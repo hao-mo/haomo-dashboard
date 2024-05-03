@@ -99,10 +99,9 @@ export const SignInForm = ({ disabledButton }: { disabledButton: boolean }) => {
               />
               <div>
                 <SubmitButton
-                  type='submit'
                   className='w-full'
                   disabled={disabledButton || form.formState.isSubmitting}
-                  isSubmitting={form.formState.isSubmitting}
+                  loading={form.formState.isSubmitting}
                 >
                   登入
                 </SubmitButton>

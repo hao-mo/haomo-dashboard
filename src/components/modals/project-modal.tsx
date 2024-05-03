@@ -114,7 +114,7 @@ export const ProjectModal = () => {
                   </Button>
                   <SubmitButton
                     disabled={disabled}
-                    isSubmitting={form.formState.isSubmitting}
+                    loading={form.formState.isSubmitting}
                   >
                     {form.formState.isSubmitSuccessful && (
                       <CheckIcon

@@ -1,15 +1,16 @@
-import { CheckIcon, Loader2 } from 'lucide-react';
+import { Loader2, Trash2Icon } from 'lucide-react';
 
 import { Button } from './ui/button';
 
-export const SubmitButton = ({
+export const DeleteButton = ({
   loading,
   children,
   ...props
 }: React.ComponentPropsWithoutRef<typeof Button> & { loading?: boolean }) => {
   return (
     <Button
-      type='submit'
+      type='button'
+      variant='destructive'
       {...props}
     >
       {loading ? (
@@ -18,7 +19,7 @@ export const SubmitButton = ({
           size={16}
         />
       ) : (
-        <CheckIcon
+        <Trash2Icon
           className='mr-2'
           size={16}
         />

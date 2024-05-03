@@ -118,7 +118,7 @@ export const AccountSettingsForm = ({
             <SubmitButton
               size='sm'
               disabled={!form.formState.isDirty || isPending}
-              isSubmitting={isPending}
+              loading={isPending}
             >
               更新
             </SubmitButton>
