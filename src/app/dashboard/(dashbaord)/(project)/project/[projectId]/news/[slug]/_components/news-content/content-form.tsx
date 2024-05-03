@@ -1,7 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CheckIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { AddButton } from '@/components/add-button';
+import { DeleteButton } from '@/components/delete-button';
 import { Button } from '@/components/ui/button';
 import { FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -70,8 +73,6 @@ export const ContentForm = (props: ContentFormProps) => {
         },
   });
 
-  console.log('type', form.getValues());
-
   const handleTabChange = (value: string) => {
     const contentType = value as ContentType;
 
@@ -116,15 +117,6 @@ export const ContentForm = (props: ContentFormProps) => {
         },
         formattedText: '',
       });
-    }
-  };
-
-  const handleSubmit = () => {
-    const values = form.getValues();
-    if (isUpdateMode) {
-      props.onUpdate(values);
-    } else {
-      props.onCreate(values);
     }
   };
 
@@ -244,23 +236,32 @@ export const ContentForm = (props: ContentFormProps) => {
 
       <div className='flex w-full items-center justify-end gap-x-2'>
         {isUpdateMode && (
-          <Button
-            type='button'
-            variant='destructive'
+          <DeleteButton
             className='mr-auto'
             onClick={props.onDelete}
           >
             刪除
-          </Button>
+          </DeleteButton>
         )}
 
-        <Button
-          type='button'
-          disabled={!form.formState.isDirty}
-          onClick={handleSubmit}
-        >
-          {isUpdateMode ? '更新' : '新增'}
-        </Button>
+        {isUpdateMode ? (
+          <Button
+            type='button'
+            disabled={!form.formState.isDirty}
+            onClick={() => props.onUpdate(form.getValues())}
+          >
+            <CheckIcon
+              className='mr-2'
+              size={16}
+            />
+            更新
+          </Button>
+        ) : (
+          <AddButton
+            disabled={!form.formState.isDirty}
+            onClick={() => props.onCreate(form.getValues())}
+          />
+        )}
       </div>
     </div>
   );

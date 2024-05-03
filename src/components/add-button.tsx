@@ -9,11 +9,15 @@ interface AddButtonProps extends React.ComponentPropsWithoutRef<typeof Button> {
 export const AddButton = ({ text = '新增', onClick, ...props }: AddButtonProps) => {
   return (
     <Button
+      type='button'
       onClick={onClick}
       {...props}
     >
-      <PlusIcon className='size-4' />
-      <span className='ml-2'>{text}</span>
+      <PlusIcon
+        className='mr-2'
+        size={16}
+      />
+      <span>{text}</span>
       {props.children}
     </Button>
   );
