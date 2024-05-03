@@ -1,38 +1,43 @@
 import { Reorder, useDragControls, useMotionValue } from 'framer-motion';
 import { GripVerticalIcon, PenIcon, Trash2Icon } from 'lucide-react';
 
+import { DoubleConfirmButton } from '@/components/double-confirm-button';
+import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/modal';
 import { useOpen } from '@/hooks/use-open';
 import { useRaisedShadow } from '@/hooks/use-raised-shadow';
 
-import type { Content } from '@/lib/types';
+import type { ContentWithId } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
 
-import { DoubleConfirmButton } from '../double-confirm-button';
-import { AlertModal } from '../ui/alert-modal';
-import { Button } from '../ui/button';
+import { ContentForm } from '.';
 
-interface ContentDragListItemProps extends PropsWithChildren {
-  item: Content & { id: string };
+const typeMap = {
+  [CONTENT_TYPE.HEADING]: '標題',
+  [CONTENT_TYPE.PARAGRAPH]: '文字',
+  [CONTENT_TYPE.IMAGE]: '圖片',
+};
+
+interface DraggableContentItemProps {
+  item: ContentWithId;
+  onUpdate: (content: ContentWithId) => void;
   onDelete: () => void;
 }
 
-export const ContentDragListItem = ({ item, children, onDelete }: ContentDragListItemProps) => {
+export const DraggableContentItem = ({ item, onUpdate, onDelete }: DraggableContentItemProps) => {
   const { isOpen, onOpen, onClose } = useOpen();
   const dragControls = useDragControls();
   const y = useMotionValue<number>(0);
   const boxShadow = useRaisedShadow(y);
 
-  const renderType = () => {
-    switch (item.type) {
-      case CONTENT_TYPE.HEADING:
-        return '標題';
-      case CONTENT_TYPE.PARAGRAPH:
-        return '文字';
-      case CONTENT_TYPE.IMAGE:
-        return '圖片';
-      default:
-        return '';
-    }
+  const handleUpdate = (content: ContentWithId) => {
+    onUpdate(content);
+    onClose();
+  };
+
+  const handleDelete = () => {
+    onDelete();
+    onClose();
   };
 
   return (
@@ -61,7 +66,7 @@ export const ContentDragListItem = ({ item, children, onDelete }: ContentDragLis
         >
           <GripVerticalIcon className='size-6' />
         </button>
-        <span className='ml-2 truncate capitalize'>{renderType()}</span>
+        <span className='ml-2 truncate capitalize'>{typeMap[item.type]}</span>
       </div>
       <div className='pointer-events-auto absolute right-4 top-half inline-flex -translate-y-half items-center gap-x-2'>
         <Button
@@ -84,14 +89,18 @@ export const ContentDragListItem = ({ item, children, onDelete }: ContentDragLis
           <Trash2Icon className='size-4' />
         </DoubleConfirmButton>
       </div>
-      <AlertModal
+      <Modal
         title='更新'
-        description='請選擇一個內文類型，並填寫內容'
+        description='請修改內容並確認更新'
         isOpen={isOpen}
         onClose={onClose}
       >
-        {children}
-      </AlertModal>
+        <ContentForm
+          content={item}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
+      </Modal>
     </Reorder.Item>
   );
 };

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { localeSchema } from '@/lib/schemas/locale.schema';
-import { contentSchema } from '@/lib/schemas/schema';
+import { contentSchema, fileSchema } from '@/lib/schemas/schema';
 
 export const newsFormSchema = z.object({
   slug: z.string(),
@@ -9,10 +9,11 @@ export const newsFormSchema = z.object({
   date: z.date(),
   headline: localeSchema,
   description: localeSchema,
-  imageUrl: z.string(),
+  articles: z.array(contentSchema),
   alt: localeSchema,
   formattedAlt: z.string(),
-  articles: z.array(contentSchema),
+  imageUrl: z.string(),
+  file: fileSchema.optional(),
 });
 
 export type NewsFormValues = z.infer<typeof newsFormSchema>;

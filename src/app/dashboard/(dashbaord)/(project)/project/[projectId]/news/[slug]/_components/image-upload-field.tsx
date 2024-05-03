@@ -1,43 +1,42 @@
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-import { type UseFormReturn } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import type { ContentWithId } from '@/lib/types';
-
 import { cn } from '@/utils';
 
-interface ImageUploadFieldProps {
-  form: UseFormReturn<ContentWithId>;
+interface ImageUploadFieldProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+> {
+  name: TName;
+  control: Control<TFieldValues>;
+  defaultImageUrl: string;
+  defaultAlt: string;
 }
 
-export const ImageUploadField = ({ form }: ImageUploadFieldProps) => {
-  const { control, setValue, register, watch } = form;
-
-  const defaultImageUrl = watch('imageUrl');
+export const ImageUploadField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  name,
+  control,
+  defaultImageUrl,
+  defaultAlt,
+}: ImageUploadFieldProps<TFieldValues, TName>) => {
+  const { register } = useFormContext();
   const [imageUrl, setImageUrl] = useState<string>(defaultImageUrl);
 
-  const imageDescription = watch('formattedAlt');
+  const fileRef = register(name);
+
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      setValue('file', file);
-      const url = URL.createObjectURL(file);
-      setImageUrl(url);
-
-      return () => {
-        URL.revokeObjectURL(url);
-      };
-    }
-  };
 
   return (
     <FormField
-      name='file'
+      name={name}
       control={control}
       render={({ field }) => {
         return (
@@ -62,7 +61,7 @@ export const ImageUploadField = ({ form }: ImageUploadFieldProps) => {
                 <div className='relative h-80 w-full bg-muted'>
                   <Image
                     src={imageUrl}
-                    alt={field.value ? field.value.name : imageDescription}
+                    alt={field.value ? field.value.name : defaultAlt}
                     className='size-full object-contain object-center blur-sm transition-all duration-500 ease-in-out group-hover:brightness-50'
                     fill
                     loading='lazy'
@@ -75,9 +74,19 @@ export const ImageUploadField = ({ form }: ImageUploadFieldProps) => {
               <Input
                 type='file'
                 className='hidden'
-                {...register('file')}
+                {...fileRef}
                 ref={inputRef}
-                onChange={handleInputChange}
+                onChange={(event) => {
+                  if (event.target.files && event.target.files.length > 0) {
+                    const file = event.target.files[0];
+                    field.onChange(file);
+                    const url = URL.createObjectURL(file);
+                    setImageUrl(url);
+                    return () => {
+                      URL.revokeObjectURL(url);
+                    };
+                  }
+                }}
               />
             </FormControl>
           </FormItem>

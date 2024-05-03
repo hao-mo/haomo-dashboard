@@ -1,13 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, Reorder } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { AddButton } from '@/components/add-button';
-import { ContentDragListItem } from '@/components/content-editor/content-drag-list-item';
+import { DeleteButton } from '@/components/delete-button';
+import { SubmitButton } from '@/components/submit-button';
+import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Modal } from '@/components/ui/modal';
 import { Textarea } from '@/components/ui/textarea';
 import useEventListener from '@/hooks/use-event-listener';
+import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
 
@@ -25,8 +27,9 @@ import type { FormattedNews } from '../../type';
 import type { NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
+import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
-import { NewsContentForm } from './news-content-form';
+import { ContentForm, ContentList } from './news-content';
 
 export const NewsForm = ({ initialData }: { initialData: FormattedNews | null }) => {
   const router = useRouter();
@@ -43,6 +46,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
       headline: defaultLocaleString,
       description: defaultLocaleString,
       date: new Date(),
+
       articles: [
         {
           type: CONTENT_TYPE.HEADING,
@@ -79,6 +83,8 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
     },
   });
 
+  useJumpToErrorInput(form.formState.errors);
+
   const { fields, update, remove, append } = useFieldArray({
     control: form.control,
     name: 'articles',
@@ -88,21 +94,12 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
 
   const isMount = useMount();
 
-  console.log('form values', form.getValues());
+  console.log('form values', form.formState.errors);
 
-  const onDelete = async (data: NewsFormValues) => {};
+  const onDelete = async () => {};
 
-  const onSubmit = async (data: NewsFormValues) => {};
-
-  const handleUpdateContent = (index: number) => async (content: ContentWithId) => {
-    const newItems = items.map((item, i) => (i === index ? content : item));
-    setItems(newItems);
-    update(index, content);
-  };
-
-  const handleDeleteContent = (index: number) => {
-    remove(index);
-    setItems((prev) => prev.filter((_, i) => i !== index));
+  const onSubmit = async (data: NewsFormValues) => {
+    console.log('🚨 - data', data);
   };
 
   const handleCreateContent = async (data: ContentWithId) => {
@@ -128,68 +125,109 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4 divide-y divide-border'
+        className='grid grid-cols-12 lg:gap-x-8'
       >
-        <FormField
-          name='date'
-          control={form.control}
-          render={({ field }) => (
-            <FormItem className='py-4'>
-              <FormLabel className='text-sm'>發布日期</FormLabel>
-              <DatePicker
-                className='flex'
-                selected={field.value}
-                onSelect={field.onChange}
-                required
-                withForm
-              />
-            </FormItem>
-          )}
-        />
-
-        <div className='relative py-4'>
-          <FormLabel className='text-sm'>標題</FormLabel>
-          <LocaleFieldList
-            name='headline'
+        <div className='col-span-full flex flex-col justify-between lg:col-span-4'>
+          <FormField
+            name='date'
             control={form.control}
-          >
-            {({ name, control }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Input {...field} />
-                  </FormItem>
-                )}
-              />
+            render={({ field }) => (
+              <FormItem className='py-4'>
+                <FormLabel
+                  className='text-sm'
+                  id='date'
+                >
+                  發布日期
+                </FormLabel>
+                <DatePicker
+                  className='flex w-full'
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  required
+                  withForm
+                />
+              </FormItem>
             )}
-          </LocaleFieldList>
+          />
+
+          <div className='relative py-4'>
+            <FormLabel className='text-sm'>標題</FormLabel>
+            <LocaleFieldList
+              name='headline'
+              control={form.control}
+            >
+              {({ name, control }) => (
+                <FormField
+                  name={name}
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Input {...field} />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </LocaleFieldList>
+          </div>
+          <div className='relative py-4'>
+            <Label className='mb-2 inline-block text-sm'>說明</Label>
+            <LocaleFieldList
+              name='description'
+              control={form.control}
+            >
+              {({ name, control }) => (
+                <FormField
+                  name={name}
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Textarea
+                        {...field}
+                        className='h-40'
+                      />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </LocaleFieldList>
+          </div>
         </div>
-        <div className='relative py-4'>
-          <FormLabel className='text-sm'>說明</FormLabel>
-          <LocaleFieldList
-            name='description'
-            control={form.control}
-          >
-            {({ name, control }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Textarea
-                      {...field}
-                      className='h-32'
-                    />
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+        <div className='col-span-full flex flex-col justify-between lg:col-span-8'>
+          <div className='relative py-4'>
+            <FormLabel className='text-sm'>封面圖片</FormLabel>
+            <ImageUploadField
+              name='file'
+              control={form.control}
+              defaultImageUrl={
+                form.getValues('file')
+                  ? URL.createObjectURL(form.getValues('file') as File)
+                  : form.getValues('imageUrl')
+              }
+              defaultAlt={form.getValues('formattedAlt')}
+            />
+          </div>
+          <div className='relative py-4'>
+            <FormLabel className='text-sm'>圖片說明</FormLabel>
+            <LocaleFieldList
+              name='alt'
+              control={form.control}
+            >
+              {({ name, control }) => (
+                <FormField
+                  name={name}
+                  control={control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <Input {...field} />
+                    </FormItem>
+                  )}
+                />
+              )}
+            </LocaleFieldList>
+          </div>
         </div>
 
-        <div className='w-full py-4'>
+        <div className='col-span-full w-full py-4'>
           <div className='mb-4 flex items-center justify-between'>
             <Label className='text-sm'>內文</Label>
             <AddButton onClick={onOpen} />
@@ -200,31 +238,34 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
             isOpen={isOpen}
             onClose={onClose}
           >
-            <NewsContentForm onCreate={handleCreateContent} />
+            <ContentForm onCreate={handleCreateContent} />
           </Modal>
-          <Reorder.Group
-            axis='y'
-            values={items}
-            onReorder={setItems}
-            layoutScroll
-            className='mt-2 space-y-4 overflow-hidden rounded-md border bg-muted/50 p-4 md:p-8'
+          <ContentList
+            items={items}
+            setItems={setItems}
+            onUpdate={update}
+            onDelete={remove}
+          />
+        </div>
+        <div className='col-span-full flex w-full items-center justify-end gap-x-2'>
+          {initialData ? (
+            <DeleteButton onClick={onDelete}>刪除</DeleteButton>
+          ) : (
+            <Button
+              type='button'
+              variant='secondary'
+              onClick={() => router.back()}
+            >
+              取消
+            </Button>
+          )}
+          <SubmitButton
+            type='submit'
+            disabled={form.formState.isSubmitting || !form.formState.isDirty}
+            loading={form.formState.isSubmitting}
           >
-            <AnimatePresence initial={false}>
-              {items.map((item, index) => (
-                <ContentDragListItem
-                  key={item.id}
-                  item={item}
-                  onDelete={() => handleDeleteContent(index)}
-                >
-                  <NewsContentForm
-                    content={item}
-                    onUpdate={handleUpdateContent(index)}
-                    onDelete={() => handleDeleteContent(index)}
-                  />
-                </ContentDragListItem>
-              ))}
-            </AnimatePresence>
-          </Reorder.Group>
+            儲存
+          </SubmitButton>
         </div>
       </form>
     </Form>

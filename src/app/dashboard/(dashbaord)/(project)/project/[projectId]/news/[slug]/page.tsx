@@ -4,7 +4,6 @@ import { RouterBackButton } from '@/components/router-back-button';
 
 import { formatRelative } from '@/utils/format';
 
-import { ArchivedButton } from './_components/archived-button';
 import { NewsForm } from './_components/news-form';
 import { getNewsBySlug } from './actions';
 
@@ -15,7 +14,7 @@ export default async function Page({ params }: { params: { projectId: string; sl
 
   return (
     <div className='relative w-full'>
-      <div className='mb-4 flex w-full flex-wrap items-center justify-between'>
+      <div className='mb-4 flex w-full flex-wrap items-center justify-between gap-4'>
         <div className='inline-flex items-center'>
           <RouterBackButton
             variant='ghost'
@@ -25,15 +24,14 @@ export default async function Page({ params }: { params: { projectId: string; sl
           </RouterBackButton>
           <div className='ml-2'>
             <h2 className='text-lg font-semibold'>活動消息 - {title}</h2>
-            {news ? (
-              <span className='text-xs text-foreground/50'>
-                上次編輯時間 {formatRelative(news.updatedAt)}
-              </span>
-            ) : null}
           </div>
         </div>
         <div>
-          <ArchivedButton />
+          {news ? (
+            <span className='text-xs text-foreground/50'>
+              上次編輯 {formatRelative(news.updatedAt)}
+            </span>
+          ) : null}
         </div>
       </div>
       <NewsForm initialData={news} />
