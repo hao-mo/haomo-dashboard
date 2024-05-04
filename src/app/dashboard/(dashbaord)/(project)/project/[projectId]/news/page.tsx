@@ -1,11 +1,19 @@
 import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
-import { getTotalNews } from './actions';
+import { getAllNews } from './actions';
 
-export const revalidate = 0;
+export const dynamic = 'force-dynamic';
 
-export default async function Page({ params }: { params: { projectId: string } }) {
-  const data = await getTotalNews();
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: { projectId: string };
+  searchParams: {
+    isDeleted: string;
+  };
+}) {
+  const data = await getAllNews();
 
   return (
     <>

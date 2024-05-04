@@ -1,4 +1,5 @@
 import { ChevronLeftIcon } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
 import { RouterBackButton } from '@/components/router-back-button';
 
@@ -7,10 +8,16 @@ import { formatRelative } from '@/utils/format';
 import { NewsForm } from './_components/news-form';
 import { getNewsBySlug } from './actions';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({ params }: { params: { projectId: string; slug: string } }) {
   const news = await getNewsBySlug(params.slug);
 
   const title = news ? '編輯' : '新增';
+
+  if (news && news.isDeleted) {
+    redirect(`/dashboard/project/${params.projectId}/news`);
+  }
 
   return (
     <div className='relative w-full'>

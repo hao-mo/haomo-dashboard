@@ -6,6 +6,9 @@ import {
 } from 'date-fns';
 import { zhTW } from 'date-fns/locale/zh-TW';
 
+import type { LocaleString } from '@/stores/locale-store';
+import { useLocaleStore } from '@/stores/locale-store';
+
 export const formatDate = (date: Date | number, formatString = 'PPPP') => {
   return format(date, formatString, {
     locale: zhTW,
@@ -46,4 +49,18 @@ export const formatTime = (date: Date | number) => {
 
 export const formatDistance = (date: Date | number, baseDate: Date | number = new Date()) => {
   return formatAsDistance(date, baseDate, { addSuffix: true, locale: zhTW });
+};
+
+/**
+ * Formats a locale string based on the current locale.
+ * @param localeString - The locale string object containing translations for different locales.
+ * @returns An object with the default translation and all other translations.
+ */
+export const formatLocaleString = (localeString: LocaleString) => {
+  const defaultLocale = useLocaleStore.getState().locale;
+  const defaultText = localeString[defaultLocale];
+  return {
+    default: defaultText,
+    ...localeString,
+  };
 };

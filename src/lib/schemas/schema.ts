@@ -5,7 +5,7 @@ import type { Option } from '@/lib/types';
 import { ACCEPTED_FILE_TYPES, completeUrlRegex, httpRegex, MAX_UPLOAD_SIZE } from '../regex';
 import { CONTENT_TYPE } from '../types';
 
-import { localeSchema } from './locale.schema';
+import { localeSchema } from '@/stores/locale-store';
 
 const textSchema = z.object({
   content: localeSchema,

@@ -79,7 +79,7 @@ const authStore = createStore<AuthStore>()(
     }),
     {
       name: 'auth-store',
-      // enabled: !import.meta.env.PROD,
+      enabled: process.env.NODE_ENV !== 'production',
     }
   )
 );

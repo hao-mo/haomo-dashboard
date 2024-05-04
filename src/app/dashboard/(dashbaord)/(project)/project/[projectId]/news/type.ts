@@ -1,4 +1,6 @@
-import type { Content, LocaleString } from '@/lib/types';
+import type { Content } from '@/lib/types';
+
+import type { LocaleString } from '@/stores/locale-store';
 
 interface ArticleContent {
   contents: Content[];
@@ -8,13 +10,13 @@ export type News = {
   id: string;
   slug: string;
   headline: LocaleString;
-  formattedHeadline: string;
+  // formattedHeadline: string;
   description: LocaleString;
-  formattedDescription: string;
+  // formattedDescription: string;
   imageUrl: string;
   alt: LocaleString;
-  formattedAlt: string;
-  date: Date;
+  // formattedAlt: string;
+  // date: Date;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;

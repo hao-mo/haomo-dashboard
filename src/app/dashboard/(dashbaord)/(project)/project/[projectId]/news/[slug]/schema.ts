@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-import { localeSchema } from '@/lib/schemas/locale.schema';
 import { contentSchema, fileSchema } from '@/lib/schemas/schema';
+
+import { localeSchema } from '@/stores/locale-store';
 
 export const newsFormSchema = z.object({
   slug: z.string(),
@@ -9,10 +10,10 @@ export const newsFormSchema = z.object({
   date: z.date(),
   headline: localeSchema,
   description: localeSchema,
-  articles: z.array(contentSchema),
   alt: localeSchema,
   formattedAlt: z.string(),
   imageUrl: z.string(),
+  articles: z.array(contentSchema),
   file: fileSchema.optional(),
 });
 

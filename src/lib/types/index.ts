@@ -1,3 +1,5 @@
+import type { LocaleString } from '@/stores/locale-store';
+
 export type Theme = 'light' | 'dark';
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {
@@ -29,12 +31,11 @@ export interface FormState {
   message: string;
 }
 
-export type LocaleString = {
-  default: string;
-  'zh-TW': string;
-  'en-US'?: string;
-  'ja-JP'?: string;
-};
+// export type LocaleString = {
+//   'zh-TW': string;
+//   'en-US'?: string;
+//   'ja-JP'?: string;
+// };
 
 export enum CONTENT_TYPE {
   PARAGRAPH = 'PARAGRAPH',

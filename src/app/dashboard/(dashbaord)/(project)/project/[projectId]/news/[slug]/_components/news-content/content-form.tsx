@@ -64,7 +64,6 @@ export const ContentForm = (props: ContentFormProps) => {
       : {
           type: CONTENT_TYPE.HEADING,
           text: {
-            default: '',
             'zh-TW': '',
             'en-US': '',
             'ja-JP': '',
@@ -87,7 +86,6 @@ export const ContentForm = (props: ContentFormProps) => {
         type: CONTENT_TYPE.IMAGE,
         imageUrl: '',
         alt: {
-          default: '',
           'zh-TW': '',
           'en-US': '',
           'ja-JP': '',
@@ -99,7 +97,6 @@ export const ContentForm = (props: ContentFormProps) => {
       form.reset({
         type: CONTENT_TYPE.HEADING,
         text: {
-          default: '',
           'zh-TW': '',
           'en-US': '',
           'ja-JP': '',
@@ -110,7 +107,6 @@ export const ContentForm = (props: ContentFormProps) => {
       form.reset({
         type: CONTENT_TYPE.PARAGRAPH,
         text: {
-          default: '',
           'zh-TW': '',
           'en-US': '',
           'ja-JP': '',

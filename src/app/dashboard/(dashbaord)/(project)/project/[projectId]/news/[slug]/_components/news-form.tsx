@@ -4,10 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { AddButton } from '@/components/add-button';
 import { DeleteButton } from '@/components/delete-button';
 import { SubmitButton } from '@/components/submit-button';
+import { AlertDialog, AlertDialogContent, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -20,10 +22,11 @@ import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
 
-import { defaultLocaleString } from '@/lib/locales';
 import { CONTENT_TYPE, type ContentWithId } from '@/lib/types';
 
+import { deleteNews } from '../../actions';
 import type { FormattedNews } from '../../type';
+import { updateNews } from '../actions';
 import type { NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
@@ -31,12 +34,20 @@ import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
 
+import { useLocaleStore } from '@/stores/locale-store';
+
 export const NewsForm = ({ initialData }: { initialData: FormattedNews | null }) => {
   const router = useRouter();
   const params = useParams();
 
   const { isOpen, onOpen, onClose } = useOpen();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const defaultLocale = useLocaleStore((state) => state.locale);
+
+  const defaultLocaleString = {
+    [defaultLocale]: '',
+  };
 
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema),
@@ -46,12 +57,10 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
       headline: defaultLocaleString,
       description: defaultLocaleString,
       date: new Date(),
-
       articles: [
         {
           type: CONTENT_TYPE.HEADING,
           text: {
-            default: 'Heading',
             'zh-TW': '標題',
             'en-US': 'Heading',
             'ja-JP': '見出し',
@@ -62,7 +71,6 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
           type: CONTENT_TYPE.PARAGRAPH,
           formattedText: '歡迎來到我們的範例文字',
           text: {
-            default: '歡迎來到我們的範例文字',
             'zh-TW': '歡迎來到我們的範例文字',
             'en-US': 'Welcome to our example text',
             'ja-JP': '私たちの例文へようこそ',
@@ -71,13 +79,11 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         {
           type: CONTENT_TYPE.HEADING,
           text: {
-            default: 'Heading',
             'zh-TW': '標題',
             'en-US': 'Heading',
             'ja-JP': '見出し',
           },
           formattedText: '標題',
-          // level: 2,
         },
       ],
     },
@@ -94,12 +100,34 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
 
   const isMount = useMount();
 
-  console.log('form values', form.formState.errors);
+  console.log('form values', form.getValues());
+  console.log('form error', form.formState.errors);
 
-  const onDelete = async () => {};
+  const onDelete = async () => {
+    try {
+      if (!initialData) return;
+      console.log('🚨 - initialData', initialData);
+      await deleteNews(initialData.id);
+      toast.success('刪除成功');
+      router.push(`/dashboard/project/${params.projectId}/news`);
+    } catch (error) {}
+  };
 
   const onSubmit = async (data: NewsFormValues) => {
-    console.log('🚨 - data', data);
+    try {
+      if (initialData) {
+        await updateNews(initialData.id, data);
+        toast.success('更新成功');
+        router.push(`/dashboard/project/${params.projectId}/news`);
+      } else {
+      }
+    } catch (error) {
+      if (initialData) {
+        toast.error('更新失敗');
+      } else {
+        toast.error('新增失敗');
+      }
+    }
   };
 
   const handleCreateContent = async (data: ContentWithId) => {
@@ -249,7 +277,12 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         </div>
         <div className='col-span-full flex w-full items-center justify-end gap-x-2'>
           {initialData ? (
-            <DeleteButton onClick={onDelete}>刪除</DeleteButton>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <DeleteButton onClick={onDelete}>刪除</DeleteButton>
+              </AlertDialogTrigger>
+              <AlertDialogContent>1234</AlertDialogContent>
+            </AlertDialog>
           ) : (
             <Button
               type='button'

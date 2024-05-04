@@ -3,8 +3,8 @@ import { type Control, type FieldPath, type FieldValues } from 'react-hook-form'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import type { Locale } from '@/lib/locales';
-import { defaultLocale, locales } from '@/lib/locales';
+import type { Locale } from '@/stores/locale-store';
+import { locales, useLocaleStore } from '@/stores/locale-store';
 
 interface LocaleFieldListProps<
   TFieldValues extends FieldValues,
@@ -28,14 +28,14 @@ export const LocaleFieldList = <
   className,
   children,
 }: LocaleFieldListProps<TFieldValues, TName>) => {
-  const localeOptions = Object.entries(locales);
+  const defaultLocale = useLocaleStore((state) => state.locale);
 
-  const defaultValue = Object.keys(defaultLocale)[0];
+  const localeOptions = Object.entries(locales);
 
   return (
     <Tabs
       className={className}
-      defaultValue={defaultValue}
+      defaultValue={defaultLocale}
     >
       <TabsList className='grid h-fit w-full grid-cols-3'>
         {localeOptions.map(([locale, { name: localeName }]) => (
