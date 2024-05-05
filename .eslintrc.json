@@ -29,7 +29,9 @@
 
           // Your internal path aliases
           ["^@/public(\\/.*|$)"],
-          ["^@/(components|hooks|styles)(\\/.*|$)"],
+          ["^(@/components)(\\/.*|$)"],
+          ["^@/(hooks)(\\/.*|$)"],
+          ["^@/(styles)(\\/.*|$)"],
           ["^@/server(\\/.*|$)"],
           ["^@/lib(\\/.*|$)"],
           ["^@/utils(\\/.*|$)"],

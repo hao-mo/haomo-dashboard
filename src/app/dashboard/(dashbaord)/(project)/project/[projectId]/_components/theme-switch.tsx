@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import { useCallback } from 'react';
 
 import { MenubarRadioGroup, MenubarRadioItem } from '@/components/ui/menubar';
+
 import { useMount } from '@/hooks/use-mount';
 
 export const ThemeSwitch = () => {
