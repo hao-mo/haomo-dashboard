@@ -12,11 +12,16 @@ import type { FormattedNews, News } from '../type';
 
 import type { NewsFormValues } from './schema';
 
-export const createNews = async (data: NewsFormValues) => {
+/**
+ * Creates a news article.
+ * @param data - The data for the news article.
+ * @returns A Promise that resolves when the news article is created.
+ * @throws If there is an error creating the news article.
+ */
+export const createNews = async ({ date, file, ...data }: NewsFormValues) => {
   try {
     const formattedData = {
       ...data,
-      status: 'published',
       headline: formatLocaleString(data.headline),
       description: formatLocaleString(data.description),
       alt: formatLocaleString(data.alt),
@@ -44,6 +49,7 @@ export const createNews = async (data: NewsFormValues) => {
           ],
         },
       ],
+      newsTagIds: ['caa8dd15-d020-473e-a591-95779fc25057'],
     };
     const response = await fetch(`${BASE_API_URL}/v1/news`, {
       method: 'POST',
@@ -62,6 +68,11 @@ export const createNews = async (data: NewsFormValues) => {
   }
 };
 
+/**
+ * Retrieves news data by slug.
+ * @param slug - The slug of the news.
+ * @returns The formatted news data.
+ */
 export const getNewsBySlug = async (slug: string) => {
   try {
     const data = await fetcher<News>(`${BASE_API_URL}/v1/news/by-slug/${slug}`, {
@@ -77,6 +88,11 @@ export const getNewsBySlug = async (slug: string) => {
   }
 };
 
+/**
+ * Updates a news item.
+ * @param id - The ID of the news item.
+ * @param data - The updated news data.
+ */
 export const updateNews = async (id: string, { date, file, ...data }: NewsFormValues) => {
   try {
     const formattedData = {
@@ -126,6 +142,11 @@ export const updateNews = async (id: string, { date, file, ...data }: NewsFormVa
   }
 };
 
+/**
+ * Rollbacks a news item by updating its `isDeleted` property to `false`.
+ * @param id - The ID of the news item to rollback.
+ * @throws If the rollback operation fails.
+ */
 export const rollbackNews = async (id: string) => {
   try {
     const response = await fetch(`${BASE_API_URL}/v1/news/${id}`, {

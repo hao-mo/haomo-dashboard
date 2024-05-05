@@ -11,7 +11,6 @@ export const newsFormSchema = z.object({
   headline: localeSchema,
   description: localeSchema,
   alt: localeSchema,
-  formattedAlt: z.string(),
   imageUrl: z.string(),
   articles: z.array(contentSchema),
   file: fileSchema.optional(),

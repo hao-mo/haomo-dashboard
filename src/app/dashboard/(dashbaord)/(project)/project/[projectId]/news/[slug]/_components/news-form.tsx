@@ -55,14 +55,12 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
       headline: defaultLocaleString,
       description: defaultLocaleString,
       date: new Date(),
+      imageUrl:
+        'https://ik.imagekit.io/dabeikeng/Products/5-3_%E8%8C%B6%E9%A2%A8%E5%91%B3%E9%A4%85%E4%B9%BE.jpg',
       articles: [
         {
           type: CONTENT_TYPE.HEADING,
-          text: {
-            'zh-TW': '',
-            'en-US': '',
-            'ja-JP': '',
-          },
+          text: defaultLocaleString,
         },
       ],
     },
@@ -77,19 +75,22 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
     name: 'articles',
   });
 
+  console.log('🚨 - fields', form.formState.errors);
+
   const [items, setItems] = useState<ContentWithId[]>(fields);
 
   const isMount = useMount();
 
   const onSubmit = async (data: NewsFormValues) => {
+    console.log('🚨 - data values', data);
     try {
       if (initialData) {
         await updateNews(initialData.id, data);
-        toast.success('更新成功');
-        router.push(`/dashboard/project/${params.projectId}/news`);
       } else {
         await createNews(data);
       }
+      toast.success('更新成功');
+      router.push(`/dashboard/project/${params.projectId}/news`);
     } catch (error) {
       if (initialData) {
         toast.error('更新失敗');
@@ -218,7 +219,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
                   ? URL.createObjectURL(form.getValues('file') as File)
                   : form.getValues('imageUrl')
               }
-              defaultAlt={form.getValues('formattedAlt')}
+              defaultAlt='image'
               disabled={isDeleted}
             />
           </div>
