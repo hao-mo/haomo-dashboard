@@ -10,7 +10,6 @@ import { formatRelative } from '@/utils/format';
 
 import type { FormattedNews } from '../type';
 
-import { CellAction } from './cell-action';
 import { CellLink } from './cell-link';
 
 // This type is used to define the shape of our data.
@@ -120,8 +119,8 @@ export const columns: ColumnDef<FormattedNews>[] = [
       <span className='capitalize'>{formatRelative(row.getValue('updatedAt'))}</span>
     ),
   },
-  {
-    id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />,
-  },
+  // {
+  //   id: 'actions',
+  //   cell: ({ row }) => <CellAction data={row.original} />,
+  // },
 ];

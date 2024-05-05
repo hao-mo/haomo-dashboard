@@ -1,6 +1,4 @@
 import { TrashIcon } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 import {
   AlertDialog,
@@ -12,54 +10,29 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-import { useMount } from '@/hooks/use-mount';
-
-import { Button } from '../ui/button';
+import { DeleteButton } from '../delete-button';
 import { Loader } from '../ui/loader';
 
 interface DeleteModalProps {
   title: string;
   description: string;
+  loading: boolean;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => Promise<void>;
-  onSuccess?: (() => Promise<void>) | (() => void);
-  onError?: (() => Promise<void>) | (() => void);
 }
 
 export const DeleteModal = ({
   title,
   description,
+  loading,
   isOpen,
   onClose,
   onConfirm,
-  onSuccess,
-  onError,
 }: DeleteModalProps) => {
-  const [loading, setLoading] = useState(false);
-
-  const isMount = useMount();
-
   const onChange = (open: boolean) => {
     if (!open) onClose();
   };
-
-  const handleConfirm = async () => {
-    try {
-      setLoading(true);
-      await onConfirm();
-      toast.success('刪除成功');
-      onSuccess && (await onSuccess());
-    } catch (error) {
-      toast.error('刪除失敗');
-      onError && (await onError());
-    } finally {
-      onClose();
-      setLoading(false);
-    }
-  };
-
-  if (!isMount) return null;
 
   return (
     <AlertDialog
@@ -73,14 +46,13 @@ export const DeleteModal = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>取消</AlertDialogCancel>
-          <Button
-            variant='destructive'
+          <DeleteButton
             disabled={loading}
-            onClick={handleConfirm}
+            onClick={onConfirm}
           >
             {loading ? <Loader className='mr-2 size-4' /> : <TrashIcon className='mr-2 size-4' />}
             確定
-          </Button>
+          </DeleteButton>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

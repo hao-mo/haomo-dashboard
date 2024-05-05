@@ -7,8 +7,8 @@ import { Input } from '../ui/input';
 
 interface DebouncedSearchInputProps
   extends Omit<React.ComponentPropsWithRef<typeof Input>, 'onChange'> {
-  value: string | number;
-  onChange: (value: string | number) => void;
+  value: string;
+  onChange: (value: string) => void;
   debounce?: number;
 }
 

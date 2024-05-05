@@ -23,12 +23,12 @@ import { useOpen } from '@/hooks/use-open';
 
 import { CONTENT_TYPE, type ContentWithId } from '@/lib/types';
 
+import { DeleteNewsModal } from '../../_components/delete-news-modal';
 import type { FormattedNews } from '../../type';
-import { updateNews } from '../actions';
+import { createNews, updateNews } from '../actions';
 import type { NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
-import { DeleteNewsModel } from './delete-news-model';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
@@ -98,8 +98,6 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
 
   const isMount = useMount();
 
-  console.log('form error', form.formState.errors);
-
   const onSubmit = async (data: NewsFormValues) => {
     try {
       if (initialData) {
@@ -107,6 +105,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         toast.success('更新成功');
         router.push(`/dashboard/project/${params.projectId}/news`);
       } else {
+        await createNews(data);
       }
     } catch (error) {
       if (initialData) {
@@ -264,7 +263,11 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         </div>
         <div className='col-span-full flex w-full items-center justify-end gap-x-2'>
           {initialData ? (
-            <DeleteNewsModel id={initialData.id} />
+            <DeleteNewsModal
+              data={initialData.id}
+              title='你確定要刪除這筆資料嗎？'
+              description='這筆資料可在 “刪除列表” 中進行復原'
+            />
           ) : (
             <Button
               type='button'

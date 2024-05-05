@@ -16,20 +16,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { TrashIcon } from 'lucide-react';
-import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { CSSProperties } from 'react';
 import { useEffect, useState } from 'react';
 
-import { AddButton } from '@/components/add-button';
-import {
-  DataTablePageSizeSelector,
-  DataTablePagination,
-  DataTableViewOptions,
-} from '@/components/data-table';
-import { DebouncedSearchInput } from '@/components/data-table/search-input';
-import { DeleteModal } from '@/components/modals/delete-modal';
-import { Button } from '@/components/ui/button';
+import { DataTablePageSizeSelector, DataTablePagination } from '@/components/data-table';
 import {
   Table,
   TableBody,
@@ -39,9 +30,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { useOpen } from '@/hooks/use-open';
-
 import { createQueryString } from '@/utils';
+
+import type { FormattedNews } from '../type';
+
+import { DataTableHeader } from './data-table-header';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -77,11 +70,11 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
   };
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TValue>({
   columns,
   data,
   pageCount,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<FormattedNews, TValue>) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -97,12 +90,9 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { isOpen, onClose, onOpen } = useOpen();
-
-  const params = useParams();
   const router = useRouter();
 
-  const table = useReactTable({
+  const table = useReactTable<FormattedNews>({
     data,
     columns,
     pageCount: pageCount ?? -1,
@@ -125,9 +115,6 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  // TODO: Add api for delete multiple rows
-  const onConfirm = async () => {};
-
   useEffect(() => {
     setPagination({
       pageIndex: Number(page) - 1,
@@ -149,39 +136,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className='relative'>
-      <div className='flex items-center justify-between gap-x-2 bg-background pb-4'>
-        <DebouncedSearchInput
-          placeholder='輸入標題...'
-          value={(table.getColumn('formattedHeadline')?.getFilterValue() as string) ?? ''}
-          onChange={(value) => table.getColumn('formattedHeadline')?.setFilterValue(value)}
-        />
-        <div className='flex items-center gap-x-2'>
-          {table.getSelectedRowModel().rows.length > 0 ? (
-            <>
-              <DeleteModal
-                isOpen={isOpen}
-                onClose={onClose}
-                title={`你確定要刪除這${table.getSelectedRowModel().rows.length}筆資料嗎？`}
-                description='這些資料可在 “刪除列表” 中進行復原'
-                onConfirm={onConfirm}
-                onSuccess={() => router.refresh()}
-              />
-              <Button
-                variant='destructive'
-                onClick={onOpen}
-              >
-                <TrashIcon className='mr-2 size-4' />
-                刪除 {table.getSelectedRowModel().rows.length} 筆
-              </Button>
-            </>
-          ) : (
-            <>
-              <AddButton onClick={() => router.push(`${pathname}/add-news`)} />
-              <DataTableViewOptions table={table} />
-            </>
-          )}
-        </div>
-      </div>
+      <DataTableHeader table={table} />
       <div className='overflow-hidden rounded-md border'>
         <Table>
           <TableHeader>

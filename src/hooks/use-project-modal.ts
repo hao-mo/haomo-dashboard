@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
-interface useProjectModal {
+interface UseProjectModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }
 
-export const useProjectModal = create<useProjectModal>((set) => ({
+export const useProjectModal = create<UseProjectModalProps>((set) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
