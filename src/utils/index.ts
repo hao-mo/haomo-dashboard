@@ -1,4 +1,5 @@
 import clsx, { type ClassValue } from 'clsx';
+import type { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
 /**
@@ -37,6 +38,29 @@ export function createURLSearchParams(searchParams: Record<string, any>): string
   });
   return params.toString();
 }
+
+/**
+ * Creates a query string from the given parameters and old search params.
+ * @param params - The parameters to include in the query string.
+ * @param oldSearchParams - The existing search params to start with.
+ * @returns The generated query string.
+ */
+export const createQueryString = (
+  params: Record<string, string | number | null>,
+  oldSearchParams: ReadonlyURLSearchParams
+) => {
+  const newSearchParams = new URLSearchParams(oldSearchParams.toString());
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === null) {
+      newSearchParams.delete(key);
+    } else {
+      newSearchParams.set(key, String(value));
+    }
+  }
+
+  return newSearchParams.toString();
+};
 
 /**
  * Capitalizes the first letter of a string.

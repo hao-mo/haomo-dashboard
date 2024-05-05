@@ -8,7 +8,13 @@ import { fetcher } from '@/utils';
 
 import type { News } from './type';
 
-export async function getAllNews() {
+interface NewsSearchOptions {
+  pageSize: string;
+  page: string;
+  isDeleted?: string;
+}
+
+export async function getAllNews({ pageSize, page, isDeleted = 'false' }: NewsSearchOptions) {
   const data = await fetcher<CustomResponse<News[]>>(`${BASE_API_URL}/v1/news/fetch`, {
     method: 'POST',
     headers: {
@@ -17,20 +23,19 @@ export async function getAllNews() {
     body: JSON.stringify({
       orderBy: 'DESC',
       sortBy: 'updatedAt',
-      pageSize: 5,
-      page: 1,
-      isDeleted: false,
+      pageSize: Number(pageSize),
+      page: Number(page),
+      isDeleted: isDeleted === 'true',
     }),
-    next: {
-      revalidate: 0,
-      tags: ['news'],
-    },
   });
 
-  return data.items.map((item) => ({
-    ...item,
-    articles: item.articles.flatMap((article) => article.contents),
-  }));
+  return {
+    data: data.items.map((item) => ({
+      ...item,
+      articles: item.articles.flatMap((article) => article.contents),
+    })),
+    pageCount: Math.ceil(data.pagination.totalCount / Number(data.pagination.pageSize)),
+  };
 }
 
 export const deleteNews = async (id: string) => {

@@ -4,6 +4,7 @@ import type {
   Column,
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
@@ -16,9 +17,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { TrashIcon } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { CSSProperties } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AddButton } from '@/components/add-button';
 import {
@@ -40,9 +41,12 @@ import {
 
 import { useOpen } from '@/hooks/use-open';
 
+import { createQueryString } from '@/utils';
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pageCount: number;
 }
 
 const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
@@ -73,7 +77,21 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
   };
 };
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  pageCount,
+}: DataTableProps<TData, TValue>) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const page = searchParams.get('page') ?? '1';
+  const pageSize = searchParams.get('pageSize') ?? '10';
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: Number(page) - 1,
+    pageSize: Number(pageSize),
+  });
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -87,6 +105,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const table = useReactTable({
     data,
     columns,
+    pageCount: pageCount ?? -1,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -95,7 +114,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    manualPagination: true,
     state: {
+      pagination,
       sorting,
       columnFilters,
       columnVisibility,
@@ -104,11 +126,26 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   });
 
   // TODO: Add api for delete multiple rows
-  const onConfirm = async () => {
-    // await fetcher(`/api/${params.projectId}/news/${data.id}`, {
-    //   method: 'DELETE',
-    // });
-  };
+  const onConfirm = async () => {};
+
+  useEffect(() => {
+    setPagination({
+      pageIndex: Number(page) - 1,
+      pageSize: Number(pageSize),
+    });
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    router.push(
+      `${pathname}?${createQueryString(
+        {
+          page: pagination.pageIndex + 1,
+          pageSize: pagination.pageSize,
+        },
+        searchParams
+      )}`
+    );
+  }, [pagination]);
 
   return (
     <div className='relative'>
@@ -139,9 +176,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             </>
           ) : (
             <>
-              <AddButton
-                onClick={() => router.push(`/dashboard/project/${params.projectId}/news/add-news`)}
-              />
+              <AddButton onClick={() => router.push(`${pathname}/add-news`)} />
               <DataTableViewOptions table={table} />
             </>
           )}

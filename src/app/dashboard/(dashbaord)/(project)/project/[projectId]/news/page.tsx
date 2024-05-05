@@ -2,18 +2,16 @@ import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 import { getAllNews } from './actions';
 
-export const revalidate = 0;
-
 export default async function Page({
-  params,
-  searchParams,
+  searchParams: { page, pageSize, isDeleted },
 }: {
-  params: { projectId: string };
   searchParams: {
+    page: string;
+    pageSize: string;
     isDeleted: string;
   };
 }) {
-  const data = await getAllNews();
+  const { data, pageCount } = await getAllNews({ page, pageSize, isDeleted });
 
   return (
     <>
@@ -21,6 +19,7 @@ export default async function Page({
       <DataTable
         columns={columns}
         data={data}
+        pageCount={pageCount}
       />
     </>
   );

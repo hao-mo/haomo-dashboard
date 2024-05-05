@@ -1,7 +1,7 @@
 'use client';
 
 import { EditIcon, MoreHorizontal, TrashIcon } from 'lucide-react';
-import { useParams, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { DeleteModal } from '@/components/modals/delete-modal';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ import { useDeleteNews } from '../hooks/use-delete-news';
 import type { FormattedNews } from '../type';
 
 export const CellAction = ({ data }: { data: FormattedNews }) => {
-  const params = useParams();
+  const pathname = usePathname();
   const router = useRouter();
 
   const { isOpen, onClose, onOpen, onDelete, onSuccess } = useDeleteNews(data.id);
@@ -48,7 +48,7 @@ export const CellAction = ({ data }: { data: FormattedNews }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className='cursor-pointer'
-            onClick={() => router.push(`/dashboard/project/${params.projectId}/news/${data.id}`)}
+            onClick={() => router.push(`${pathname}/${data.id}`)}
           >
             <EditIcon className='mr-2 size-4' />
             編輯
