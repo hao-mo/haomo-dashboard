@@ -1,6 +1,6 @@
 import { AnimatePresence, Reorder } from 'framer-motion';
 
-import type { ContentWithId } from '@/lib/types';
+import type { ContentWithId } from '../../schema';
 
 import { DraggableContentItem } from './draggable-content-item';
 
@@ -9,12 +9,17 @@ interface ContentListProps {
   setItems: (items: ContentWithId[]) => void;
   onUpdate: (index: number, content: ContentWithId) => void;
   onDelete: (index: number) => void;
+  disabled?: boolean;
 }
-export const ContentList = ({ items, setItems, onUpdate, onDelete }: ContentListProps) => {
+export const ContentList = ({
+  items,
+  disabled,
+  setItems,
+  onUpdate,
+  onDelete,
+}: ContentListProps) => {
   const handleUpdateContent = (index: number) => (content: ContentWithId) => {
-    console.log('🚨 - content', content);
     const newItems = items.map((item, i) => (i === index ? content : item));
-    console.log('🚨 - newItems', newItems);
     setItems(newItems);
     onUpdate(index, content);
   };
@@ -37,6 +42,7 @@ export const ContentList = ({ items, setItems, onUpdate, onDelete }: ContentList
           <DraggableContentItem
             key={item.id}
             item={item}
+            disabled={disabled}
             onUpdate={handleUpdateContent(index)}
             onDelete={() => handleDeleteContent(index)}
           />

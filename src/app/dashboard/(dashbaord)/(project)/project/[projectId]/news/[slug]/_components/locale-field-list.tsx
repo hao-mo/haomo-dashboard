@@ -15,7 +15,9 @@ interface LocaleFieldListProps<
   children: (props: {
     name: `${TName}.${Locale}`;
     control: Control<TFieldValues>;
+    disabled?: boolean;
   }) => React.ReactNode;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -26,6 +28,7 @@ export const LocaleFieldList = <
   name,
   control,
   className,
+  disabled,
   children,
 }: LocaleFieldListProps<TFieldValues, TName>) => {
   const defaultLocale = useLocaleStore((state) => state.locale);
@@ -42,6 +45,7 @@ export const LocaleFieldList = <
           <TabsTrigger
             key={locale}
             value={locale}
+            disabled={disabled}
           >
             {localeName}
           </TabsTrigger>
@@ -55,6 +59,7 @@ export const LocaleFieldList = <
           {children({
             name: `${name}.${locale}` as `${TName}.${Locale}`,
             control,
+            disabled,
           })}
         </TabsContent>
       ))}

@@ -8,8 +8,9 @@ import { Modal } from '@/components/ui/modal';
 import { useOpen } from '@/hooks/use-open';
 import { useRaisedShadow } from '@/hooks/use-raised-shadow';
 
-import type { ContentWithId } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
+
+import type { ContentWithId } from '../../schema';
 
 import { ContentForm } from '.';
 
@@ -23,9 +24,15 @@ interface DraggableContentItemProps {
   item: ContentWithId;
   onUpdate: (content: ContentWithId) => void;
   onDelete: () => void;
+  disabled?: boolean;
 }
 
-export const DraggableContentItem = ({ item, onUpdate, onDelete }: DraggableContentItemProps) => {
+export const DraggableContentItem = ({
+  item,
+  disabled,
+  onUpdate,
+  onDelete,
+}: DraggableContentItemProps) => {
   const { isOpen, onOpen, onClose } = useOpen();
   const dragControls = useDragControls();
   const y = useMotionValue<number>(0);
@@ -76,6 +83,7 @@ export const DraggableContentItem = ({ item, onUpdate, onDelete }: DraggableCont
           size='icon'
           className='z-2 rounded-md px-3 py-2 text-foreground/50 transition-[color,background-color,opacity] duration-200 ease-in-out focus:outline-none hocus-visible:bg-muted hocus-visible:text-primary'
           onClick={onOpen}
+          disabled={disabled}
         >
           <PenIcon className='size-4' />
         </Button>
@@ -86,10 +94,12 @@ export const DraggableContentItem = ({ item, onUpdate, onDelete }: DraggableCont
           confirmClassName='text-white bg-destructive hocus-visible:bg-destructive hocus-visible:text-white'
           confirmText='刪除'
           onConfirm={onDelete}
+          disabled={disabled}
         >
           <Trash2Icon className='size-4' />
         </DoubleConfirmButton>
       </div>
+      {disabled && <div className='pointer-events-auto absolute inset-0 z-2 bg-white opacity-50' />}
       <Modal
         title='更新'
         description='請修改內容並確認更新'

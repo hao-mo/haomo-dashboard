@@ -10,25 +10,31 @@ import { cn } from '@/utils';
 
 import { FormControl } from './form';
 
-export function DatePicker({
-  className,
-  selected,
-  onSelect,
-  required = false,
-  withForm = false,
-  placeholder = 'Pick a date',
-  ...props
-}: {
+interface DatePickerProps
+  extends Omit<React.ComponentProps<typeof Calendar>, 'onSelect' | 'selected' | 'mode'>,
+    WithClassName {
   selected: Date;
   onSelect: SelectSingleEventHandler;
   required?: boolean;
   withForm?: boolean;
   placeholder?: string;
-} & WithClassName &
-  Omit<React.ComponentProps<typeof Calendar>, 'onSelect' | 'selected' | 'mode'>) {
+  buttonDisabled?: boolean;
+}
+
+export function DatePicker({
+  className,
+  selected,
+  buttonDisabled,
+  onSelect,
+  required = false,
+  withForm = false,
+  placeholder = 'Pick a date',
+  ...props
+}: DatePickerProps) {
   const renderButton = () => (
     <Button
       variant={'outline'}
+      disabled={buttonDisabled}
       className={cn(
         'w-[280px] justify-start text-left font-normal',
         !selected && 'text-muted-foreground',

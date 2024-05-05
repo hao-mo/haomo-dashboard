@@ -21,12 +21,12 @@ import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
 
-import { CONTENT_TYPE, type ContentWithId } from '@/lib/types';
+import { CONTENT_TYPE } from '@/lib/types';
 
 import { DeleteNewsModal } from '../../_components/delete-news-modal';
 import type { FormattedNews } from '../../type';
-import { createNews, updateNews } from '../actions';
-import type { NewsFormValues } from '../schema';
+import { createNews, rollbackNews, updateNews } from '../actions';
+import type { ContentWithId, NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
 import { ImageUploadField } from './image-upload-field';
@@ -59,33 +59,16 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         {
           type: CONTENT_TYPE.HEADING,
           text: {
-            'zh-TW': '標題',
-            'en-US': 'Heading',
-            'ja-JP': '見出し',
+            'zh-TW': '',
+            'en-US': '',
+            'ja-JP': '',
           },
-          formattedText: '標題',
-        },
-        {
-          type: CONTENT_TYPE.PARAGRAPH,
-          formattedText: '歡迎來到我們的範例文字',
-          text: {
-            'zh-TW': '歡迎來到我們的範例文字',
-            'en-US': 'Welcome to our example text',
-            'ja-JP': '私たちの例文へようこそ',
-          },
-        },
-        {
-          type: CONTENT_TYPE.HEADING,
-          text: {
-            'zh-TW': '標題',
-            'en-US': 'Heading',
-            'ja-JP': '見出し',
-          },
-          formattedText: '標題',
         },
       ],
     },
   });
+
+  const isDeleted = form.watch('isDeleted');
 
   useJumpToErrorInput(form.formState.errors);
 
@@ -116,7 +99,18 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
     }
   };
 
-  const handleCreateContent = async (data: ContentWithId) => {
+  const onRollback = async () => {
+    try {
+      if (!initialData) return;
+      await rollbackNews(initialData.id);
+      toast.success('復原成功');
+      router.push(`/dashboard/project/${params.projectId}/news`);
+    } catch (error) {
+      toast.error('復原失敗');
+    }
+  };
+
+  const onCreateContent = async (data: ContentWithId) => {
     append(data);
     setItems([...items, data]);
     onClose();
@@ -157,6 +151,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
                   className='flex w-full'
                   selected={field.value}
                   onSelect={field.onChange}
+                  buttonDisabled={isDeleted}
                   required
                   withForm
                 />
@@ -169,14 +164,18 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
             <LocaleFieldList
               name='headline'
               control={form.control}
+              disabled={isDeleted}
             >
-              {({ name, control }) => (
+              {({ name, control, disabled }) => (
                 <FormField
                   name={name}
                   control={control}
                   render={({ field }) => (
                     <FormItem>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        disabled={disabled}
+                      />
                     </FormItem>
                   )}
                 />
@@ -188,8 +187,9 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
             <LocaleFieldList
               name='description'
               control={form.control}
+              disabled={isDeleted}
             >
-              {({ name, control }) => (
+              {({ name, control, disabled }) => (
                 <FormField
                   name={name}
                   control={control}
@@ -197,7 +197,8 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
                     <FormItem>
                       <Textarea
                         {...field}
-                        className='h-40'
+                        className='min-h-40'
+                        disabled={disabled}
                       />
                     </FormItem>
                   )}
@@ -206,7 +207,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
             </LocaleFieldList>
           </div>
         </div>
-        <div className='col-span-full flex flex-col justify-between lg:col-span-8'>
+        <div className='col-span-full flex flex-col lg:col-span-8'>
           <div className='relative py-4'>
             <FormLabel className='text-sm'>封面圖片</FormLabel>
             <ImageUploadField
@@ -218,6 +219,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
                   : form.getValues('imageUrl')
               }
               defaultAlt={form.getValues('formattedAlt')}
+              disabled={isDeleted}
             />
           </div>
           <div className='relative py-4'>
@@ -225,14 +227,18 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
             <LocaleFieldList
               name='alt'
               control={form.control}
+              disabled={isDeleted}
             >
-              {({ name, control }) => (
+              {({ name, control, disabled }) => (
                 <FormField
                   name={name}
                   control={control}
                   render={({ field }) => (
                     <FormItem>
-                      <Input {...field} />
+                      <Input
+                        {...field}
+                        disabled={disabled}
+                      />
                     </FormItem>
                   )}
                 />
@@ -244,7 +250,10 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         <div className='col-span-full w-full py-4'>
           <div className='mb-4 flex items-center justify-between'>
             <Label className='text-sm'>內文</Label>
-            <AddButton onClick={onOpen} />
+            <AddButton
+              onClick={onOpen}
+              disabled={isDeleted}
+            />
           </div>
           <Modal
             title='新增內文區塊'
@@ -252,38 +261,51 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
             isOpen={isOpen}
             onClose={onClose}
           >
-            <ContentForm onCreate={handleCreateContent} />
+            <ContentForm onCreate={onCreateContent} />
           </Modal>
           <ContentList
             items={items}
             setItems={setItems}
+            disabled={isDeleted}
             onUpdate={update}
             onDelete={remove}
           />
         </div>
         <div className='col-span-full flex w-full items-center justify-end gap-x-2'>
-          {initialData ? (
-            <DeleteNewsModal
-              data={initialData.id}
-              title='你確定要刪除這筆資料嗎？'
-              description='這筆資料可在 “刪除列表” 中進行復原'
-            />
-          ) : (
+          {isDeleted ? (
             <Button
               type='button'
-              variant='secondary'
-              onClick={() => router.back()}
+              variant='destructive'
+              onClick={onRollback}
             >
-              取消
+              復原
             </Button>
+          ) : (
+            <>
+              {initialData ? (
+                <DeleteNewsModal
+                  data={initialData.id}
+                  title='你確定要刪除這筆資料嗎？'
+                  description='這筆資料可在 “刪除列表” 中進行復原'
+                />
+              ) : (
+                <Button
+                  type='button'
+                  variant='secondary'
+                  onClick={() => router.back()}
+                >
+                  取消
+                </Button>
+              )}
+              <SubmitButton
+                type='submit'
+                disabled={form.formState.isSubmitting || !form.formState.isDirty}
+                loading={form.formState.isSubmitting}
+              >
+                儲存
+              </SubmitButton>
+            </>
           )}
-          <SubmitButton
-            type='submit'
-            disabled={form.formState.isSubmitting || !form.formState.isDirty}
-            loading={form.formState.isSubmitting}
-          >
-            儲存
-          </SubmitButton>
         </div>
       </form>
     </Form>

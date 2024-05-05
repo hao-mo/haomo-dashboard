@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 
-import { DeleteButton } from '../delete-button';
+import { Button } from '../ui/button';
 import { Loader } from '../ui/loader';
 
 interface DeleteModalProps {
@@ -46,13 +46,15 @@ export const DeleteModal = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>取消</AlertDialogCancel>
-          <DeleteButton
+          <Button
+            type='button'
+            variant='destructive'
             disabled={loading}
             onClick={onConfirm}
           >
             {loading ? <Loader className='mr-2 size-4' /> : <TrashIcon className='mr-2 size-4' />}
             確定
-          </DeleteButton>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

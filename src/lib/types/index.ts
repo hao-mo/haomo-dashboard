@@ -104,6 +104,4 @@ type Heading = {
 
 export type Content = Paragraph | Image | Heading;
 
-export type ContentWithId = Content & { id: string };
-
 export type ContentType = Content['type'];

@@ -16,6 +16,7 @@ interface ImageUploadFieldProps<
   control: Control<TFieldValues>;
   defaultImageUrl: string;
   defaultAlt: string;
+  disabled?: boolean;
 }
 
 export const ImageUploadField = <
@@ -26,6 +27,7 @@ export const ImageUploadField = <
   control,
   defaultImageUrl,
   defaultAlt,
+  disabled,
 }: ImageUploadFieldProps<TFieldValues, TName>) => {
   const { register } = useFormContext();
   const [imageUrl, setImageUrl] = useState<string>(defaultImageUrl);
@@ -33,6 +35,8 @@ export const ImageUploadField = <
   const fileRef = register(name);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const isImageExist = imageUrl && imageUrl !== '';
 
   return (
     <FormField
@@ -45,24 +49,29 @@ export const ImageUploadField = <
               <div
                 className={cn(
                   'flex h-80 items-center justify-center rounded-md border-2 border-dashed border-border bg-muted',
-                  imageUrl !== '' &&
+                  isImageExist &&
                     'absolute left-0 top-0 z-1 size-full border-none bg-transparent text-white opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100'
                 )}
               >
-                <button
-                  type='button'
-                  className='size-full cursor-pointer text-sm'
-                  onClick={() => inputRef.current?.click()}
-                >
-                  {imageUrl !== '' ? '變更圖片' : '請選擇圖片'}
-                </button>
+                {!disabled && (
+                  <button
+                    type='button'
+                    className='size-full cursor-pointer text-sm'
+                    onClick={() => inputRef.current?.click()}
+                  >
+                    {isImageExist ? '變更圖片' : '請選擇圖片'}
+                  </button>
+                )}
               </div>
-              {imageUrl !== '' && (
-                <div className='relative h-80 w-full bg-muted'>
+              {isImageExist && (
+                <div className='relative h-80 w-full rounded-md bg-muted'>
                   <Image
                     src={imageUrl}
                     alt={field.value ? field.value.name : defaultAlt}
-                    className='size-full object-contain object-center blur-sm transition-all duration-500 ease-in-out group-hover:brightness-50'
+                    className={cn(
+                      'size-full object-contain object-center blur-sm transition-all duration-500 ease-in-out group-hover:brightness-50',
+                      disabled && 'opacity-50 brightness-50'
+                    )}
                     fill
                     loading='lazy'
                     onLoad={(e) => e.currentTarget.classList.remove('blur-sm')}
@@ -76,6 +85,7 @@ export const ImageUploadField = <
                 className='hidden'
                 {...fileRef}
                 ref={inputRef}
+                disabled={disabled}
                 onChange={(event) => {
                   if (event.target.files && event.target.files.length > 0) {
                     const file = event.target.files[0];

@@ -18,3 +18,7 @@ export const newsFormSchema = z.object({
 });
 
 export type NewsFormValues = z.infer<typeof newsFormSchema>;
+
+export type ContentFormValues = z.infer<typeof contentSchema>;
+
+export type ContentWithId = ContentFormValues & { id: string };

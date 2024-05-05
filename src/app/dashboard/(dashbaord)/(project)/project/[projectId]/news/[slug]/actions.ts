@@ -12,14 +12,9 @@ import type { FormattedNews, News } from '../type';
 
 import type { NewsFormValues } from './schema';
 
-type CreateNewsPayload = Omit<
-  News,
-  'id' | 'createdAt' | 'updatedAt' | 'formattedHeadline' | 'formattedDescription' | 'formattedAlt'
->;
-
 export const createNews = async (data: NewsFormValues) => {
   try {
-    const formattedData: CreateNewsPayload = {
+    const formattedData = {
       ...data,
       status: 'published',
       headline: formatLocaleString(data.headline),
@@ -123,6 +118,27 @@ export const updateNews = async (id: string, { date, file, ...data }: NewsFormVa
     });
     if (!response.ok) {
       throw new Error('Failed to update news');
+    }
+    revalidateTag('news');
+  } catch (error) {
+    console.log('🚨 - error', error);
+    throw error;
+  }
+};
+
+export const rollbackNews = async (id: string) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/v1/news/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        isDeleted: false,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to rollback news');
     }
     revalidateTag('news');
   } catch (error) {

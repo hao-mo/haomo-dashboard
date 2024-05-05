@@ -6,15 +6,17 @@ import { useForm } from 'react-hook-form';
 import { AddButton } from '@/components/add-button';
 import { DeleteButton } from '@/components/delete-button';
 import { Button } from '@/components/ui/button';
-import { FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
 import { contentSchema } from '@/lib/schemas/schema';
-import type { ContentType, ContentWithId } from '@/lib/types';
+import type { ContentType } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
 
+import type { ContentWithId } from '../../schema';
 import { ImageUploadField } from '../image-upload-field';
 import { LocaleFieldList } from '../locale-field-list';
 
@@ -68,7 +70,6 @@ export const ContentForm = (props: ContentFormProps) => {
             'en-US': '',
             'ja-JP': '',
           },
-          formattedText: '',
         },
   });
 
@@ -90,7 +91,6 @@ export const ContentForm = (props: ContentFormProps) => {
           'en-US': '',
           'ja-JP': '',
         },
-        formattedAlt: '',
         file: undefined,
       });
     } else if (contentType === CONTENT_TYPE.HEADING) {
@@ -101,7 +101,6 @@ export const ContentForm = (props: ContentFormProps) => {
           'en-US': '',
           'ja-JP': '',
         },
-        formattedText: '',
       });
     } else {
       form.reset({
@@ -111,7 +110,6 @@ export const ContentForm = (props: ContentFormProps) => {
           'en-US': '',
           'ja-JP': '',
         },
-        formattedText: '',
       });
     }
   };
@@ -120,7 +118,7 @@ export const ContentForm = (props: ContentFormProps) => {
     if (type === CONTENT_TYPE.HEADING) {
       return (
         <div className='relative'>
-          <FormLabel className='text-sm'>標題</FormLabel>
+          <Label className='text-sm'>標題</Label>
           <LocaleFieldList
             name='text'
             control={form.control}
@@ -143,7 +141,7 @@ export const ContentForm = (props: ContentFormProps) => {
     if (type === CONTENT_TYPE.PARAGRAPH) {
       return (
         <div className='relative'>
-          <FormLabel className='text-sm'>內容</FormLabel>
+          <Label className='text-sm'>內容</Label>
           <LocaleFieldList
             name='text'
             control={form.control}
@@ -169,7 +167,7 @@ export const ContentForm = (props: ContentFormProps) => {
     if (type === CONTENT_TYPE.IMAGE) {
       const file = form.getValues('file');
       const imageUrl = file ? URL.createObjectURL(file) : form.getValues('imageUrl');
-      const alt = form.getValues('formattedAlt');
+      const alt = file?.name ?? 'image';
       return (
         <>
           <ImageUploadField
@@ -178,7 +176,7 @@ export const ContentForm = (props: ContentFormProps) => {
             defaultImageUrl={imageUrl}
             defaultAlt={alt}
           />
-          <FormLabel className='text-sm'>說明</FormLabel>
+          <Label className='text-sm'>說明</Label>
           <div className='relative'>
             <LocaleFieldList
               name='alt'
