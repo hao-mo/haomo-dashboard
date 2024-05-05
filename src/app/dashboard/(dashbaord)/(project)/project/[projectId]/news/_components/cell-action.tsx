@@ -13,23 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useOpen } from '@/hooks/use-open';
 
-import { fetcher } from '@/utils';
-
+import { useDeleteNews } from '../hooks/use-delete-news';
 import type { FormattedNews } from '../type';
 
 export const CellAction = ({ data }: { data: FormattedNews }) => {
   const params = useParams();
   const router = useRouter();
-  const { isOpen, onClose, onOpen } = useOpen();
 
-  // TODO: Change data.id to data slug
-  const onConfirm = async () => {
-    await fetcher(`/api/${params.projectId}/news/${data.id}`, {
-      method: 'DELETE',
-    });
-  };
+  const { isOpen, onClose, onOpen, onDelete, onSuccess } = useDeleteNews(data.id);
 
   return (
     <>
@@ -38,8 +30,8 @@ export const CellAction = ({ data }: { data: FormattedNews }) => {
         description='此資料可在 “刪除列表” 中進行復原'
         isOpen={isOpen}
         onClose={onClose}
-        onConfirm={onConfirm}
-        onSuccess={() => router.refresh()}
+        onConfirm={onDelete}
+        onSuccess={onSuccess}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

@@ -7,9 +7,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { AddButton } from '@/components/add-button';
-import { DeleteButton } from '@/components/delete-button';
 import { SubmitButton } from '@/components/submit-button';
-import { AlertDialog, AlertDialogContent, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -24,12 +22,12 @@ import { useOpen } from '@/hooks/use-open';
 
 import { CONTENT_TYPE, type ContentWithId } from '@/lib/types';
 
-import { deleteNews } from '../../actions';
 import type { FormattedNews } from '../../type';
 import { updateNews } from '../actions';
 import type { NewsFormValues } from '../schema';
 import { newsFormSchema } from '../schema';
 
+import { DeleteNewsModel } from './delete-news-model';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
@@ -41,7 +39,6 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
   const params = useParams();
 
   const { isOpen, onOpen, onClose } = useOpen();
-  const [isLoading, setIsLoading] = useState(false);
 
   const defaultLocale = useLocaleStore((state) => state.locale);
 
@@ -100,18 +97,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
 
   const isMount = useMount();
 
-  console.log('form values', form.getValues());
   console.log('form error', form.formState.errors);
-
-  const onDelete = async () => {
-    try {
-      if (!initialData) return;
-      console.log('🚨 - initialData', initialData);
-      await deleteNews(initialData.id);
-      toast.success('刪除成功');
-      router.push(`/dashboard/project/${params.projectId}/news`);
-    } catch (error) {}
-  };
 
   const onSubmit = async (data: NewsFormValues) => {
     try {
@@ -277,12 +263,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
         </div>
         <div className='col-span-full flex w-full items-center justify-end gap-x-2'>
           {initialData ? (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <DeleteButton onClick={onDelete}>刪除</DeleteButton>
-              </AlertDialogTrigger>
-              <AlertDialogContent>1234</AlertDialogContent>
-            </AlertDialog>
+            <DeleteNewsModel id={initialData.id} />
           ) : (
             <Button
               type='button'

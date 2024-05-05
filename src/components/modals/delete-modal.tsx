@@ -23,7 +23,9 @@ interface DeleteModalProps {
   onClose: () => void;
   onConfirm: () => Promise<void>;
   onSuccess?: (() => Promise<void>) | (() => void);
+  onError?: (() => Promise<void>) | (() => void);
 }
+
 export const DeleteModal = ({
   title,
   description,
@@ -31,6 +33,7 @@ export const DeleteModal = ({
   onClose,
   onConfirm,
   onSuccess,
+  onError,
 }: DeleteModalProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -48,6 +51,7 @@ export const DeleteModal = ({
       onSuccess && (await onSuccess());
     } catch (error) {
       toast.error('刪除失敗');
+      onError && (await onError());
     } finally {
       onClose();
       setLoading(false);
