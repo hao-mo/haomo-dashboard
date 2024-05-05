@@ -10,12 +10,12 @@ export type News = {
   id: string;
   slug: string;
   headline: LocaleString;
-  // formattedHeadline: string;
+  formattedHeadline: string;
   description: LocaleString;
-  // formattedDescription: string;
+  formattedDescription: string;
   imageUrl: string;
   alt: LocaleString;
-  // formattedAlt: string;
+  formattedAlt: string;
   // date: Date;
   isDeleted: boolean;
   createdAt: Date;

@@ -12,7 +12,10 @@ import type { FormattedNews, News } from '../type';
 
 import type { NewsFormValues } from './schema';
 
-type CreateNewsPayload = Omit<News, 'id' | 'createdAt' | 'updatedAt'>;
+type CreateNewsPayload = Omit<
+  News,
+  'id' | 'createdAt' | 'updatedAt' | 'formattedHeadline' | 'formattedDescription' | 'formattedAlt'
+>;
 
 export const createNews = async (data: NewsFormValues) => {
   try {

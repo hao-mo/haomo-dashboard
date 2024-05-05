@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 import { formatRelative } from '@/utils/format';
 
-import type { FormattedNews, News } from '../type';
+import type { FormattedNews } from '../type';
 
 import { CellAction } from './cell-action';
 import { CellLink } from './cell-link';
@@ -48,7 +48,7 @@ export const columns: ColumnDef<FormattedNews>[] = [
     accessorKey: 'status',
     header: '狀態',
     cell: ({ row }) => {
-      const status = row.getValue('status') as News['status'];
+      const status = row.getValue('status');
       const getVariant = () => {
         if (status === 'archived') {
           return 'secondary';
