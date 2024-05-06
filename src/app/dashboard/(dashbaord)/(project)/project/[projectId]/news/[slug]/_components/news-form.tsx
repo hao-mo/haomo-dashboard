@@ -44,19 +44,19 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
   const defaultLocale = useLocaleStore((state) => state.locale);
 
   const defaultLocaleString = {
-    [defaultLocale]: '',
+    [defaultLocale]: 'Test',
   };
 
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema),
     defaultValues: initialData ?? {
-      slug: '',
-      isDeleted: false,
+      slug: 'test12345',
       headline: defaultLocaleString,
       description: defaultLocaleString,
       date: new Date(),
       imageUrl:
         'https://ik.imagekit.io/dabeikeng/Products/5-3_%E8%8C%B6%E9%A2%A8%E5%91%B3%E9%A4%85%E4%B9%BE.jpg',
+      alt: defaultLocaleString,
       articles: [
         {
           type: CONTENT_TYPE.HEADING,

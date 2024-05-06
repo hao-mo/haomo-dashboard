@@ -66,7 +66,7 @@ declare global {
   }
 
   interface CustomResponse<T> {
-    items: T;
+    items: T[];
     pagination: Pagination;
   }
 }

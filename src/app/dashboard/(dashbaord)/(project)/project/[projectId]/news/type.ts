@@ -16,6 +16,7 @@ export type News = {
   imageUrl: string;
   alt: LocaleString;
   formattedAlt: string;
+  // TODO: 請阿摸新增此欄位
   // date: Date;
   isDeleted: boolean;
   createdAt: Date;
@@ -26,3 +27,13 @@ export type News = {
 };
 
 export type FormattedNews = Omit<News, 'articles'> & { articles: Content[] };
+
+export type NewsTag = {
+  id: string;
+  isDeleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  value: LocaleString;
+  formattedValue: string;
+};

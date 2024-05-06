@@ -96,18 +96,6 @@ export const columns: ColumnDef<FormattedNews>[] = [
   //   cell: ({ row }) => formatDate(row.getValue('date'), 'YYYY/MM/dd'),
   // },
   {
-    accessorKey: 'createdAt',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='建立時間'
-      />
-    ),
-    cell: ({ row }) => (
-      <span className='capitalize'>{formatRelative(row.getValue('createdAt'))}</span>
-    ),
-  },
-  {
     accessorKey: 'updatedAt',
     header: ({ column }) => (
       <DataTableColumnHeader
