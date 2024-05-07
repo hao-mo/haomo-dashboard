@@ -21,7 +21,7 @@ export function DataTableHeader({ table }: { table: Table<FormattedNews> }) {
   };
 
   return (
-    <div className='flex items-center justify-between gap-x-2 bg-background pb-4'>
+    <div className='mb-8 flex items-center justify-between gap-x-2 bg-background'>
       <DebouncedSearchInput
         value={searchValue}
         onChange={onInputChange}

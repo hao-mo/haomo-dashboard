@@ -16,14 +16,16 @@ export type News = {
   imageUrl: string;
   alt: LocaleString;
   formattedAlt: string;
-  // TODO: 請阿摸新增此欄位
-  // date: Date;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
   articles: ArticleContent[];
+  newsTagIds: string[];
+  newsTags: NewsTag[];
   // TODO: 請阿摸新增此欄位
   status: 'draft' | 'processing' | 'published' | 'archived' | 'failed';
+  // TODO: 請阿摸新增此欄位
+  // date: Date;
 };
 
 export type FormattedNews = Omit<News, 'articles'> & { articles: Content[] };

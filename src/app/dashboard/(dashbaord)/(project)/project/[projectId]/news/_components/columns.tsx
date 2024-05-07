@@ -11,6 +11,7 @@ import { formatRelative } from '@/utils/format';
 import type { FormattedNews } from '../type';
 
 import { CellLink } from './cell-link';
+import { CellTagList } from './cell-tag-list';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -84,6 +85,12 @@ export const columns: ColumnDef<FormattedNews>[] = [
     header: () => '標題',
     enableHiding: false,
     cell: ({ row }) => <CellLink data={row.original} />,
+  },
+  {
+    accessorKey: 'neswTags',
+    header: () => '標籤',
+    enableHiding: false,
+    cell: ({ row }) => <CellTagList tags={row.original.newsTags} />,
   },
   // {
   //   accessorKey: 'date',

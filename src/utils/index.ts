@@ -1,5 +1,4 @@
 import clsx, { type ClassValue } from 'clsx';
-import type { ReadonlyURLSearchParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
 /**
@@ -47,7 +46,7 @@ export function createURLSearchParams(searchParams: Record<string, any>): string
  */
 export const createQueryString = (
   params: Record<string, string | number | null>,
-  oldSearchParams: ReadonlyURLSearchParams
+  oldSearchParams: URLSearchParams
 ) => {
   const newSearchParams = new URLSearchParams(oldSearchParams.toString());
 
