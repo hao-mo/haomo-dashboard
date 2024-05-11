@@ -5,9 +5,9 @@ import { Badge } from '@/components/ui/badge';
 
 import { createQueryString } from '@/utils';
 
-import type { NewsTag } from '../type';
+import type { Tag } from '../type';
 
-export const CellTagList = ({ tags }: { tags: NewsTag[] }) => {
+export const CellTagList = ({ tags }: { tags: Tag[] }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

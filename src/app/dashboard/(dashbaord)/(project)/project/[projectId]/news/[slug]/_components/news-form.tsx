@@ -21,6 +21,7 @@ import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
 
+import type { Tag } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
 
 import { DeleteNewsModal } from '../../_components/delete-news-modal';
@@ -32,10 +33,16 @@ import { newsFormSchema } from '../schema';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
+import { TagFieldList } from './tag-field-list';
 
 import { useLocaleStore } from '@/stores/locale-store';
 
-export const NewsForm = ({ initialData }: { initialData: FormattedNews | null }) => {
+interface NewsFormProps {
+  initialData: FormattedNews | null;
+  newsTags: Tag[];
+}
+
+export const NewsForm = ({ initialData, newsTags }: NewsFormProps) => {
   const router = useRouter();
   const params = useParams();
 
@@ -63,6 +70,7 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
           text: defaultLocaleString,
         },
       ],
+      newsTags: [],
     },
   });
 
@@ -82,7 +90,6 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
   const isMount = useMount();
 
   const onSubmit = async (data: NewsFormValues) => {
-    console.log('🚨 - data values', data);
     try {
       if (initialData) {
         await updateNews(initialData.id, data);
@@ -183,30 +190,10 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
               )}
             </LocaleFieldList>
           </div>
-          <div className='relative py-4'>
-            <Label className='mb-2 inline-block text-sm'>說明</Label>
-            <LocaleFieldList
-              name='description'
-              control={form.control}
-              disabled={isDeleted}
-            >
-              {({ name, control, disabled }) => (
-                <FormField
-                  name={name}
-                  control={control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <Textarea
-                        {...field}
-                        className='min-h-40'
-                        disabled={disabled}
-                      />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </LocaleFieldList>
-          </div>
+          <TagFieldList
+            control={form.control}
+            allTags={newsTags}
+          />
         </div>
         <div className='col-span-full flex flex-col lg:col-span-8'>
           <div className='relative py-4'>
@@ -246,6 +233,31 @@ export const NewsForm = ({ initialData }: { initialData: FormattedNews | null })
               )}
             </LocaleFieldList>
           </div>
+        </div>
+
+        <div className='relative col-span-full py-4'>
+          <Label className='mb-2 inline-block text-sm'>說明</Label>
+          <LocaleFieldList
+            name='description'
+            control={form.control}
+            disabled={isDeleted}
+          >
+            {({ name, control, disabled }) => (
+              <FormField
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Textarea
+                      {...field}
+                      className='min-h-40'
+                      disabled={disabled}
+                    />
+                  </FormItem>
+                )}
+              />
+            )}
+          </LocaleFieldList>
         </div>
 
         <div className='col-span-full w-full py-4'>

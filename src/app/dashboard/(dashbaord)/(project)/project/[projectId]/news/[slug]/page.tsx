@@ -4,6 +4,8 @@ import { RouterBackButton } from '@/components/router-back-button';
 
 import { formatRelative } from '@/utils/format';
 
+import { getAllNewsTags } from '../actions';
+
 import { NewsForm } from './_components/news-form';
 import { getNewsBySlug } from './actions';
 
@@ -11,6 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function Page({ params }: { params: { projectId: string; slug: string } }) {
   const news = await getNewsBySlug(params.slug);
+  const { data: newsTags } = await getAllNewsTags();
 
   const title = news ? '編輯' : '新增';
 
@@ -36,7 +39,10 @@ export default async function Page({ params }: { params: { projectId: string; sl
           ) : null}
         </div>
       </div>
-      <NewsForm initialData={news} />
+      <NewsForm
+        initialData={news}
+        newsTags={newsTags}
+      />
     </div>
   );
 }

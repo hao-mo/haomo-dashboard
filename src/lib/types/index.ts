@@ -105,3 +105,13 @@ type Heading = {
 export type Content = Paragraph | Image | Heading;
 
 export type ContentType = Content['type'];
+
+export type Tag = {
+  id: string;
+  isDeleted: boolean;
+  name: string;
+  value: LocaleString;
+  formattedValue: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

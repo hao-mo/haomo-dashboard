@@ -3,10 +3,11 @@
 import { revalidateTag } from 'next/cache';
 
 import { BASE_API_URL } from '@/lib/server';
+import type { Tag } from '@/lib/types';
 
 import { fetcher } from '@/utils';
 
-import type { News, NewsTag } from './type';
+import type { News } from './type';
 
 interface NewsSearchOptions {
   pageSize: string;
@@ -68,7 +69,7 @@ export const deleteNews = async (id: string) => {
 
 export const getAllNewsTags = async () => {
   try {
-    const result = await fetcher<CustomResponse<NewsTag>>(`${BASE_API_URL}/v1/news-tags/fetch`, {
+    const result = await fetcher<CustomResponse<Tag>>(`${BASE_API_URL}/v1/news-tags/fetch`, {
       method: 'POST',
       body: JSON.stringify({
         orderBy: 'DESC',

@@ -5,9 +5,9 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 
-import type { NewsTag } from '../type';
+import type { Tag } from '../type';
 
-export const NewsTagList = ({ tags }: { tags: NewsTag[] }) => {
+export const NewsTagList = ({ tags }: { tags: Tag[] }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

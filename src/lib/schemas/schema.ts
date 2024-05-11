@@ -66,6 +66,11 @@ export const imageSchema = z.object({
 
 export const contentSchema = z.union([headingSchema, paragraphSchema, imageSchema]);
 
+export const tagSchema = z.object({
+  value: localeSchema,
+  isDeleted: z.boolean().default(false),
+});
+
 export const pushNotificationOptions: Option[] = [
   {
     name: 'All',
@@ -131,3 +136,5 @@ export type AccountSettingFieldValues = z.infer<typeof accountSettingFormSchema>
 export type ProfileSettingFieldValues = z.infer<typeof profileSettingFormSchema>;
 
 export type NotificationSettingFieldValues = z.infer<typeof notificationSettingFormSchema>;
+
+export type TagFormValues = z.infer<typeof tagSchema>;
