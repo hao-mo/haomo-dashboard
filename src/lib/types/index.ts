@@ -22,10 +22,10 @@ export type IRoute = {
   routes?: IRoute[];
 };
 
-export interface Option {
+export type Option = {
   value: string;
   name: string;
-}
+};
 
 export interface FormState {
   message: string;

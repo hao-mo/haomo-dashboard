@@ -5,8 +5,8 @@ import { contentSchema, fileSchema } from '@/lib/schemas/schema';
 import { localeSchema } from '@/stores/locale-store';
 
 const tagSchema = z.object({
+  id: z.string(),
   value: localeSchema,
-  isDeleted: z.boolean().default(false),
 });
 
 export const newsFormSchema = z.object({

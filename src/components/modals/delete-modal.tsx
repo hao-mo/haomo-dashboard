@@ -19,7 +19,7 @@ interface DeleteModalProps {
   loading: boolean;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => Promise<void>;
+  onConfirm: () => void;
 }
 
 export const DeleteModal = ({

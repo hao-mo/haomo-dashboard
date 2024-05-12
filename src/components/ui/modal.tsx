@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader } from './dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './dialog';
 
 interface ModalProps extends PropsWithChildren {
   title: string;
@@ -17,7 +17,9 @@ export const Modal = ({ title, description, isOpen, onClose, children }: ModalPr
       onOpenChange={onChange}
     >
       <DialogContent>
-        <DialogHeader>{title}</DialogHeader>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
         <DialogDescription>{description}</DialogDescription>
         {children}
       </DialogContent>

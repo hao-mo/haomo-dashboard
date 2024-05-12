@@ -33,16 +33,16 @@ import { newsFormSchema } from '../schema';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
-import { TagFieldList } from './tag-field-list';
+import { TagSelectField } from './tag-select-field';
 
 import { useLocaleStore } from '@/stores/locale-store';
 
 interface NewsFormProps {
   initialData: FormattedNews | null;
-  newsTags: Tag[];
+  allNewsTags: Tag[];
 }
 
-export const NewsForm = ({ initialData, newsTags }: NewsFormProps) => {
+export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
   const router = useRouter();
   const params = useParams();
 
@@ -82,8 +82,6 @@ export const NewsForm = ({ initialData, newsTags }: NewsFormProps) => {
     control: form.control,
     name: 'articles',
   });
-
-  console.log('🚨 - fields', form.formState.errors);
 
   const [items, setItems] = useState<ContentWithId[]>(fields);
 
@@ -129,6 +127,7 @@ export const NewsForm = ({ initialData, newsTags }: NewsFormProps) => {
     (event) => {
       if (!form.formState.isDirty) return;
       event.preventDefault();
+      event.returnValue = '';
     },
     undefined,
     [form.formState.isDirty],
@@ -190,9 +189,9 @@ export const NewsForm = ({ initialData, newsTags }: NewsFormProps) => {
               )}
             </LocaleFieldList>
           </div>
-          <TagFieldList
+          <TagSelectField
             control={form.control}
-            allTags={newsTags}
+            allNewsTags={allNewsTags}
           />
         </div>
         <div className='col-span-full flex flex-col lg:col-span-8'>

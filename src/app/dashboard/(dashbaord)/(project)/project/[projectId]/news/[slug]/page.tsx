@@ -41,7 +41,7 @@ export default async function Page({ params }: { params: { projectId: string; sl
       </div>
       <NewsForm
         initialData={news}
-        newsTags={newsTags}
+        allNewsTags={newsTags}
       />
     </div>
   );

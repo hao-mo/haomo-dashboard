@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { DeleteButton } from '@/components/delete-button';
 import { DeleteModal } from '@/components/modals/delete-modal';
 
-import { useDeleteModal } from '@/hooks/use-delete-modal';
+import { useModal } from '@/hooks/use-modal';
 
 import { deleteNews } from '../actions';
 
@@ -24,7 +24,7 @@ export const DeleteNewsModal = ({
   const router = useRouter();
   const params = useParams();
 
-  const { isOpen, onClose, onOpen, loading, startLoading, stopLoading } = useDeleteModal();
+  const { isOpen, onClose, onOpen, loading, startLoading, stopLoading } = useModal();
 
   const onConfirm = async () => {
     try {
