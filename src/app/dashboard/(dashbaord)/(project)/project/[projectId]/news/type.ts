@@ -1,3 +1,4 @@
+import type { StatusFormValues } from '@/lib/schemas/schema';
 import type { Content, Tag } from '@/lib/types';
 
 import type { LocaleString } from '@/stores/locale-store';
@@ -23,7 +24,7 @@ export type News = {
   newsTagIds: string[];
   newsTags: Tag[];
   // TODO: 請阿摸新增此欄位
-  status: 'draft' | 'processing' | 'published' | 'archived' | 'failed';
+  status: StatusFormValues;
   // TODO: 請阿摸新增此欄位
   // date: Date;
 };

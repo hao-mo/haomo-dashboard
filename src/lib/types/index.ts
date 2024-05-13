@@ -31,12 +31,6 @@ export interface FormState {
   message: string;
 }
 
-// export type LocaleString = {
-//   'zh-TW': string;
-//   'en-US'?: string;
-//   'ja-JP'?: string;
-// };
-
 export enum CONTENT_TYPE {
   PARAGRAPH = 'PARAGRAPH',
   IMAGE = 'IMAGE',

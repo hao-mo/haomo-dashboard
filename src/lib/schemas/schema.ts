@@ -66,10 +66,18 @@ export const imageSchema = z.object({
 
 export const contentSchema = z.union([headingSchema, paragraphSchema, imageSchema]);
 
+export type ContentFormValues = z.infer<typeof contentSchema>;
+
 export const tagSchema = z.object({
+  id: z.string(),
   value: localeSchema,
-  isDeleted: z.boolean().default(false),
 });
+
+export type TagFormValues = z.infer<typeof tagSchema>;
+
+export const statusSchema = z.enum(['draft', 'published']);
+
+export type StatusFormValues = z.infer<typeof statusSchema>;
 
 export const pushNotificationOptions: Option[] = [
   {
@@ -136,5 +144,3 @@ export type AccountSettingFieldValues = z.infer<typeof accountSettingFormSchema>
 export type ProfileSettingFieldValues = z.infer<typeof profileSettingFormSchema>;
 
 export type NotificationSettingFieldValues = z.infer<typeof notificationSettingFormSchema>;
-
-export type TagFormValues = z.infer<typeof tagSchema>;

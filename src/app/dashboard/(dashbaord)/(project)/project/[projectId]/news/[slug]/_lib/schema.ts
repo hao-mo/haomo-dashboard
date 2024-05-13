@@ -1,16 +1,13 @@
 import { z } from 'zod';
 
-import { contentSchema, fileSchema } from '@/lib/schemas/schema';
+import type { ContentFormValues } from '@/lib/schemas/schema';
+import { contentSchema, fileSchema, statusSchema, tagSchema } from '@/lib/schemas/schema';
 
 import { localeSchema } from '@/stores/locale-store';
 
-const tagSchema = z.object({
-  id: z.string(),
-  value: localeSchema,
-});
-
 export const newsFormSchema = z.object({
   slug: z.string(),
+  status: statusSchema,
   isDeleted: z.boolean().default(false),
   date: z.date(),
   headline: localeSchema,
@@ -23,7 +20,5 @@ export const newsFormSchema = z.object({
 });
 
 export type NewsFormValues = z.infer<typeof newsFormSchema>;
-
-export type ContentFormValues = z.infer<typeof contentSchema>;
 
 export type ContentWithId = ContentFormValues & { id: string };
