@@ -11,7 +11,7 @@ import { cn } from '@/utils';
 interface ImageUploadFieldProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
-> {
+> extends WithClassName {
   name: TName;
   control: Control<TFieldValues>;
   defaultImageUrl: string;
@@ -28,6 +28,7 @@ export const ImageUploadField = <
   defaultImageUrl,
   defaultAlt,
   disabled,
+  className,
 }: ImageUploadFieldProps<TFieldValues, TName>) => {
   const { register } = useFormContext();
   const [imageUrl, setImageUrl] = useState<string>(defaultImageUrl);
@@ -44,7 +45,7 @@ export const ImageUploadField = <
       control={control}
       render={({ field }) => {
         return (
-          <FormItem>
+          <FormItem className={className}>
             <div className='group relative mb-2 overflow-hidden'>
               <div
                 className={cn(
