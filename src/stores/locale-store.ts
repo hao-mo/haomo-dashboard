@@ -20,20 +20,6 @@ export const locales = {
   },
 };
 
-// .superRefine((obj, ctx) => {
-//   // Ensure only known locale keys are used (add your locale keys here)
-//   const allowedKeys = ['zh-TW', 'en-US', 'ja-JP'];
-//   for (const key of Object.keys(obj)) {
-//     if (!allowedKeys.includes(key)) {
-//       ctx.addIssue({
-//         path: [key],
-//         code: 'custom',
-//         message: `該語言 "${key}" 並不支援`,
-//       });
-//     }
-//   }
-// });
-
 export type Locale = keyof typeof locales;
 
 type LocaleState = {
@@ -76,5 +62,25 @@ export const localeSchema = z
       });
     }
   });
+
+// .superRefine((obj, ctx) => {
+//   // Ensure only known locale keys are used (add your locale keys here)
+//   const allowedKeys = ['zh-TW', 'en-US', 'ja-JP'];
+//   for (const key of Object.keys(obj)) {
+//     if (!allowedKeys.includes(key)) {
+//       ctx.addIssue({
+//         path: [key],
+//         code: 'custom',
+//         message: `該語言 "${key}" 並不支援`,
+//       });
+//     }
+//   }
+// });
+
+export const defaultLocaleString = {
+  [LOCALE.ZH_TW]: '',
+  [LOCALE.EN_US]: '',
+  [LOCALE.JA_JP]: '',
+};
 
 export type LocaleString = z.infer<typeof localeSchema>;

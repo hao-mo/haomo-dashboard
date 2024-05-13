@@ -12,6 +12,8 @@ import type { FormattedNews, News } from '../type';
 
 import type { NewsFormValues } from './schema';
 
+import type { LocaleString } from '@/stores/locale-store';
+
 /**
  * Creates a news article.
  * @param data - The data for the news article.
@@ -162,6 +164,51 @@ export const rollbackNews = async (id: string) => {
       throw new Error('Failed to rollback news');
     }
     revalidateTag('news');
+  } catch (error) {
+    console.log('🚨 - error', error);
+    throw error;
+  }
+};
+
+/**
+ * Updates the tag of a news item.
+ * @param id - The ID of the news tag.
+ * @param value - The new tag value.
+ * @throws If the update fails.
+ */
+export const updateNewsTag = async (id: string, value: LocaleString) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/v1/news-tag/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        value,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update news tag');
+    }
+  } catch (error) {
+    console.log('🚨 - error', error);
+    throw error;
+  }
+};
+
+/**
+ * Deletes a news tag by its ID.
+ * @param id - The ID of the news tag to delete.
+ * @throws If the deletion fails or an error occurs during the process.
+ */
+export const deleteNewsTag = async (id: string) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/v1/news-tag/${id}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete news tag');
+    }
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;

@@ -35,7 +35,7 @@ import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
 import { TagSelectField } from './tag-select-field';
 
-import { useLocaleStore } from '@/stores/locale-store';
+import { defaultLocaleString } from '@/stores/locale-store';
 
 interface NewsFormProps {
   initialData: FormattedNews | null;
@@ -48,33 +48,66 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
 
   const { isOpen, onOpen, onClose } = useOpen();
 
-  const defaultLocale = useLocaleStore((state) => state.locale);
-
-  const defaultLocaleString = {
-    [defaultLocale]: 'Test',
-  };
-
   const form = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema),
-    defaultValues: initialData ?? {
-      slug: 'test12345',
-      headline: defaultLocaleString,
-      description: defaultLocaleString,
-      date: new Date(),
-      imageUrl:
-        'https://ik.imagekit.io/dabeikeng/Products/5-3_%E8%8C%B6%E9%A2%A8%E5%91%B3%E9%A4%85%E4%B9%BE.jpg',
-      alt: defaultLocaleString,
-      articles: [
-        {
-          type: CONTENT_TYPE.HEADING,
-          text: defaultLocaleString,
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          headline: {
+            ...defaultLocaleString,
+            ...initialData.headline,
+          },
+          description: {
+            ...defaultLocaleString,
+            ...initialData.description,
+          },
+          alt: {
+            ...defaultLocaleString,
+            ...initialData.alt,
+          },
+          articles: initialData.articles.map((article) => {
+            if (article.type === CONTENT_TYPE.IMAGE) {
+              return {
+                ...article,
+                alt: {
+                  ...defaultLocaleString,
+                  ...article.alt,
+                },
+              };
+            }
+            if (article.type === CONTENT_TYPE.HEADING || article.type === CONTENT_TYPE.PARAGRAPH) {
+              return {
+                ...article,
+                text: {
+                  ...defaultLocaleString,
+                  ...article.text,
+                },
+              };
+            }
+            return article;
+          }),
+        }
+      : {
+          slug: 'test12345',
+          headline: defaultLocaleString,
+          description: defaultLocaleString,
+          date: new Date(),
+          imageUrl:
+            'https://ik.imagekit.io/dabeikeng/Products/5-3_%E8%8C%B6%E9%A2%A8%E5%91%B3%E9%A4%85%E4%B9%BE.jpg',
+          alt: defaultLocaleString,
+          articles: [
+            {
+              type: CONTENT_TYPE.HEADING,
+              text: defaultLocaleString,
+            },
+          ],
+          newsTags: [],
         },
-      ],
-      newsTags: [],
-    },
   });
 
   const isDeleted = form.watch('isDeleted');
+
+  console.log('newsTags', form.getValues('newsTags'));
 
   useJumpToErrorInput(form.formState.errors);
 

@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MoreHorizontalIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -22,9 +22,11 @@ import { useOpen } from '@/hooks/use-open';
 import { tagSchema } from '@/lib/schemas/schema';
 import type { Option } from '@/lib/types';
 
+import { deleteNewsTag } from '../actions';
+
 import { LocaleFieldList } from './locale-field-list';
 
-import type { LocaleString } from '@/stores/locale-store';
+import { defaultLocaleString, type LocaleString } from '@/stores/locale-store';
 
 interface TagActionProps {
   item: Option;
@@ -33,18 +35,6 @@ interface TagActionProps {
 
 export const TagAction = ({ item, value }: TagActionProps) => {
   const { isOpen, onOpenChange, onClose } = useOpen();
-
-  const { selected } = useMultiSelectContext();
-
-  const [updating, setUpdating] = useState(false);
-
-  const form = useForm({
-    resolver: zodResolver(tagSchema),
-    defaultValues: {
-      id: item.value,
-      value: value,
-    },
-  });
 
   const {
     isOpen: isModalOpen,
@@ -55,9 +45,30 @@ export const TagAction = ({ item, value }: TagActionProps) => {
     stopLoading,
   } = useModal();
 
-  const onUpdate = async () => {
+  const { selected } = useMultiSelectContext();
+
+  const [updating, setUpdating] = useState(false);
+
+  const form = useForm({
+    resolver: zodResolver(tagSchema),
+    defaultValues: {
+      id: item.value,
+      value: {
+        ...defaultLocaleString,
+        ...value,
+      },
+    },
+  });
+
+  const values = form.watch('value');
+
+  const onUpdate = useCallback(async () => {
     try {
       setUpdating(true);
+      console.log('🚨 - values', values);
+      if (!values) return;
+
+      // await updateNewsTag(item.value, values);
       toast.success('更新成功');
     } catch (error) {
       console.log('error', error);
@@ -66,11 +77,12 @@ export const TagAction = ({ item, value }: TagActionProps) => {
       setUpdating(false);
       onClose();
     }
-  };
+  }, [item.value, values]);
 
-  const onDelete = async () => {
+  const onDelete = useCallback(async () => {
     try {
       startLoading();
+      await deleteNewsTag(item.value);
       toast.success('刪除成功');
     } catch (error) {
       console.log('error', error);
@@ -80,7 +92,7 @@ export const TagAction = ({ item, value }: TagActionProps) => {
       onClose();
       onModalClose();
     }
-  };
+  }, [item.value]);
 
   return (
     <>
