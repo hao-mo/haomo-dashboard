@@ -11,7 +11,6 @@ import { SubmitButton } from '@/components/submit-button';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Modal } from '@/components/ui/modal';
 import {
@@ -21,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 
 import useEventListener from '@/hooks/use-event-listener';
 import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
@@ -38,10 +36,10 @@ import type { ContentWithId, NewsFormValues } from '../_lib/schema';
 import { newsFormSchema } from '../_lib/schema';
 import { createNews, rollbackNews, updateNews } from '../actions';
 
-import { TagSelectField } from './tag/tag-select-field';
 import { ImageUploadField } from './image-upload-field';
-import { LocaleFieldList } from './locale-field-list';
+import { LocaleField } from './locale-field';
 import { ContentForm, ContentList } from './news-content';
+import { TagSelectField } from './tag-select-field';
 
 import { defaultLocaleString } from '@/stores/locale-store';
 
@@ -111,7 +109,7 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
 
   const isDeleted = form.watch('isDeleted');
 
-  console.log('newsTags', form.getValues('newsTags'));
+  console.log('form values', form.getValues());
 
   useJumpToErrorInput(form.formState.errors);
 
@@ -224,67 +222,33 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
             )}
           />
         </div>
-
         <TagSelectField
           control={form.control}
           allNewsTags={allNewsTags}
         />
-
         <div className='relative py-4'>
-          <FormLabel>標題</FormLabel>
-          <LocaleFieldList
+          <Label className='mb-2 inline-block'>標題</Label>
+          <LocaleField
+            type='text'
             name='headline'
             control={form.control}
             disabled={isDeleted}
-          >
-            {({ name, control, disabled }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={disabled}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+          />
         </div>
 
         <div className='relative py-4'>
           <Label className='mb-2 inline-block'>說明</Label>
-          <LocaleFieldList
+          <LocaleField
+            type='textarea'
             name='description'
             control={form.control}
             disabled={isDeleted}
-          >
-            {({ name, control, disabled }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        className='min-h-40'
-                        disabled={disabled}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+            className='min-h-40'
+          />
         </div>
 
         <div className='relative py-4'>
-          <FormLabel className='text-sm'>封面圖片</FormLabel>
+          <Label className='mb-2 inline-block'>封面圖片</Label>
           <ImageUploadField
             name='file'
             control={form.control}
@@ -298,32 +262,18 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
           />
         </div>
         <div className='relative py-4'>
-          <FormLabel className='text-sm'>封面圖片說明</FormLabel>
-          <LocaleFieldList
+          <Label className='mb-2 inline-block'>封面圖片說明</Label>
+          <LocaleField
+            type='text'
             name='alt'
             control={form.control}
             disabled={isDeleted}
-          >
-            {({ name, control, disabled }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Input
-                      {...field}
-                      disabled={disabled}
-                    />
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+          />
         </div>
 
         <div className=' w-full py-4'>
-          <div className='mb-4 flex items-center justify-between'>
-            <Label className='text-sm'>內文</Label>
+          <div className='mb-4 flex items-end justify-between'>
+            <Label>內文</Label>
             <AddButton
               onClick={onOpen}
               disabled={isDeleted}

@@ -6,7 +6,7 @@ import { MultiSelect } from '@/components/ui/multi-select';
 
 import type { Tag } from '@/lib/types';
 
-import type { NewsFormValues } from '../../_lib/schema';
+import type { NewsFormValues } from '../_lib/schema';
 
 import { TagAction } from './tag-action';
 

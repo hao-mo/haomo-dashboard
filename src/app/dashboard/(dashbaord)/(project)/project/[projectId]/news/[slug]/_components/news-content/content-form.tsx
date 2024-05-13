@@ -6,11 +6,8 @@ import { useForm } from 'react-hook-form';
 import { AddButton } from '@/components/add-button';
 import { DeleteButton } from '@/components/delete-button';
 import { Button } from '@/components/ui/button';
-import { FormField, FormItem } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
 
 import { contentSchema } from '@/lib/schemas/schema';
 import type { ContentType } from '@/lib/types';
@@ -18,7 +15,7 @@ import { CONTENT_TYPE } from '@/lib/types';
 
 import type { ContentWithId } from '../../_lib/schema';
 import { ImageUploadField } from '../image-upload-field';
-import { LocaleFieldList } from '../locale-field-list';
+import { LocaleField } from '../locale-field';
 
 interface ContentTab {
   value: ContentType;
@@ -119,22 +116,11 @@ export const ContentForm = (props: ContentFormProps) => {
       return (
         <div className='relative'>
           <Label className='text-sm'>標題</Label>
-          <LocaleFieldList
+          <LocaleField
+            type='text'
             name='text'
             control={form.control}
-          >
-            {({ name, control }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Input {...field} />
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+          />
         </div>
       );
     }
@@ -142,25 +128,12 @@ export const ContentForm = (props: ContentFormProps) => {
       return (
         <div className='relative'>
           <Label className='text-sm'>內容</Label>
-          <LocaleFieldList
+          <LocaleField
+            type='textarea'
             name='text'
             control={form.control}
-          >
-            {({ name, control }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Textarea
-                      {...field}
-                      className='h-32'
-                    />
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+            className='h-32'
+          />
         </div>
       );
     }
@@ -178,22 +151,11 @@ export const ContentForm = (props: ContentFormProps) => {
           />
           <Label className='text-sm'>說明</Label>
           <div className='relative'>
-            <LocaleFieldList
+            <LocaleField
+              type='text'
               name='alt'
               control={form.control}
-            >
-              {({ name, control }) => (
-                <FormField
-                  name={name}
-                  control={control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <Input {...field} />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </LocaleFieldList>
+            />
           </div>
         </>
       );

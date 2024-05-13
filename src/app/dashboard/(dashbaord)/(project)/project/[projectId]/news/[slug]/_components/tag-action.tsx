@@ -12,8 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { FormField, FormItem } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { useMultiSelectContext } from '@/components/ui/multi-select';
 
 import { useModal } from '@/hooks/use-modal';
@@ -22,8 +20,9 @@ import { useOpen } from '@/hooks/use-open';
 import { tagSchema } from '@/lib/schemas/schema';
 import type { Option } from '@/lib/types';
 
-import { deleteNewsTag } from '../../actions';
-import { LocaleFieldList } from '../locale-field-list';
+import { deleteNewsTag } from '../actions';
+
+import { LocaleField } from './locale-field';
 
 import { defaultLocaleString, type LocaleString } from '@/stores/locale-store';
 
@@ -114,22 +113,11 @@ export const TagAction = ({ item, value }: TagActionProps) => {
           onClick={(e) => e.stopPropagation()}
           onCloseAutoFocus={(e) => e.stopPropagation()}
         >
-          <LocaleFieldList
+          <LocaleField
+            type='text'
             name='value'
             control={form.control}
-          >
-            {({ name, control }) => (
-              <FormField
-                name={name}
-                control={control}
-                render={({ field }) => (
-                  <FormItem>
-                    <Input {...field} />
-                  </FormItem>
-                )}
-              />
-            )}
-          </LocaleFieldList>
+          />
           <div className='mt-4 flex flex-wrap items-center gap-2'>
             <Button
               size='sm'
