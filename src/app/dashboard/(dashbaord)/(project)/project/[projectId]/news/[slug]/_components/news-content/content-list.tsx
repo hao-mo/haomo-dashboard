@@ -1,6 +1,6 @@
 import { AnimatePresence, Reorder } from 'framer-motion';
 
-import type { ContentWithId } from '../../schema';
+import type { ContentWithId } from '../../_lib/schema';
 
 import { DraggableContentItem } from './draggable-content-item';
 

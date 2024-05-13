@@ -10,7 +10,7 @@ import { formatLocaleString } from '@/utils/format';
 
 import type { FormattedNews, News } from '../type';
 
-import type { NewsFormValues } from './schema';
+import type { NewsFormValues } from './_lib/schema';
 
 import type { LocaleString } from '@/stores/locale-store';
 

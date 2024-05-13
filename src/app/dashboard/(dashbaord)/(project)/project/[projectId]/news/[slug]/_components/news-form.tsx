@@ -26,9 +26,10 @@ import { CONTENT_TYPE } from '@/lib/types';
 
 import { DeleteNewsModal } from '../../_components/delete-news-modal';
 import type { FormattedNews } from '../../type';
+import { statusOptions } from '../_lib';
+import type { ContentWithId, NewsFormValues } from '../_lib/schema';
+import { newsFormSchema } from '../_lib/schema';
 import { createNews, rollbackNews, updateNews } from '../actions';
-import type { ContentWithId, NewsFormValues } from '../schema';
-import { newsFormSchema } from '../schema';
 
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
@@ -89,19 +90,15 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
         }
       : {
           slug: 'test12345',
-          headline: defaultLocaleString,
-          description: defaultLocaleString,
+          status: 'draft',
           date: new Date(),
           imageUrl:
             'https://ik.imagekit.io/dabeikeng/Products/5-3_%E8%8C%B6%E9%A2%A8%E5%91%B3%E9%A4%85%E4%B9%BE.jpg',
-          alt: defaultLocaleString,
-          articles: [
-            {
-              type: CONTENT_TYPE.HEADING,
-              text: defaultLocaleString,
-            },
-          ],
           newsTags: [],
+          articles: [],
+          headline: defaultLocaleString,
+          description: defaultLocaleString,
+          alt: defaultLocaleString,
         },
   });
 

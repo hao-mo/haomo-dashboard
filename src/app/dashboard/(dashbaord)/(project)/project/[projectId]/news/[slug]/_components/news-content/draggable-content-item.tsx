@@ -10,7 +10,7 @@ import { useRaisedShadow } from '@/hooks/use-raised-shadow';
 
 import { CONTENT_TYPE } from '@/lib/types';
 
-import type { ContentWithId } from '../../schema';
+import type { ContentWithId } from '../../_lib/schema';
 
 import { ContentForm } from '.';
 

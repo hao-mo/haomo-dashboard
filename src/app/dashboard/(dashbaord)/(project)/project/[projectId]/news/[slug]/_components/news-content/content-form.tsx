@@ -16,7 +16,7 @@ import { contentSchema } from '@/lib/schemas/schema';
 import type { ContentType } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
 
-import type { ContentWithId } from '../../schema';
+import type { ContentWithId } from '../../_lib/schema';
 import { ImageUploadField } from '../image-upload-field';
 import { LocaleFieldList } from '../locale-field-list';
 
