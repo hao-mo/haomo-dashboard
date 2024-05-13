@@ -10,10 +10,17 @@ import { AddButton } from '@/components/add-button';
 import { SubmitButton } from '@/components/submit-button';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
-import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Modal } from '@/components/ui/modal';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
 import useEventListener from '@/hooks/use-event-listener';
@@ -31,10 +38,10 @@ import type { ContentWithId, NewsFormValues } from '../_lib/schema';
 import { newsFormSchema } from '../_lib/schema';
 import { createNews, rollbackNews, updateNews } from '../actions';
 
+import { TagSelectField } from './tag/tag-select-field';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleFieldList } from './locale-field-list';
 import { ContentForm, ContentList } from './news-content';
-import { TagSelectField } from './tag-select-field';
 
 import { defaultLocaleString } from '@/stores/locale-store';
 
@@ -168,22 +175,14 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className='grid grid-cols-12 lg:gap-x-8'
-      >
-        <div className='col-span-full flex flex-col justify-between lg:col-span-4'>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className='flex items-center gap-4 py-4 max-md:flex-col'>
           <FormField
             name='date'
             control={form.control}
             render={({ field }) => (
-              <FormItem className='py-4'>
-                <FormLabel
-                  className='text-sm'
-                  id='date'
-                >
-                  發布日期
-                </FormLabel>
+              <FormItem className='relative w-full flex-1'>
+                <FormLabel id='date'>發布日期</FormLabel>
                 <DatePicker
                   className='flex w-full'
                   selected={field.value}
@@ -195,77 +194,70 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
               </FormItem>
             )}
           />
-
-          <div className='relative py-4'>
-            <FormLabel className='text-sm'>標題</FormLabel>
-            <LocaleFieldList
-              name='headline'
-              control={form.control}
-              disabled={isDeleted}
-            >
-              {({ name, control, disabled }) => (
-                <FormField
-                  name={name}
-                  control={control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <Input
-                        {...field}
-                        disabled={disabled}
-                      />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </LocaleFieldList>
-          </div>
-          <TagSelectField
+          <FormField
+            name='status'
             control={form.control}
-            allNewsTags={allNewsTags}
+            render={({ field }) => (
+              <FormItem className='w-full flex-1'>
+                <FormLabel>狀態</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder='選擇一個狀態' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {statusOptions.map((option) => (
+                      <SelectItem
+                        key={option.value}
+                        value={option.value}
+                      >
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormItem>
+            )}
           />
         </div>
-        <div className='col-span-full flex flex-col lg:col-span-8'>
-          <div className='relative py-4'>
-            <FormLabel className='text-sm'>封面圖片</FormLabel>
-            <ImageUploadField
-              name='file'
-              control={form.control}
-              defaultImageUrl={
-                form.getValues('file')
-                  ? URL.createObjectURL(form.getValues('file') as File)
-                  : form.getValues('imageUrl')
-              }
-              defaultAlt='image'
-              disabled={isDeleted}
-            />
-          </div>
-          <div className='relative py-4'>
-            <FormLabel className='text-sm'>圖片說明</FormLabel>
-            <LocaleFieldList
-              name='alt'
-              control={form.control}
-              disabled={isDeleted}
-            >
-              {({ name, control, disabled }) => (
-                <FormField
-                  name={name}
-                  control={control}
-                  render={({ field }) => (
-                    <FormItem>
+
+        <TagSelectField
+          control={form.control}
+          allNewsTags={allNewsTags}
+        />
+
+        <div className='relative py-4'>
+          <FormLabel>標題</FormLabel>
+          <LocaleFieldList
+            name='headline'
+            control={form.control}
+            disabled={isDeleted}
+          >
+            {({ name, control, disabled }) => (
+              <FormField
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
                       <Input
                         {...field}
                         disabled={disabled}
                       />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </LocaleFieldList>
-          </div>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
+          </LocaleFieldList>
         </div>
 
-        <div className='relative col-span-full py-4'>
-          <Label className='mb-2 inline-block text-sm'>說明</Label>
+        <div className='relative py-4'>
+          <Label className='mb-2 inline-block'>說明</Label>
           <LocaleFieldList
             name='description'
             control={form.control}
@@ -277,9 +269,49 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
                 control={control}
                 render={({ field }) => (
                   <FormItem>
-                    <Textarea
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        className='min-h-40'
+                        disabled={disabled}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
+          </LocaleFieldList>
+        </div>
+
+        <div className='relative py-4'>
+          <FormLabel className='text-sm'>封面圖片</FormLabel>
+          <ImageUploadField
+            name='file'
+            control={form.control}
+            defaultImageUrl={
+              form.getValues('file')
+                ? URL.createObjectURL(form.getValues('file') as File)
+                : form.getValues('imageUrl')
+            }
+            defaultAlt='image'
+            disabled={isDeleted}
+          />
+        </div>
+        <div className='relative py-4'>
+          <FormLabel className='text-sm'>封面圖片說明</FormLabel>
+          <LocaleFieldList
+            name='alt'
+            control={form.control}
+            disabled={isDeleted}
+          >
+            {({ name, control, disabled }) => (
+              <FormField
+                name={name}
+                control={control}
+                render={({ field }) => (
+                  <FormItem>
+                    <Input
                       {...field}
-                      className='min-h-40'
                       disabled={disabled}
                     />
                   </FormItem>
@@ -289,7 +321,7 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
           </LocaleFieldList>
         </div>
 
-        <div className='col-span-full w-full py-4'>
+        <div className=' w-full py-4'>
           <div className='mb-4 flex items-center justify-between'>
             <Label className='text-sm'>內文</Label>
             <AddButton

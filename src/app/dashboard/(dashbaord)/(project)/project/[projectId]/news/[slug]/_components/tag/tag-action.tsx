@@ -22,9 +22,8 @@ import { useOpen } from '@/hooks/use-open';
 import { tagSchema } from '@/lib/schemas/schema';
 import type { Option } from '@/lib/types';
 
-import { deleteNewsTag } from '../actions';
-
-import { LocaleFieldList } from './locale-field-list';
+import { deleteNewsTag } from '../../actions';
+import { LocaleFieldList } from '../locale-field-list';
 
 import { defaultLocaleString, type LocaleString } from '@/stores/locale-store';
 
@@ -111,7 +110,7 @@ export const TagAction = ({ item, value }: TagActionProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align='end'
-          className='w-fit p-4'
+          className='p-4'
           onClick={(e) => e.stopPropagation()}
           onCloseAutoFocus={(e) => e.stopPropagation()}
         >

@@ -28,12 +28,12 @@ export default async function Page({ params }: { params: { projectId: string; sl
             <ChevronLeftIcon size={20} />
           </RouterBackButton>
           <div className='ml-2'>
-            <h2 className='text-lg font-semibold'>活動消息 - {title}</h2>
+            <h2 className='select-none text-lg font-semibold'>活動消息 - {title}</h2>
           </div>
         </div>
         <div>
           {news ? (
-            <span className='text-xs text-foreground/50'>
+            <span className='select-none text-xs text-foreground/50'>
               上次編輯 {formatRelative(news.updatedAt)}
             </span>
           ) : null}

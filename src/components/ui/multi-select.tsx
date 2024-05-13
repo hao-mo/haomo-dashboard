@@ -55,6 +55,7 @@ interface MultiSelectProps extends WithClassName {
   selected: Option[];
   onValueChange: (value: Option[]) => void;
   dropdownClassName?: string;
+  emptyAction?: React.ReactNode;
   additionalAction?: (option: Option) => React.ReactNode;
 }
 
@@ -62,8 +63,9 @@ export const MultiSelect = ({
   options,
   selected,
   className,
-  onValueChange,
   dropdownClassName,
+  onValueChange,
+  emptyAction,
   additionalAction,
 }: MultiSelectProps) => {
   const { isOpen, onOpenChange } = useOpen();
@@ -73,7 +75,6 @@ export const MultiSelect = ({
   };
 
   const handleOnItemSelect = (targetItem: string) => {
-    console.log('🚨 - targetItem', targetItem);
     if (selected.some((item) => item.value === targetItem)) {
       onValueChange(selected.filter((item) => item.value !== targetItem));
     } else {
@@ -97,7 +98,7 @@ export const MultiSelect = ({
         <PopoverTrigger asChild>
           <Button
             variant='outline'
-            className={cn('group relative h-fit w-full justify-between', className)}
+            className={cn('group relative h-fit min-h-10 w-full justify-between', className)}
             onClick={() => onOpenChange(!isOpen)}
           >
             <div className='flex flex-wrap gap-1'>
@@ -105,7 +106,7 @@ export const MultiSelect = ({
                 <Badge
                   key={item.value}
                   variant='secondary'
-                  className='group-hover:bg-white/80'
+                  className='group-hover:bg-white/80 '
                   onClick={() => handleUnselect(item.value)}
                 >
                   {item.name}
@@ -134,11 +135,10 @@ export const MultiSelect = ({
           <Command className={dropdownClassName}>
             <CommandInput
               className='text-xs'
-              placeholder='Search ...'
+              placeholder='搜尋...'
             />
             <CommandEmpty className='grid place-items-center p-4'>
-              <p className='mb-2 text-xs'>沒有相符的結果</p>
-              <Button size='sm'>新增</Button>
+              {emptyAction ? emptyAction : <p className='text-xs'>沒有相符的結果</p>}
             </CommandEmpty>
             <CommandGroup className='max-h-64 overflow-auto'>
               {options.map((option) => (

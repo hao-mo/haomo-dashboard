@@ -45,6 +45,7 @@ export function DatePicker({
       {selected ? format(selected, 'PPP') : <span>{placeholder}</span>}
     </Button>
   );
+
   return (
     <Popover>
       <PopoverTrigger asChild>
