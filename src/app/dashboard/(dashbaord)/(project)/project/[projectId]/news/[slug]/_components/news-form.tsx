@@ -26,7 +26,6 @@ import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
 
-import type { Tag } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
 
 import { DeleteNewsModal } from '../../_components/delete-news-modal';

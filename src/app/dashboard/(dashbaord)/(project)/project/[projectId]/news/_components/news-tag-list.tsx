@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 
-import type { Tag } from '../type';
+import type { Tag } from '@/lib/types';
 
 export const NewsTagList = ({ tags }: { tags: Tag[] }) => {
   const router = useRouter();

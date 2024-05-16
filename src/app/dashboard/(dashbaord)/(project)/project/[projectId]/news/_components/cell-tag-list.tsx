@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 
-import { createQueryString } from '@/utils';
+import type { Tag } from '@/lib/types';
 
-import type { Tag } from '../type';
+import { createQueryString } from '@/utils';
 
 export const CellTagList = ({ tags }: { tags: Tag[] }) => {
   const router = useRouter();
