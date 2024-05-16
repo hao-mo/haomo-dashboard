@@ -114,7 +114,7 @@ export const MultiSelect = ({
             className='text-xs'
             placeholder='搜尋...'
           />
-          <CommandEmpty className='grid place-items-center p-2'>
+          <CommandEmpty className='grid place-items-center p-4'>
             {emptyAction || <p className='text-xs'>沒有相符的結果</p>}
           </CommandEmpty>
           <CommandList>

@@ -45,7 +45,6 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
   const { isOpen: isModalOpen, onClose: onModalClose, onOpen: onModalOpen } = useModal();
 
   const { data, isFetching, hasNextPage, refetch } = useGetNewsTags();
-  console.log('🚨 - isFetching', isFetching);
 
   const { setValue } = useFormContext();
 
@@ -127,6 +126,18 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
     if (!isModalOpen) setTargetTag(null);
   }, [isModalOpen]);
 
+  useEffect(() => {
+    const deletedTag = selectedTags.find(
+      (tag) => !tagOptions.some((option) => option.value === tag.value)
+    );
+    if (deletedTag) {
+      setValue(
+        'newsTags',
+        newsTags.filter((tag) => tag.id !== deletedTag.value)
+      );
+    }
+  }, [tagOptions]);
+
   return (
     <FormField
       name='newsTags'
@@ -143,7 +154,12 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
               emptyAction={
                 <div className='text-center'>
                   <p className='mb-2'>查無此標籤</p>
-                  <Button onClick={onModalOpen}>新增標籤</Button>
+                  <Button
+                    size='sm'
+                    onClick={onModalOpen}
+                  >
+                    新增標籤
+                  </Button>
                 </div>
               }
               additionalAction={(option) => {
