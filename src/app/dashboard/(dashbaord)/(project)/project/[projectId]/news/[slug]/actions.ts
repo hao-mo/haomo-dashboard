@@ -170,6 +170,28 @@ export const rollbackNews = async (id: string) => {
   }
 };
 
+export const createNewsTag = async (value: LocaleString) => {
+  try {
+    const response = await fetch(`${BASE_API_URL}/v1/news-tags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'newsTag',
+        value: formatLocaleString(value),
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to create news tag');
+    }
+    revalidateTag('news-tags');
+  } catch (error) {
+    console.log('🚨 - error', error);
+    throw error;
+  }
+};
+
 /**
  * Updates the tag of a news item.
  * @param id - The ID of the news tag.
@@ -178,18 +200,21 @@ export const rollbackNews = async (id: string) => {
  */
 export const updateNewsTag = async (id: string, value: LocaleString) => {
   try {
-    const response = await fetch(`${BASE_API_URL}/v1/news-tag/${id}`, {
+    const response = await fetch(`${BASE_API_URL}/v1/news-tags/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        value,
+        name: 'newsTag',
+        value: formatLocaleString(value),
       }),
     });
+    console.log('🚨 - response', response);
     if (!response.ok) {
       throw new Error('Failed to update news tag');
     }
+    revalidateTag('news-tags');
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;
@@ -203,7 +228,7 @@ export const updateNewsTag = async (id: string, value: LocaleString) => {
  */
 export const deleteNewsTag = async (id: string) => {
   try {
-    const response = await fetch(`${BASE_API_URL}/v1/news-tag/${id}`, {
+    const response = await fetch(`${BASE_API_URL}/v1/news-tags/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {

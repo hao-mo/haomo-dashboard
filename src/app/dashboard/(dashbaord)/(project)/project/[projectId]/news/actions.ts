@@ -67,18 +67,35 @@ export const deleteNews = async (id: string) => {
   }
 };
 
-export const getAllNewsTags = async () => {
+interface NewsTagsSearchOptions {
+  page?: number;
+  pageSize?: number;
+  isDeleted?: boolean;
+}
+
+export const fetchNewsTags = async ({
+  page = 1,
+  pageSize = 10,
+  isDeleted = false,
+}: NewsTagsSearchOptions) => {
   try {
     const result = await fetcher<CustomResponse<Tag>>(`${BASE_API_URL}/v1/news-tags/fetch`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         orderBy: 'DESC',
         sortBy: 'updatedAt',
-        page: 1,
-        //   "pageSize": 1,
-        isDeleted: false,
+        page,
+        pageSize,
+        isDeleted,
       }),
+      next: {
+        tags: ['news-tags'],
+      },
     });
+
     return {
       data: result.items,
       pageCount: Math.ceil(result.pagination.totalCount / Number(result.pagination.pageSize)),
@@ -87,4 +104,8 @@ export const getAllNewsTags = async () => {
     console.log('🚨 - error', error);
     throw error;
   }
+};
+
+export const revalidateNewsTags = async () => {
+  revalidateTag('news-tags');
 };

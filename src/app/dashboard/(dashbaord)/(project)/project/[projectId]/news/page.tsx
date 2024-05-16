@@ -1,7 +1,7 @@
 import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 import { NewsTagList } from './_components/news-tag-list';
-import { getAllNews, getAllNewsTags } from './actions';
+import { fetchNewsTags, getAllNews } from './actions';
 
 export default async function Page({
   searchParams: { page, pageSize, isDeleted, tagIds },
@@ -14,7 +14,7 @@ export default async function Page({
   };
 }) {
   const { data: news, pageCount } = await getAllNews({ page, pageSize, isDeleted, tagIds });
-  const { data: newsTags } = await getAllNewsTags();
+  const { data: newsTags } = await fetchNewsTags({});
 
   return (
     <>

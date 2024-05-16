@@ -38,16 +38,15 @@ import { createNews, rollbackNews, updateNews } from '../actions';
 import { ImageUploadField } from './image-upload-field';
 import { LocaleField } from './locale-field';
 import { ContentForm, ContentList } from './news-content';
-import { TagSelectField } from './tag-select-field';
+import { TagSelectField } from './tag-selector';
 
 import { defaultLocaleString } from '@/stores/locale-store';
 
 interface NewsFormProps {
   initialData: FormattedNews | null;
-  allNewsTags: Tag[];
 }
 
-export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
+export const NewsForm = ({ initialData }: NewsFormProps) => {
   const router = useRouter();
   const params = useParams();
 
@@ -108,7 +107,7 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
 
   const isDeleted = form.watch('isDeleted');
 
-  console.log('form values', form.getValues());
+  // console.log('form values', form.getValues());
 
   useJumpToErrorInput(form.formState.errors);
 
@@ -221,10 +220,7 @@ export const NewsForm = ({ initialData, allNewsTags }: NewsFormProps) => {
             )}
           />
         </div>
-        <TagSelectField
-          control={form.control}
-          allNewsTags={allNewsTags}
-        />
+        <TagSelectField control={form.control} />
         <div className='relative py-4'>
           <Label className='mb-2 inline-block'>標題</Label>
           <LocaleField
