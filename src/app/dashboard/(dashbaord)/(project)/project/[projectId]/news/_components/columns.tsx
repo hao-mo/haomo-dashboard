@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 import { formatRelative } from '@/utils/format';
 
-import type { FormattedNews } from '../type';
+import type { News } from '../type';
 
 import { CellAction } from './cell-action';
 import { CellLink } from './cell-link';
@@ -17,7 +17,7 @@ import { CellTagList } from './cell-tag-list';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<FormattedNews>[] = [
+export const columns: ColumnDef<News>[] = [
   {
     id: 'select',
     header: ({ table }) => (

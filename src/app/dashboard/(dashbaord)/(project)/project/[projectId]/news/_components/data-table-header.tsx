@@ -4,11 +4,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import { AddButton } from '@/components/add-button';
 import { DataTableViewOptions, DebouncedSearchInput } from '@/components/data-table';
 
-import type { FormattedNews } from '../type';
+import type { News } from '../type';
 
 import { DeleteNewsModal } from './delete-news-modal';
 
-export function DataTableHeader({ table }: { table: Table<FormattedNews> }) {
+export function DataTableHeader({ table }: { table: Table<News> }) {
   const router = useRouter();
   const pathname = usePathname();
 

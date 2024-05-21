@@ -7,6 +7,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { cn } from '@/utils';
+import { formatDate } from '@/utils/format';
 
 import { FormControl } from './form';
 
@@ -28,7 +29,7 @@ export function DatePicker({
   onSelect,
   required = false,
   withForm = false,
-  placeholder = 'Pick a date',
+  placeholder = '選擇一個日期',
   ...props
 }: DatePickerProps) {
   const renderButton = () => (
@@ -42,7 +43,7 @@ export function DatePicker({
       )}
     >
       <CalendarIcon className='mr-2 size-4' />
-      {selected ? format(selected, 'PPP') : <span>{placeholder}</span>}
+      {selected ? formatDate(selected, 'PPP') : <span>{placeholder}</span>}
     </Button>
   );
 

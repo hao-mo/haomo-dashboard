@@ -8,7 +8,7 @@ import { CONTENT_TYPE } from '@/lib/types';
 import { fetcher } from '@/utils';
 import { formatLocaleString } from '@/utils/format';
 
-import type { FormattedNews, News } from '../type';
+import type { News } from '../type';
 
 import type { NewsFormValues } from './_lib/schema';
 
@@ -20,7 +20,7 @@ import type { LocaleString } from '@/stores/locale-store';
  * @returns A Promise that resolves when the news article is created.
  * @throws If there is an error creating the news article.
  */
-export const createNews = async ({ date, file, ...data }: NewsFormValues) => {
+export const createNews = async ({ file, status, ...data }: NewsFormValues) => {
   try {
     const formattedData = {
       ...data,
@@ -28,31 +28,25 @@ export const createNews = async ({ date, file, ...data }: NewsFormValues) => {
       description: formatLocaleString(data.description),
       alt: formatLocaleString(data.alt),
       articles: [
-        {
-          contents: [
-            ...data.articles.map((article) => {
-              if (article.type === CONTENT_TYPE.IMAGE) {
-                return {
-                  ...article,
-                  alt: formatLocaleString(article.alt),
-                };
-              }
-              if (
-                article.type === CONTENT_TYPE.HEADING ||
-                article.type === CONTENT_TYPE.PARAGRAPH
-              ) {
-                return {
-                  ...article,
-                  text: formatLocaleString(article.text),
-                };
-              }
-              return article;
-            }),
-          ],
-        },
+        ...data.articles.map((article) => {
+          if (article.type === CONTENT_TYPE.IMAGE) {
+            return {
+              ...article,
+              alt: formatLocaleString(article.alt),
+            };
+          }
+          if (article.type === CONTENT_TYPE.HEADING || article.type === CONTENT_TYPE.PARAGRAPH) {
+            return {
+              ...article,
+              text: formatLocaleString(article.text),
+            };
+          }
+          return article;
+        }),
       ],
       newsTagIds: ['caa8dd15-d020-473e-a591-95779fc25057'],
     };
+    console.log('🚨 - formattedData', formattedData);
     const response = await fetch(`${BASE_API_URL}/v1/news`, {
       method: 'POST',
       headers: {
@@ -63,7 +57,6 @@ export const createNews = async ({ date, file, ...data }: NewsFormValues) => {
     if (!response.ok) {
       throw new Error('Failed to create news');
     }
-    revalidateTag('news');
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;
@@ -80,12 +73,10 @@ export const getNewsBySlug = async (slug: string) => {
     const data = await fetcher<News>(`${BASE_API_URL}/v1/news/by-slug/${slug}`, {
       method: 'GET',
     });
-    const formattedData: FormattedNews = {
-      ...data,
-      articles: data.articles.flatMap((article) => article.contents),
-    };
-    return formattedData;
+
+    return data;
   } catch (error) {
+    console.log('🚨 - error', error);
     return null;
   }
 };
@@ -95,7 +86,7 @@ export const getNewsBySlug = async (slug: string) => {
  * @param id - The ID of the news item.
  * @param data - The updated news data.
  */
-export const updateNews = async (id: string, { date, file, ...data }: NewsFormValues) => {
+export const updateNews = async (id: string, { file, ...data }: NewsFormValues) => {
   try {
     const formattedData = {
       ...data,
@@ -103,28 +94,21 @@ export const updateNews = async (id: string, { date, file, ...data }: NewsFormVa
       description: formatLocaleString(data.description),
       alt: formatLocaleString(data.alt),
       articles: [
-        {
-          contents: [
-            ...data.articles.map((article) => {
-              if (article.type === CONTENT_TYPE.IMAGE) {
-                return {
-                  ...article,
-                  alt: formatLocaleString(article.alt),
-                };
-              }
-              if (
-                article.type === CONTENT_TYPE.HEADING ||
-                article.type === CONTENT_TYPE.PARAGRAPH
-              ) {
-                return {
-                  ...article,
-                  text: formatLocaleString(article.text),
-                };
-              }
-              return article;
-            }),
-          ],
-        },
+        ...data.articles.map((article) => {
+          if (article.type === CONTENT_TYPE.IMAGE) {
+            return {
+              ...article,
+              alt: formatLocaleString(article.alt),
+            };
+          }
+          if (article.type === CONTENT_TYPE.HEADING || article.type === CONTENT_TYPE.PARAGRAPH) {
+            return {
+              ...article,
+              text: formatLocaleString(article.text),
+            };
+          }
+          return article;
+        }),
       ],
     };
     const response = await fetch(`${BASE_API_URL}/v1/news/${id}`, {
@@ -163,7 +147,6 @@ export const rollbackNews = async (id: string) => {
     if (!response.ok) {
       throw new Error('Failed to rollback news');
     }
-    revalidateTag('news');
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;
@@ -185,7 +168,6 @@ export const createNewsTag = async (value: LocaleString) => {
     if (!response.ok) {
       throw new Error('Failed to create news tag');
     }
-    revalidateTag('news-tags');
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;
@@ -207,14 +189,17 @@ export const updateNewsTag = async (id: string, value: LocaleString) => {
       },
       body: JSON.stringify({
         name: 'newsTag',
-        value: formatLocaleString(value),
+        value: {
+          default: value['zh-TW'] ?? '',
+          en: '12',
+          'zh-TW': value['zh-TW'] ?? '',
+        },
       }),
     });
     console.log('🚨 - response', response);
     if (!response.ok) {
       throw new Error('Failed to update news tag');
     }
-    revalidateTag('news-tags');
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;

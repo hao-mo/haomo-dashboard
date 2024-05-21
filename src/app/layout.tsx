@@ -9,7 +9,7 @@ import { Providers } from '../providers/providers';
 import '../styles/globals.scss';
 
 const meta = {
-  title: 'HaoMo Dashboard',
+  title: 'Dashboard',
   description: 'Content management system for HaoMo',
   cardImage: '/og.webp',
   robots: 'follow, index',

@@ -28,8 +28,11 @@ import { useOpen } from '@/hooks/use-open';
 
 import { CONTENT_TYPE } from '@/lib/types';
 
+import { getUniqueId } from '@/utils';
+
 import { DeleteNewsModal } from '../../_components/delete-news-modal';
-import type { FormattedNews } from '../../type';
+import { revalidateNewsTags } from '../../actions';
+import type { News } from '../../type';
 import { statusOptions } from '../_lib';
 import type { ContentWithId, NewsFormValues } from '../_lib/schema';
 import { newsFormSchema } from '../_lib/schema';
@@ -43,7 +46,7 @@ import { TagSelectField } from './tag-selector';
 import { defaultLocaleString } from '@/stores/locale-store';
 
 interface NewsFormProps {
-  initialData: FormattedNews | null;
+  initialData: News | null;
 }
 
 export const NewsForm = ({ initialData }: NewsFormProps) => {
@@ -57,6 +60,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
     defaultValues: initialData
       ? {
           ...initialData,
+          publishAt: new Date(initialData.publishAt),
           headline: {
             ...defaultLocaleString,
             ...initialData.headline,
@@ -94,11 +98,16 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
       : {
           slug: 'test12345',
           status: 'draft',
-          date: new Date(),
+          publishAt: new Date(),
           imageUrl:
             'https://ik.imagekit.io/dabeikeng/Products/5-3_%E8%8C%B6%E9%A2%A8%E5%91%B3%E9%A4%85%E4%B9%BE.jpg',
           newsTags: [],
-          articles: [],
+          articles: [
+            {
+              type: CONTENT_TYPE.HEADING,
+              text: defaultLocaleString,
+            },
+          ],
           headline: defaultLocaleString,
           description: defaultLocaleString,
           alt: defaultLocaleString,
@@ -107,7 +116,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
 
   const isDeleted = form.watch('isDeleted');
 
-  // console.log('form values', form.getValues());
+  console.log('form values', form.getValues());
 
   useJumpToErrorInput(form.formState.errors);
 
@@ -127,6 +136,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
       } else {
         await createNews(data);
       }
+      revalidateNewsTags();
       toast.success('更新成功');
       router.push(`/dashboard/project/${params.projectId}/news`);
     } catch (error) {
@@ -142,6 +152,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
     try {
       if (!initialData) return;
       await rollbackNews(initialData.id);
+      revalidateNewsTags();
       toast.success('復原成功');
       router.push(`/dashboard/project/${params.projectId}/news`);
     } catch (error) {
@@ -151,7 +162,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
 
   const onCreateContent = async (data: ContentWithId) => {
     append(data);
-    setItems([...items, data]);
+    setItems([...items, { ...data, id: getUniqueId() }]);
     onClose();
   };
 
@@ -174,7 +185,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='flex items-center gap-4 py-4 max-md:flex-col'>
           <FormField
-            name='date'
+            name='publishAt'
             control={form.control}
             render={({ field }) => (
               <FormItem className='relative w-full flex-1'>

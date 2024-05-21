@@ -55,7 +55,6 @@ type Link = {
 // Define text with style properties
 type Text = {
   content: LocaleString;
-  formattedContent: string;
   style?: TextStyle;
 };
 
@@ -63,14 +62,12 @@ type Text = {
 type Paragraph = {
   type: CONTENT_TYPE.PARAGRAPH;
   text: LocaleString;
-  formattedText: string;
 };
 
 // Define an image type
 type Image = {
   type: CONTENT_TYPE.IMAGE;
   alt: LocaleString;
-  formattedAlt: string;
   imageUrl: string;
   file?: File;
 };
@@ -92,7 +89,6 @@ type List = {
 type Heading = {
   type: CONTENT_TYPE.HEADING;
   text: LocaleString;
-  formattedText: string;
   // level: 1 | 2 | 3 | 4 | 5 | 6;
 };
 

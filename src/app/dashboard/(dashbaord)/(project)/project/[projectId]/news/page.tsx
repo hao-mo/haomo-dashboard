@@ -3,6 +3,11 @@ import { DataTable } from './_components/data-table';
 import { NewsTagList } from './_components/news-tag-list';
 import { fetchNewsTags, getAllNews } from './actions';
 
+export const metadata = {
+  title: '最新消息',
+  description: '最新消息',
+};
+
 export default async function Page({
   searchParams: { page, pageSize, isDeleted, tagIds },
 }: {

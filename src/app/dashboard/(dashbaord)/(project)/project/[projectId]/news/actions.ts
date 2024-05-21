@@ -39,10 +39,7 @@ export async function getAllNews({
     });
 
     return {
-      data: data.items.map((item) => ({
-        ...item,
-        articles: item.articles.flatMap((article) => article.contents),
-      })),
+      data: data.items,
       pageCount: Math.ceil(data.pagination.totalCount / Number(data.pagination.pageSize)),
     };
   } catch (error) {

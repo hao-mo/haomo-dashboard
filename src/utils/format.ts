@@ -4,10 +4,11 @@ import {
   formatRelative as formatAsRelativeDate,
   intlFormat,
 } from 'date-fns';
-import { zhTW } from 'date-fns/locale/zh-TW';
+import { zhTW } from 'date-fns/locale';
+
+import { useLocaleStore } from './../stores/locale-store';
 
 import type { LocaleString } from '@/stores/locale-store';
-import { useLocaleStore } from '@/stores/locale-store';
 
 export const formatDate = (date: Date | number, formatString = 'PPPP') => {
   return format(date, formatString, {

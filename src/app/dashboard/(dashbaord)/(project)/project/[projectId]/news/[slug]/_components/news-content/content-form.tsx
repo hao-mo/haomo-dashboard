@@ -17,6 +17,8 @@ import type { ContentWithId } from '../../_lib/schema';
 import { ImageUploadField } from '../image-upload-field';
 import { LocaleField } from '../locale-field';
 
+import { defaultLocaleString } from '@/stores/locale-store';
+
 interface ContentTab {
   value: ContentType;
   label: string;
@@ -83,30 +85,18 @@ export const ContentForm = (props: ContentFormProps) => {
       form.reset({
         type: CONTENT_TYPE.IMAGE,
         imageUrl: '',
-        alt: {
-          'zh-TW': '',
-          'en-US': '',
-          'ja-JP': '',
-        },
+        alt: defaultLocaleString,
         file: undefined,
       });
     } else if (contentType === CONTENT_TYPE.HEADING) {
       form.reset({
         type: CONTENT_TYPE.HEADING,
-        text: {
-          'zh-TW': '',
-          'en-US': '',
-          'ja-JP': '',
-        },
+        text: defaultLocaleString,
       });
     } else {
       form.reset({
         type: CONTENT_TYPE.PARAGRAPH,
-        text: {
-          'zh-TW': '',
-          'en-US': '',
-          'ja-JP': '',
-        },
+        text: defaultLocaleString,
       });
     }
   };

@@ -14,12 +14,13 @@ import { MultiSelect } from '@/components/ui/multi-select';
 
 import { useModal } from '@/hooks/use-modal';
 
+import type { TagFormValues } from '@/lib/schemas/schema';
 import type { Option, Tag } from '@/lib/types';
 
 import { useGetNewsTags } from '../../../_lib/get-news-tags';
 import { revalidateNewsTags } from '../../../actions';
 import type { NewsFormValues } from '../../_lib/schema';
-import { deleteNewsTag } from '../../actions';
+import { createNewsTag, deleteNewsTag, updateNewsTag } from '../../actions';
 
 import { TagAction } from './tag-action';
 import { TagForm } from './tag-form';
@@ -46,9 +47,10 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
 
   const { data, isFetching, hasNextPage, refetch } = useGetNewsTags();
 
-  const { setValue } = useFormContext();
+  const { setValue, getValues } = useFormContext<NewsFormValues>();
 
   const [targetTag, setTargetTag] = useState<Tag | null>(null);
+  console.log('🚨 - targetTag', targetTag);
 
   const newsTags = useWatch({
     name: 'newsTags',
@@ -90,7 +92,7 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
     [allNewsTags, defaultLocale]
   );
 
-  const onEdit = useCallback(
+  const handleEditClick = useCallback(
     (option: Option) => {
       setTargetTag(allNewsTags.find((tag) => tag.id === option.value) ?? null);
       onModalOpen();
@@ -98,12 +100,52 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
     [allNewsTags]
   );
 
-  const onDelete = useCallback(
+  const handleDeleteClick = useCallback(
     (option: Option) => {
       setTargetTag(allNewsTags.find((tag) => tag.id === option.value) ?? null);
       onDeleteModalOpen();
     },
     [allNewsTags]
+  );
+
+  const onUpdate = async (values: TagFormValues) => {
+    try {
+      await updateNewsTag(values.id, values.value);
+      const oldNewsTags = getValues('newsTags');
+      const newNewsTags = oldNewsTags.map((tag) => (tag.id === values.id ? values : tag));
+      setValue('newsTags', newNewsTags);
+      revalidateNewsTags();
+      toast.success('更新成功');
+      onModalClose();
+    } catch (error) {
+      console.log('error', error);
+      toast.error('更新失敗');
+    }
+  };
+
+  const onCreate = async (values: TagFormValues) => {
+    try {
+      await createNewsTag(values.value);
+      revalidateNewsTags();
+
+      toast.success('新增成功');
+      onModalClose();
+    } catch (error) {
+      console.log('error', error);
+      toast.error('新增失敗');
+    }
+  };
+
+  const onSubmit = useCallback(
+    async (values: TagFormValues) => {
+      console.log('🚨 - values', values);
+      if (values.id !== '') {
+        await onUpdate(values);
+      } else {
+        await onCreate(values);
+      }
+    },
+    [onUpdate, onCreate]
   );
 
   const onConfirmDelete = useCallback(async () => {
@@ -139,62 +181,64 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
   }, [tagOptions]);
 
   return (
-    <FormField
-      name='newsTags'
-      control={control}
-      render={() => (
-        <FormItem className='relative py-4'>
-          <FormLabel>標籤</FormLabel>
-          <FormControl>
-            <MultiSelect
-              loading={isFetching}
-              options={tagOptions}
-              selected={selectedTags}
-              onValueChange={onValueChange}
-              emptyAction={
-                <div className='text-center'>
-                  <p className='mb-2'>查無此標籤</p>
-                  <Button
-                    size='sm'
-                    onClick={onModalOpen}
-                  >
-                    新增標籤
-                  </Button>
-                </div>
-              }
-              additionalAction={(option) => {
-                return (
-                  <TagAction
-                    option={option}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                  />
-                );
-              }}
-              footerAction={hasNextPage && <RefetchTrigger func={refetch} />}
-            />
-          </FormControl>
-          <Modal
-            title={targetTag ? '編輯標籤' : '新增標籤'}
-            description={targetTag ? '請編輯標籤名稱' : '請新增標籤名稱'}
-            isOpen={isModalOpen}
-            onClose={onModalClose}
-          >
-            <TagForm
-              initialValue={targetTag}
-              onClose={onModalClose}
-            />
-          </Modal>
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onClose={onDeleteModalClose}
-            title={`你確定要刪除“${targetTag?.value[defaultLocale]}”標籤嗎？`}
-            description='可能會影響多筆資料，請謹慎操作'
-            loading={deleteLoading}
-            onConfirm={onConfirmDelete}
-          />
-        </FormItem>
-      )}
-    />
+    <>
+      <FormField
+        name='newsTags'
+        control={control}
+        render={() => (
+          <FormItem className='relative py-4'>
+            <FormLabel>標籤</FormLabel>
+            <FormControl>
+              <MultiSelect
+                loading={isFetching}
+                options={tagOptions}
+                selected={selectedTags}
+                onValueChange={onValueChange}
+                emptyAction={
+                  <div className='text-center'>
+                    <p className='mb-2'>查無此標籤</p>
+                    <Button
+                      size='sm'
+                      onClick={onModalOpen}
+                    >
+                      新增標籤
+                    </Button>
+                  </div>
+                }
+                additionalAction={(option) => {
+                  return (
+                    <TagAction
+                      option={option}
+                      onEdit={handleEditClick}
+                      onDelete={handleDeleteClick}
+                    />
+                  );
+                }}
+                footerAction={hasNextPage && <RefetchTrigger func={refetch} />}
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <Modal
+        title={targetTag ? '編輯標籤' : '新增標籤'}
+        description={targetTag ? '請編輯標籤名稱' : '請新增標籤名稱'}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+      >
+        <TagForm
+          initialValue={targetTag}
+          onSubmit={onSubmit}
+        />
+      </Modal>
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={onDeleteModalClose}
+        title={`你確定要刪除“${targetTag?.value[defaultLocale]}”標籤嗎？`}
+        description='可能會影響多筆資料，請謹慎操作'
+        loading={deleteLoading}
+        onConfirm={onConfirmDelete}
+      />
+    </>
   );
 };

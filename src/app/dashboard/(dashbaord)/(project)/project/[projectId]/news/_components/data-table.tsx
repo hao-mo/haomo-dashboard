@@ -32,7 +32,7 @@ import {
 
 import { createQueryString } from '@/utils';
 
-import type { FormattedNews } from '../type';
+import type { News } from '../type';
 
 import { DataTableHeader } from './data-table-header';
 
@@ -70,11 +70,7 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
   };
 };
 
-export function DataTable<TValue>({
-  columns,
-  data,
-  pageCount,
-}: DataTableProps<FormattedNews, TValue>) {
+export function DataTable<TValue>({ columns, data, pageCount }: DataTableProps<News, TValue>) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -92,7 +88,7 @@ export function DataTable<TValue>({
 
   const router = useRouter();
 
-  const table = useReactTable<FormattedNews>({
+  const table = useReactTable<News>({
     data,
     columns,
     pageCount: pageCount ?? -1,

@@ -13,9 +13,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import type { FormattedNews } from '../type';
+import type { News } from '../type';
 
-export const CellAction = ({ data }: { data: FormattedNews }) => {
+export const CellAction = ({ data }: { data: News }) => {
   const pathname = usePathname();
   const router = useRouter();
 

@@ -1,4 +1,5 @@
 import clsx, { type ClassValue } from 'clsx';
+import { nanoid } from 'nanoid';
 import { twMerge } from 'tailwind-merge';
 
 /**
@@ -19,6 +20,10 @@ export const cn = (...args: ClassValue[]) => {
  */
 export async function fetcher<T = unknown>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const response = await fetch(input, { cache: 'no-store', ...init });
+
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
 
   return response.json() as T;
 }
@@ -168,3 +173,11 @@ export const nextFrame = async (): Promise<void> => {
 export const toNumber = (target: string) => {
   return Number(target.replace(/[^0-9.-]+/g, ''));
 };
+
+/**
+ * Generates a unique identifier using nanoid.
+ * @returns {string} The unique identifier.
+ */
+export function getUniqueId() {
+  return nanoid();
+}

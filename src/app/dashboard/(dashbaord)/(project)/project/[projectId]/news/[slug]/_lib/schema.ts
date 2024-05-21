@@ -9,7 +9,7 @@ export const newsFormSchema = z.object({
   slug: z.string(),
   status: statusSchema,
   isDeleted: z.boolean().default(false),
-  date: z.date(),
+  publishAt: z.date(),
   headline: localeSchema,
   description: localeSchema,
   alt: localeSchema,
