@@ -54,7 +54,10 @@ export const TagAction = memo(({ option, onEdit, onDelete }: TagActionProps) => 
             <PenIcon className='mr-2 size-4' />
             編輯
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onDelete(option)}>
+          <DropdownMenuItem
+            onClick={() => onDelete(option)}
+            className='text-destructive'
+          >
             <TrashIcon className='mr-2 size-4' />
             刪除
           </DropdownMenuItem>

@@ -1,8 +1,14 @@
 import { Reorder, useDragControls, useMotionValue } from 'framer-motion';
-import { GripVerticalIcon, PenIcon, Trash2Icon } from 'lucide-react';
+import { GripVerticalIcon, MoreHorizontalIcon, PenIcon, TrashIcon } from 'lucide-react';
 
-import { DoubleConfirmButton } from '@/components/double-confirm-button';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Modal } from '@/components/ui/modal';
 
 import { useOpen } from '@/hooks/use-open';
@@ -33,19 +39,21 @@ export const DraggableContentItem = ({
   onUpdate,
   onDelete,
 }: DraggableContentItemProps) => {
-  const { isOpen, onOpen, onClose } = useOpen();
+  const { isOpen, onOpenChange } = useOpen();
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useOpen();
+
   const dragControls = useDragControls();
   const y = useMotionValue<number>(0);
   const boxShadow = useRaisedShadow(y);
 
   const handleUpdate = (content: ContentWithId) => {
     onUpdate(content);
-    onClose();
+    onModalClose();
   };
 
   const handleDelete = () => {
     onDelete();
-    onClose();
+    onModalClose();
   };
 
   return (
@@ -77,34 +85,51 @@ export const DraggableContentItem = ({
         <span className='ml-2 truncate capitalize'>{typeMap[item.type]}</span>
       </div>
       <div className='pointer-events-auto absolute right-4 top-half inline-flex -translate-y-half items-center gap-x-2'>
-        <Button
-          type='button'
-          variant='secondary'
-          size='icon'
-          className='z-2 rounded-md px-3 py-2 text-foreground/50 transition-[color,background-color,opacity] duration-200 ease-in-out focus:outline-none hocus-visible:bg-muted hocus-visible:text-primary'
-          onClick={onOpen}
-          disabled={disabled}
+        <DropdownMenu
+          open={isOpen}
+          onOpenChange={onOpenChange}
         >
-          <PenIcon className='size-4' />
-        </Button>
-        <DoubleConfirmButton
-          variant='secondary'
-          size='icon'
-          className='z-2 rounded-md px-3 py-2 text-foreground/50 transition-[color,background-color] duration-200 ease-in-out focus:outline-none focus-visible:outline-destructive hocus-visible:bg-muted/50 hocus-visible:text-destructive'
-          confirmClassName='text-white bg-destructive hocus-visible:bg-destructive hocus-visible:text-white'
-          confirmText='刪除'
-          onConfirm={onDelete}
-          disabled={disabled}
-        >
-          <Trash2Icon className='size-4' />
-        </DoubleConfirmButton>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size='icon'
+              variant='ghost'
+              disabled={disabled}
+            >
+              <MoreHorizontalIcon size={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align='end'
+            className='min-w-40'
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            onCloseAutoFocus={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={onModalOpen}>
+                <PenIcon className='mr-2 size-4' />
+                編輯
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={onDelete}
+                className='text-destructive'
+              >
+                <TrashIcon className='mr-2 size-4' />
+                刪除
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       {disabled && <div className='pointer-events-auto absolute inset-0 z-2 bg-white opacity-50' />}
       <Modal
         title='更新'
         description='請修改內容並確認更新'
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isModalOpen}
+        onClose={onModalClose}
       >
         <ContentForm
           content={item}
