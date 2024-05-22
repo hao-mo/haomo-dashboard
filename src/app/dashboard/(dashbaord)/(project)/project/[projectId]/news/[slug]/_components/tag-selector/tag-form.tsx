@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import { AddButton } from '@/components/add-button';
 import { SubmitButton } from '@/components/submit-button';
-import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
@@ -74,6 +75,7 @@ export const TagForm = ({ initialValue, onSubmit }: TagFormProps) => {
             <FormItem>
               <FormLabel>名稱</FormLabel>
               <Input {...field} />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -86,12 +88,19 @@ export const TagForm = ({ initialValue, onSubmit }: TagFormProps) => {
           />
         </div>
         <div className='mt-4 flex items-center justify-end'>
-          <SubmitButton
-            loading={form.formState.isSubmitting}
-            disabled={form.formState.isSubmitting}
-          >
-            變更
-          </SubmitButton>
+          {initialValue ? (
+            <SubmitButton
+              loading={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting}
+            >
+              變更
+            </SubmitButton>
+          ) : (
+            <AddButton
+              type='submit'
+              disabled={form.formState.isSubmitting}
+            />
+          )}
         </div>
       </form>
     </Form>

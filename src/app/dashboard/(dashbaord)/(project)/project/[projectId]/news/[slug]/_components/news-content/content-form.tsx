@@ -64,11 +64,7 @@ export const ContentForm = (props: ContentFormProps) => {
       ? props.content
       : {
           type: CONTENT_TYPE.HEADING,
-          text: {
-            'zh-TW': '',
-            'en-US': '',
-            'ja-JP': '',
-          },
+          text: defaultLocaleString,
         },
   });
 

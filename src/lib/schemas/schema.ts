@@ -29,7 +29,6 @@ const textSchema = z.object({
 export const headingSchema = z.object({
   type: z.literal(CONTENT_TYPE.HEADING),
   text: localeSchema,
-  // formattedText: z.string(),
   // level: z.union([
   //   z.literal(1),
   //   z.literal(2),
@@ -43,24 +42,22 @@ export const headingSchema = z.object({
 export const paragraphSchema = z.object({
   type: z.literal(CONTENT_TYPE.PARAGRAPH),
   text: localeSchema,
-  // formattedText: z.string(),
 });
 
 export const fileSchema = z
   .instanceof(File)
   .refine((file) => {
     return !file || file.size <= MAX_UPLOAD_SIZE;
-  }, 'File size must be less than 3MB')
+  }, '檔案必須小於 3MB')
   .refine(
     (file) => (file ? ACCEPTED_FILE_TYPES.includes(file.type) : false),
-    'Only .jpg, .jpeg, .png and .webp file types are supported'
+    '只支援 .jpg, .jpeg, .png 和 .webp 的檔案類型'
   );
 
 export const imageSchema = z.object({
   type: z.literal(CONTENT_TYPE.IMAGE),
   imageUrl: z.string(),
   alt: localeSchema,
-  // formattedAlt: z.string(),
   file: fileSchema.optional(),
 });
 
@@ -70,7 +67,7 @@ export type ContentFormValues = z.infer<typeof contentSchema>;
 
 export const tagSchema = z.object({
   id: z.string(),
-  name: z.string(),
+  name: z.string().min(1),
   value: localeSchema,
 });
 

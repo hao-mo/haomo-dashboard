@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 
-import { FormControl, FormField, FormItem } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { cn } from '@/utils';
@@ -84,6 +84,7 @@ export const ImageUploadField = <
               <Input
                 type='file'
                 className='hidden'
+                accept='.jpg, .jpeg, .png, .webp'
                 {...fileRef}
                 ref={inputRef}
                 disabled={disabled}
@@ -100,6 +101,7 @@ export const ImageUploadField = <
                 }}
               />
             </FormControl>
+            <FormMessage />
           </FormItem>
         );
       }}

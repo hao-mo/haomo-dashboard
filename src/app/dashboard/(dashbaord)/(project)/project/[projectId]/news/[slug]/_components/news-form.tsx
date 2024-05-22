@@ -10,7 +10,14 @@ import { AddButton } from '@/components/add-button';
 import { SubmitButton } from '@/components/submit-button';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { Modal } from '@/components/ui/modal';
 import {
@@ -22,6 +29,7 @@ import {
 } from '@/components/ui/select';
 
 import useEventListener from '@/hooks/use-event-listener';
+import { useI18nZodErrors } from '@/hooks/use-i18n-zod-errors';
 import { useJumpToErrorInput } from '@/hooks/use-jump-to-error-input';
 import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
@@ -55,7 +63,10 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
 
   const { isOpen, onOpen, onClose } = useOpen();
 
+  useI18nZodErrors();
+
   const form = useForm<NewsFormValues>({
+    mode: 'all',
     resolver: zodResolver(newsFormSchema),
     defaultValues: initialData
       ? {
@@ -115,8 +126,6 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
   });
 
   const isDeleted = form.watch('isDeleted');
-
-  console.log('form values', form.getValues());
 
   useJumpToErrorInput(form.formState.errors);
 
@@ -198,6 +207,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
                   required
                   withForm
                 />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -227,6 +237,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
                     ))}
                   </SelectContent>
                 </Select>
+                <FormMessage />
               </FormItem>
             )}
           />

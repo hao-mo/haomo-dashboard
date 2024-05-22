@@ -1,6 +1,8 @@
-import { type Control, type FieldPath, type FieldValues } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
-import { FormControl, FormField, FormItem } from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
@@ -56,12 +58,23 @@ export const LocaleField = <
 }: LocaleFieldProps<TFieldValues, TName>) => {
   const defaultLocale = useLocaleStore((state) => state.locale);
 
+  const [tab, setTab] = useState<Locale>(defaultLocale);
+
   const localeOptions = Object.entries(locales);
+
+  const { getFieldState } = useFormContext();
+  const fieldState = getFieldState(name);
+
+  useEffect(() => {
+    if (!fieldState.error) return;
+    setTab(Object.keys(fieldState.error)[0] as Locale);
+  }, [fieldState.error]);
 
   return (
     <Tabs
+      value={tab}
+      onValueChange={(value) => setTab(value as Locale)}
       className={tabClassName}
-      defaultValue={defaultLocale}
     >
       <TabsList className='grid h-fit w-full grid-cols-3'>
         {localeOptions.map(([locale, { name: localeName }]) => (
@@ -99,6 +112,7 @@ export const LocaleField = <
                     />
                   )}
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

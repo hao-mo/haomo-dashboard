@@ -151,6 +151,7 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
 
   const onConfirmDelete = useCallback(async () => {
     if (!targetTag) return;
+    startDeleteLoading();
     try {
       await deleteNewsTag(targetTag.id);
 
@@ -161,8 +162,10 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
     } catch (error) {
       toast.error('刪除失敗');
       console.log('error', error);
+    } finally {
+      stopDeleteLoading();
+      onDeleteModalClose();
     }
-    onDeleteModalClose();
   }, [targetTag]);
 
   useEffect(() => {
