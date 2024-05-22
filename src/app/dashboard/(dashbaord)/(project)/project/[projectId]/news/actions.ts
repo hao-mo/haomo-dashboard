@@ -103,6 +103,10 @@ export const fetchNewsTags = async ({
   }
 };
 
+export const revalidateNews = async () => {
+  revalidateTag('news');
+};
+
 export const revalidateNewsTags = async () => {
   revalidateTag('news-tags');
 };

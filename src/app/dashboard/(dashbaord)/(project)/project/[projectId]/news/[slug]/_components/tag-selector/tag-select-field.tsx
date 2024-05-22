@@ -50,7 +50,6 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
   const { setValue, getValues } = useFormContext<NewsFormValues>();
 
   const [targetTag, setTargetTag] = useState<Tag | null>(null);
-  console.log('🚨 - targetTag', targetTag);
 
   const newsTags = useWatch({
     name: 'newsTags',
@@ -87,7 +86,7 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
         },
         id: value.value,
       }));
-      setValue('newsTags', tags);
+      setValue('newsTags', tags, { shouldDirty: true });
     },
     [allNewsTags, defaultLocale]
   );
@@ -127,7 +126,6 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
     try {
       await createNewsTag(values.value);
       revalidateNewsTags();
-
       toast.success('新增成功');
       onModalClose();
     } catch (error) {
@@ -138,7 +136,6 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
 
   const onSubmit = useCallback(
     async (values: TagFormValues) => {
-      console.log('🚨 - values', values);
       if (values.id !== '') {
         await onUpdate(values);
       } else {

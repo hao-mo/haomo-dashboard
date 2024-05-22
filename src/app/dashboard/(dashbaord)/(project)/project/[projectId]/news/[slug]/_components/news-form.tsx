@@ -31,7 +31,7 @@ import { CONTENT_TYPE } from '@/lib/types';
 import { getUniqueId } from '@/utils';
 
 import { DeleteNewsModal } from '../../_components/delete-news-modal';
-import { revalidateNewsTags } from '../../actions';
+import { revalidateNews } from '../../actions';
 import type { News } from '../../type';
 import { statusOptions } from '../_lib';
 import type { ContentWithId, NewsFormValues } from '../_lib/schema';
@@ -136,7 +136,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
       } else {
         await createNews(data);
       }
-      revalidateNewsTags();
+      revalidateNews();
       toast.success('更新成功');
       router.push(`/dashboard/project/${params.projectId}/news`);
     } catch (error) {
@@ -152,7 +152,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
     try {
       if (!initialData) return;
       await rollbackNews(initialData.id);
-      revalidateNewsTags();
+      revalidateNews();
       toast.success('復原成功');
       router.push(`/dashboard/project/${params.projectId}/news`);
     } catch (error) {

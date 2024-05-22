@@ -44,9 +44,8 @@ export const createNews = async ({ file, status, ...data }: NewsFormValues) => {
           return article;
         }),
       ],
-      newsTagIds: ['caa8dd15-d020-473e-a591-95779fc25057'],
+      newsTagIds: data.newsTags.map((tag) => tag.id),
     };
-    console.log('🚨 - formattedData', formattedData);
     const response = await fetch(`${BASE_API_URL}/v1/news`, {
       method: 'POST',
       headers: {
@@ -110,6 +109,7 @@ export const updateNews = async (id: string, { file, ...data }: NewsFormValues) 
           return article;
         }),
       ],
+      newsTagIds: data.newsTags.map((tag) => tag.id),
     };
     const response = await fetch(`${BASE_API_URL}/v1/news/${id}`, {
       method: 'PATCH',
