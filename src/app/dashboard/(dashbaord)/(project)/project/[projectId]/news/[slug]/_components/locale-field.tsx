@@ -91,6 +91,7 @@ export const LocaleField = <
         <TabsContent
           key={locale}
           value={locale}
+          tabIndex={-1}
         >
           <FormField
             name={getLocaleName(name, locale as Locale) as TName}

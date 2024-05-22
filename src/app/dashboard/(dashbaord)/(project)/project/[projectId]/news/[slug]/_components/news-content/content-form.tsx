@@ -170,6 +170,7 @@ export const ContentForm = (props: ContentFormProps) => {
           <TabsContent
             key={value}
             value={value}
+            tabIndex={-1}
           >
             {renderContent(value)}
           </TabsContent>

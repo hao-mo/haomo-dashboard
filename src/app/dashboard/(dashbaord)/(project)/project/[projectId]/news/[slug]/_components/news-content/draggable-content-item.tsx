@@ -63,6 +63,7 @@ export const DraggableContentItem = ({
       value={item}
       className='border-gray-200 pointer-events-none relative flex items-center justify-between rounded-md border bg-white p-4 shadow-sm focus:outline-none'
       style={{ y, boxShadow }}
+      tabIndex={-1}
       dragControls={dragControls}
       dragListener={false}
       whileTap={{ cursor: 'grabbing' }}
@@ -78,6 +79,7 @@ export const DraggableContentItem = ({
       <div className='flex w-full items-center pr-24 lg:pr-32'>
         <button
           className='pointer-events-auto z-2 shrink-0 cursor-grab overflow-hidden rounded-md px-0.5 py-1 transition-colors duration-200 ease-in-out hover:bg-muted focus:outline-none active:cursor-grabbing active:bg-muted'
+          tabIndex={-1}
           onPointerDown={(event) => dragControls.start(event)}
         >
           <GripVerticalIcon className='size-6' />
