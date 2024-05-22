@@ -2,7 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 import { SubmitButton } from '@/components/submit-button';
-import { Form } from '@/components/ui/form';
+import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 import type { TagFormValues } from '@/lib/schemas/schema';
 import { tagSchema } from '@/lib/schemas/schema';
@@ -30,6 +32,7 @@ export const TagForm = ({ initialValue, onSubmit }: TagFormProps) => {
     defaultValues: initialValue
       ? {
           id: initialValue.id,
+          name: initialValue.name,
           value: {
             ...defaultLocaleString,
             ...initialValue.value,
@@ -37,6 +40,7 @@ export const TagForm = ({ initialValue, onSubmit }: TagFormProps) => {
         }
       : {
           id: '',
+          name: '',
           value: defaultLocaleString,
         },
   });
@@ -59,12 +63,28 @@ export const TagForm = ({ initialValue, onSubmit }: TagFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit}>
-        <LocaleField
-          type='text'
-          name='value'
+      <form
+        onSubmit={handleSubmit}
+        className='grid gap-4'
+      >
+        <FormField
+          name='name'
           control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>名稱</FormLabel>
+              <Input {...field} />
+            </FormItem>
+          )}
         />
+        <div className='py-4'>
+          <Label className='mb-2 inline-block'>顯示名稱</Label>
+          <LocaleField
+            type='text'
+            name='value'
+            control={form.control}
+          />
+        </div>
         <div className='mt-4 flex items-center justify-end'>
           <SubmitButton
             loading={form.formState.isSubmitting}

@@ -70,6 +70,7 @@ export type ContentFormValues = z.infer<typeof contentSchema>;
 
 export const tagSchema = z.object({
   id: z.string(),
+  name: z.string(),
   value: localeSchema,
 });
 

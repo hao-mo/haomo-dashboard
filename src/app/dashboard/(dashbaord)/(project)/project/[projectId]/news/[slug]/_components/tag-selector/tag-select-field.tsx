@@ -79,13 +79,17 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
 
   const onValueChange = useCallback(
     (values: Option[]) => {
-      const tags = values.map((value) => ({
-        value: {
-          ...allNewsTags.find((tag) => tag.id === value.value)?.value,
-          [defaultLocale]: value.name,
-        },
-        id: value.value,
-      }));
+      const tags = values.map((value) => {
+        const targetTag = allNewsTags.find((tag) => tag.id === value.value)!;
+        return {
+          value: {
+            ...targetTag.value,
+            [defaultLocale]: value.name,
+          },
+          id: value.value,
+          name: targetTag.name,
+        };
+      });
       setValue('newsTags', tags, { shouldDirty: true });
     },
     [allNewsTags, defaultLocale]
@@ -109,7 +113,7 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
 
   const onUpdate = async (values: TagFormValues) => {
     try {
-      await updateNewsTag(values.id, values.value);
+      await updateNewsTag(values);
       const oldNewsTags = getValues('newsTags');
       const newNewsTags = oldNewsTags.map((tag) => (tag.id === values.id ? values : tag));
       setValue('newsTags', newNewsTags);
@@ -124,7 +128,7 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
 
   const onCreate = async (values: TagFormValues) => {
     try {
-      await createNewsTag(values.value);
+      await createNewsTag(values);
       revalidateNewsTags();
       toast.success('新增成功');
       onModalClose();

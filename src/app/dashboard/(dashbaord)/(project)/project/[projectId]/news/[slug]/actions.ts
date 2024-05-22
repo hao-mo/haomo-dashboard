@@ -2,6 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
+import type { TagFormValues } from '@/lib/schemas/schema';
 import { BASE_API_URL } from '@/lib/server';
 import { CONTENT_TYPE } from '@/lib/types';
 
@@ -11,8 +12,6 @@ import { formatLocaleString } from '@/utils/format';
 import type { News } from '../type';
 
 import type { NewsFormValues } from './_lib/schema';
-
-import type { LocaleString } from '@/stores/locale-store';
 
 /**
  * Creates a news article.
@@ -153,17 +152,14 @@ export const rollbackNews = async (id: string) => {
   }
 };
 
-export const createNewsTag = async (value: LocaleString) => {
+export const createNewsTag = async ({ value, ...data }: TagFormValues) => {
   try {
     const response = await fetch(`${BASE_API_URL}/v1/news-tags`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name: 'newsTag',
-        value: formatLocaleString(value),
-      }),
+      body: JSON.stringify({ ...data, value: formatLocaleString(value) }),
     });
     if (!response.ok) {
       throw new Error('Failed to create news tag');
@@ -180,7 +176,7 @@ export const createNewsTag = async (value: LocaleString) => {
  * @param value - The new tag value.
  * @throws If the update fails.
  */
-export const updateNewsTag = async (id: string, value: LocaleString) => {
+export const updateNewsTag = async ({ id, value, ...data }: TagFormValues) => {
   try {
     const response = await fetch(`${BASE_API_URL}/v1/news-tags/${id}`, {
       method: 'PATCH',
@@ -188,12 +184,8 @@ export const updateNewsTag = async (id: string, value: LocaleString) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: 'newsTag',
-        value: {
-          default: value['zh-TW'] ?? '',
-          en: '12',
-          'zh-TW': value['zh-TW'] ?? '',
-        },
+        ...data,
+        value: formatLocaleString(value),
       }),
     });
     console.log('🚨 - response', response);
