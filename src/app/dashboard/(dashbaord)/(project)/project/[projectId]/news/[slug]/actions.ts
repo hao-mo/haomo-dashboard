@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
-
 import type { TagFormValues } from '@/lib/schemas/schema';
 import { BASE_API_URL } from '@/lib/server';
 import { CONTENT_TYPE } from '@/lib/types';
@@ -84,7 +82,8 @@ export const getNewsBySlug = async (slug: string) => {
  * @param id - The ID of the news item.
  * @param data - The updated news data.
  */
-export const updateNews = async (id: string, { file, ...data }: NewsFormValues) => {
+export const updateNews = async (id: string, data: Omit<NewsFormValues, 'file'>) => {
+  console.log('🚨 - data', data);
   try {
     const formattedData = {
       ...data,
@@ -120,7 +119,6 @@ export const updateNews = async (id: string, { file, ...data }: NewsFormValues) 
     if (!response.ok) {
       throw new Error('Failed to update news');
     }
-    revalidateTag('news');
   } catch (error) {
     console.log('🚨 - error', error);
     throw error;

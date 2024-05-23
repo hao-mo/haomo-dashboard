@@ -35,6 +35,7 @@ import { useMount } from '@/hooks/use-mount';
 import { useOpen } from '@/hooks/use-open';
 
 import { CONTENT_TYPE } from '@/lib/types';
+import { uploadImage } from '@/lib/upload-image';
 
 import { getUniqueId } from '@/utils';
 
@@ -138,12 +139,23 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
 
   const isMount = useMount();
 
-  const onSubmit = async (data: NewsFormValues) => {
+  console.log('values', form.getValues());
+
+  const onSubmit = async ({ file, ...values }: NewsFormValues) => {
     try {
       if (initialData) {
-        await updateNews(initialData.id, data);
+        const imageResponse = await uploadImage({
+          file,
+          folder: '/news',
+          tags: ['news'],
+        });
+        console.log('🚨 - imageReszponse', imageResponse);
+        await updateNews(initialData.id, {
+          ...values,
+          // imageUrl: imageResponse.url,
+        });
       } else {
-        await createNews(data);
+        await createNews(values);
       }
       revalidateNews();
       toast.success('更新成功');

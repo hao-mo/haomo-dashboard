@@ -58,6 +58,8 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
   });
 
   const allNewsTags = useMemo(() => data?.pages.flatMap((page) => page.data) ?? [], [data]);
+  console.log('🚨 - allNewsTags', allNewsTags);
+  console.log('🚨 - newsTags', newsTags);
 
   const tagOptions = useMemo(
     () =>

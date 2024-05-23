@@ -17,5 +17,4 @@ const nextConfig = {
     serverComponentsExternalPackages: ['mongoose', '@typegoose/typegoose'],
   },
 };
-
 export default nextConfig;

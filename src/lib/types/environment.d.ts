@@ -19,5 +19,9 @@ declare namespace NodeJS {
     readonly MONGODB_URI: string;
     // OPENAI
     readonly OPENAI_API_KEY: string;
+    // ImageKit
+    readonly IMAGE_KIT_PUBLIC_KEY: string;
+    readonly IMAGE_KIT_PRIVATE_KEY: string;
+    readonly IMAGE_KIT_URL_ENDPOINT: string;
   }
 }

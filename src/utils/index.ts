@@ -176,8 +176,29 @@ export const toNumber = (target: string) => {
 
 /**
  * Generates a unique identifier using nanoid.
- * @returns {string} The unique identifier.
+ * @returns The unique identifier.
  */
 export function getUniqueId() {
   return nanoid();
+}
+
+/**
+ * Safely parses a JSON string and returns the parsed result.
+ * If parsing fails, it tries to parse the input string wrapped in double quotes.
+ * If parsing still fails, it logs an error and returns the input string as is.
+ *
+ * @param input - The JSON string to parse.
+ * @returns The parsed JSON object or the input string if parsing fails.
+ */
+export function safeParseJson<T>(input: string) {
+  try {
+    return JSON.parse(input) as T;
+  } catch (error) {
+    try {
+      return JSON.parse(`"${input}"`) as T;
+    } catch (innerError) {
+      console.error('Failed to parse JSON:', innerError);
+      return null;
+    }
+  }
 }
