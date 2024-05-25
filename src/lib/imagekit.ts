@@ -17,7 +17,7 @@ export const uploadImage = async ({ file, folder, tags }: UploadImageProps) => {
     formData.append('folder', folder);
     formData.append('tags', JSON.stringify(tags));
 
-    const response = await fetch('/api/upload-image', {
+    const response = await fetch('/api/image', {
       method: 'POST',
       body: formData,
     });
@@ -26,5 +26,19 @@ export const uploadImage = async ({ file, folder, tags }: UploadImageProps) => {
   } catch (error) {
     console.log('🚨 - error', error);
     throw new Error('Failed to upload image');
+  }
+};
+
+export const deleteImage = async (fileId: string) => {
+  try {
+    const response = await fetch(`/api/image?fileId=${fileId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete image');
+    }
+  } catch (error) {
+    console.log('🚨 - error', error);
+    throw error;
   }
 };

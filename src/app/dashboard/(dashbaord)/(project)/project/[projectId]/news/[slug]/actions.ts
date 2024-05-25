@@ -82,8 +82,10 @@ export const getNewsBySlug = async (slug: string) => {
  * @param id - The ID of the news item.
  * @param data - The updated news data.
  */
-export const updateNews = async (id: string, data: Omit<NewsFormValues, 'file'>) => {
-  console.log('🚨 - data', data);
+export const updateNews = async (
+  id: string,
+  { newsTags, ...data }: Omit<NewsFormValues, 'file'>
+) => {
   try {
     const formattedData = {
       ...data,
@@ -107,7 +109,7 @@ export const updateNews = async (id: string, data: Omit<NewsFormValues, 'file'>)
           return article;
         }),
       ],
-      newsTagIds: data.newsTags.map((tag) => tag.id),
+      newsTagIds: newsTags.map((tag) => tag.id),
     };
     const response = await fetch(`${BASE_API_URL}/v1/news/${id}`, {
       method: 'PATCH',
