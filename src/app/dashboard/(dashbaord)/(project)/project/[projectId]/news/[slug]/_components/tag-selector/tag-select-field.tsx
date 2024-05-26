@@ -29,9 +29,10 @@ import { useLocaleStore } from '@/stores/locale-store';
 
 interface TagSelectFieldProps {
   control: Control<NewsFormValues>;
+  disabled?: boolean;
 }
 
-export const TagSelectField = ({ control }: TagSelectFieldProps) => {
+export const TagSelectField = ({ control, disabled }: TagSelectFieldProps) => {
   const defaultLocale = useLocaleStore((state) => state.locale);
 
   const {
@@ -194,6 +195,7 @@ export const TagSelectField = ({ control }: TagSelectFieldProps) => {
             <FormLabel>標籤</FormLabel>
             <FormControl>
               <MultiSelect
+                disabled={disabled}
                 loading={isFetching}
                 options={tagOptions}
                 selected={selectedTags}

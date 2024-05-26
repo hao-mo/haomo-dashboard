@@ -24,6 +24,7 @@ interface MultiSelectProps extends WithClassName {
   selected: Option[];
   onValueChange: (value: Option[]) => void;
   loading?: boolean;
+  disabled?: boolean;
   loadingAction?: React.ReactNode;
   emptyAction?: React.ReactNode;
   footerAction?: React.ReactNode;
@@ -35,6 +36,7 @@ export const MultiSelect = ({
   selected,
   className,
   onValueChange,
+  disabled,
   loading,
   loadingAction,
   emptyAction,
@@ -69,6 +71,7 @@ export const MultiSelect = ({
             className
           )}
           onClick={() => onOpenChange(!isOpen)}
+          disabled={disabled}
         >
           {selected.length === 0 ? (
             '請選擇...'

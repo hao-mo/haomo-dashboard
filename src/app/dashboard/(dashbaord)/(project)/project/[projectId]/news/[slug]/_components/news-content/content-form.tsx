@@ -13,9 +13,9 @@ import { contentSchema } from '@/lib/schemas/schema';
 import type { ContentType } from '@/lib/types';
 import { CONTENT_TYPE } from '@/lib/types';
 
+import { ImageUploadField } from '../../../../../../../../../../components/image-upload-field';
+import { LocaleField } from '../../../../../../../../../../components/locale-field';
 import type { ContentWithId } from '../../_lib/schema';
-import { ImageUploadField } from '../image-upload-field';
-import { LocaleField } from '../locale-field';
 
 import { defaultLocaleString } from '@/stores/locale-store';
 

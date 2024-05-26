@@ -11,7 +11,7 @@ import type { TagFormValues } from '@/lib/schemas/schema';
 import { tagSchema } from '@/lib/schemas/schema';
 import type { Tag } from '@/lib/types';
 
-import { LocaleField } from '../locale-field';
+import { LocaleField } from '../../../../../../../../../../components/locale-field';
 
 import { defaultLocaleString } from '@/stores/locale-store';
 

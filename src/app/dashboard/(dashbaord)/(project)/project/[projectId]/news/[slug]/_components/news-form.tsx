@@ -39,6 +39,8 @@ import { CONTENT_TYPE } from '@/lib/types';
 
 import { getUniqueId } from '@/utils';
 
+import { ImageUploadField } from '../../../../../../../../../components/image-upload-field';
+import { LocaleField } from '../../../../../../../../../components/locale-field';
 import { DeleteNewsModal } from '../../_components/delete-news-modal';
 import { revalidateNews } from '../../actions';
 import type { News } from '../../type';
@@ -47,8 +49,6 @@ import type { ContentWithId, NewsFormValues } from '../_lib/schema';
 import { newsFormSchema } from '../_lib/schema';
 import { createNews, rollbackNews, updateNews } from '../actions';
 
-import { ImageUploadField } from './image-upload-field';
-import { LocaleField } from './locale-field';
 import { ContentForm, ContentList } from './news-content';
 import { TagSelectField } from './tag-selector';
 
@@ -237,7 +237,7 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger disabled={isDeleted}>
                       <SelectValue placeholder='選擇一個狀態' />
                     </SelectTrigger>
                   </FormControl>
@@ -257,7 +257,10 @@ export const NewsForm = ({ initialData }: NewsFormProps) => {
             )}
           />
         </div>
-        <TagSelectField control={form.control} />
+        <TagSelectField
+          control={form.control}
+          disabled={isDeleted}
+        />
         <div className='relative py-4'>
           <Label className='mb-2 inline-block'>標題</Label>
           <LocaleField

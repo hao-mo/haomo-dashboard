@@ -7,10 +7,10 @@ import { RouterBackButton } from '@/components/router-back-button';
 import { queryClient } from '@/lib/react-query';
 
 import { dynamicImport } from '@/utils/dynamic-import';
+import { formatRelative } from '@/utils/format';
 
 import { fetchNewsTags } from '../actions';
 
-// import { NewsForm } from './_components/news-form';
 import { getNewsBySlug } from './actions';
 
 export const dynamic = 'force-dynamic';
@@ -43,8 +43,6 @@ export default async function Page({ params }: { params: { projectId: string; sl
     queryFn: async ({ pageParam }) => fetchNewsTags({ page: pageParam }),
   });
 
-  const title = news ? '編輯' : '新增';
-
   return (
     <div className='relative w-full'>
       <div className='mb-4 flex w-full flex-wrap items-center justify-between gap-4'>
@@ -56,13 +54,15 @@ export default async function Page({ params }: { params: { projectId: string; sl
             <ChevronLeftIcon size={20} />
           </RouterBackButton>
           <div className='ml-2'>
-            <h2 className='select-none text-lg font-semibold'>活動消息 - {title}</h2>
+            <h2 className='select-none text-lg font-semibold'>
+              活動消息 - {news ? '編輯' : '新增'}
+            </h2>
           </div>
         </div>
         <div>
           {news ? (
             <span className='select-none text-xs text-foreground/50'>
-              {/* 上次編輯 {formatRelative(news.updatedAt)} */}
+              上次編輯 {formatRelative(news.updatedAt)}
             </span>
           ) : null}
         </div>

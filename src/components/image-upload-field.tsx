@@ -51,7 +51,8 @@ export const ImageUploadField = <
                 className={cn(
                   'flex h-80 items-center justify-center rounded-md border-2 border-dashed border-border bg-muted',
                   isImageExist &&
-                    'absolute left-0 top-0 z-1 size-full border-none bg-transparent text-white opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100'
+                    'absolute left-0 top-0 z-1 size-full border-none bg-transparent text-white opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100',
+                  disabled ? 'group-hover:bg-transparent' : 'group-hover:bg-black/50'
                 )}
               >
                 {!disabled && (
@@ -70,7 +71,7 @@ export const ImageUploadField = <
                     src={imageUrl}
                     alt={field.value ? field.value.name : defaultAlt}
                     className={cn(
-                      'size-full object-contain object-center blur-sm transition-all duration-500 ease-in-out group-hover:brightness-50',
+                      'size-full object-contain object-center blur-sm transition-all duration-500 ease-in-out',
                       disabled && 'opacity-50 brightness-50'
                     )}
                     fill
